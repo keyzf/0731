@@ -12,6 +12,7 @@ var Utils = {
   StoreUtil: require('./store'),
   AjaxUtil: require('./ajax'),
   DateUtil: require('./date'),
+  FilterRender:require('./filterRender'),
   // 快捷方法
   ajax: require('./ajax').ajax,
   getLoginFlag: require('./ajax').getLoginFlag,
