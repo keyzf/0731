@@ -1,0 +1,98 @@
+
+.tags-group {
+    margin: 0;
+    border-radius: @input-border-radius;
+    padding: 0 0 3px 0;
+    position: relative;
+    outline: 0;
+    cursor: text;
+    overflow: hidden;
+    background-color: #fff;
+
+    // Clearing floats
+    &:after {
+        content: '';
+        display: table;
+        clear: both;
+    }
+
+    // Result item
+    >li {
+        float: left;
+        list-style: none;
+        margin: 3px 0 3px 3px;
+        position: relative;
+        cursor: default;
+        background-clip: padding-box;
+        -webkit-touch-callout: none;
+        border-radius: @border-radius-base;
+        .user-select(none);
+
+        // RTL
+        html[dir="rtl"] & {
+            margin-left: 0;
+            margin-right: 3px;
+        }
+
+        // Item
+        >a {
+            display: block;
+            line-height: 1;
+            border-radius: @input-border-radius;
+            color: #fff;
+            padding: @padding-base-vertical @padding-base-horizontal;
+            padding-right: ((@padding-base-horizontal * 2.5));
+            background-color: @color-slate-700;
+
+            > i {
+                margin-right: 10px;
+            }
+        }
+
+        // Inherit bg color in solid menu
+        &[class*=bg-] > i {
+            background-color: inherit;
+        }
+
+        // Close button
+        >i {
+            position: absolute;
+            right: (@padding-base-horizontal - 3);
+            top: 50%;
+            margin-top: -(@icon-font-size / 2);
+            line-height: 1;
+            .opacity(0.6);
+            cursor: pointer;
+            
+            // Hover state
+            &:hover {
+                .opacity(1);
+            }
+
+            // RTL
+            html[dir="rtl"] & {
+                right: auto;
+                left: (@padding-base-horizontal / 2);
+            }
+
+            // Cross icon
+            &:after {
+                content: '\ed6b';
+                font-family: 'icomoon';
+                display: block;
+                font-size: @icon-font-size;
+                color: #fff;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+        }
+    }
+    &.display{
+        >li{
+            >a{
+                cursor: default;
+            }
+        }
+    }
+
+}

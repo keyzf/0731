@@ -1,0 +1,318 @@
+var React = require('react')
+var ReactDom = require('react-dom')
+var assign = require('object-assign')
+var classnames = require('classnames')
+var deepEqual = require('deep-equal')
+
+var Calendar = require('../calendar')
+var Time = require('../time')
+var CalendarPosition = require('../calendar/position')
+
+/**
+ * 用于选择日期
+ */
+var DatePicker = React.createClass({
+  propTypes: {
+    /**
+     * 默认显示的提示文字，例：'请选择'
+     */
+    name: React.PropTypes.any,
+    /**
+     * 默认选中的日期，例：'2016-01-01'
+     */
+    date: React.PropTypes.any,
+    /**
+     * 可选日期最小值，例：new Date(date.getFullYear() - 1, date.getMonth(), date.getDate())
+     */
+    minDate: React.PropTypes.any,
+    /**
+     * 可选日期最大值，例：new Date()
+     */
+    maxDate: React.PropTypes.any,
+    /**
+     * 日期格式，例：'YYYY-MM-DD'
+     */
+    format: React.PropTypes.string,
+    /**
+     * 显示界面，默认为'day'，只显示月为'month'，只显示年为'year'，例：'day'
+     */
+    view: React.PropTypes.string,
+    /**
+     * 显示清除按钮，例：true
+     */
+    showClose: React.PropTypes.bool,
+    /**
+     * 是否显示时间(时、分、秒）控制器，例：true
+     */
+    showTime: React.PropTypes.bool,
+    /**
+     * 是否固定小时，例：false
+     */
+    fixedHour: React.PropTypes.bool,
+    /**
+     * 是否固定分钟，例：false
+     */
+    fixedMinute: React.PropTypes.bool,
+    /**
+     * 是否固定秒，例：false
+     */
+    fixedSecond: React.PropTypes.bool,
+    /**
+     * 横坐标位置偏移
+     */
+    left: React.PropTypes.number,
+    /**
+     * 日历样式宽度，不建议修改
+     */
+    calendarWidth: React.PropTypes.number,
+    /**
+     * 日历样式高度，不建议修改
+     */
+    calendarHeight: React.PropTypes.number,
+    /**
+     * 时间组件样式高度，不建议修改
+     */
+    showTimeHeight: React.PropTypes.number,
+    /**
+     * 默认显示的时间
+     */
+    defaultTime: React.PropTypes.string,
+
+    /**
+     * 选中回调，例：funciton(date) {}
+     */
+    onChange: React.PropTypes.func,
+  },
+  getDefaultProps: function () {
+    return {
+      left: 0,
+      view: 'day',
+      showClose: true,
+      showTime: false,
+      calendarWidth: 273,
+      calendarHeight: 370,
+      showTimeHeight: 175,
+      defaultTime: '00:00:00'
+    }
+  },
+  getInitialState: function () {
+    var startValue = this.props.value
+
+    // 把时间部分取出
+    var startTime = this.props.defaultTime
+    if (startValue) {
+      var index = startValue.indexOf(' ')
+      index >= 0 ? startTime = startValue.substring(index) : null
+    }
+
+    return {
+      open: false,
+      name: this.props.name,
+      showCalendar: false,
+      startValue: startValue,
+      computableFormat: this.props.format || 'YYYY.MM.DD',
+      startTime: startTime,
+      popupDiv: null,
+      lastShowCalendar: false,
+      internalLeft: 0,
+      internalTop: 0,
+
+      canlendarRef: null,
+    }
+  },
+  componentDidMount: function () {
+    this._createPopup()
+  },
+  componentWillUnmount: function () {
+    this._removePopup()
+  },
+  componentWillReceiveProps: function (nextProps) {
+    if (!(deepEqual(this.props, nextProps))) {
+      this.state.name = nextProps.name
+      this.state.startValue = nextProps.value
+
+      // 把时间部分取出
+      if (this.state.startValue) {
+        var index = this.state.startValue.indexOf(' ')
+        index >= 0 ? this.state.startTime = this.state.startValue.substring(index) : null
+      }
+
+      this.props = nextProps
+    }
+  },
+  componentWillUpdate: function () {
+
+  },
+  componentDidUpdate: function () {
+    // 不能每次都重新渲染calendar 否则会重置calendar内部状态
+    if (this.state.lastShowCalendar != this.state.showCalendar) {
+      this.state.lastShowCalendar = this.state.showCalendar
+      this._createPopup()
+    }
+  },
+  _onStartDateChange: function (date) {
+    if (typeof date === 'undefined' || date == null) {
+      if (typeof this.state.startValue === 'undefined' || this.state.startValue == null || this.state.startValue === '') {
+        return
+      } else {
+        date = this.state.startValue
+      }
+    }
+    var index = date.indexOf(' ')
+    index >= 0 ? date = date.substring(0, index) : null
+    this.setState({
+      startValue: date + (this.props.showTime ? (' ' + this.state.startTime) : '')
+    })
+  },
+  _calendarInputClick: function () {
+    if (this.state.showCalendar) {
+      this._hideCalendar()
+    } else {
+      this.setState({
+        showCalendar: true
+      })
+    }
+  },
+  _closeOnStartSelect: function () {
+    this._hideCalendar()
+  },
+  _hideCalendar: function () {
+    var that = this
+    if (this.state.showCalendar) {
+      this.setState({
+        showCalendar: false
+      }, function () {
+        if (typeof that.props.onChange === 'function') {
+          if (that.state.startValue != null && that.state.startValue != '') {
+            that.props.onChange(
+              new Date(that.state.startValue)
+            )
+          } else {
+            that.props.onChange(
+              null
+            )
+          }
+        }
+      })
+    }
+  },
+  _onStartTimeChange: function (value) {
+    this.state.startTime = value
+    this.forceUpdate()
+    this._onStartDateChange()
+  },
+  _createPopup: function () {
+    var that = this
+    this._removePopup()
+
+    var minView = 0
+    switch (this.props.view) {
+      case 'month':
+        minView = 1
+        break;
+      case 'year':
+        minView = 2
+        break;
+    }
+
+    //style={{left: this.props.left + left, top: top + 40, position: 'fiexed'}}
+
+    // 动态创建浮层
+    this.state.popupDiv = document.createElement('div')
+    document.body.appendChild(this.state.popupDiv)
+    this.state.canlendarRef = ReactDom.render(
+      this.state.showCalendar ?
+        <div>
+          <div className='date-range-popup-mask' onClick={this._hideCalendar} />
+          <div className='date-range-popup'>
+            <div>
+              <CalendarPosition
+                key='start_calendar'
+                className='start-calendar'
+                calendarInputRef={that.refs.canlendar_input_ref}
+                left={this.props.left}
+                calendarWidth={this.props.calendarWidth}
+                calendarHeight={this.props.calendarHeight}
+                showTime={this.props.showTime}
+                showTimeHeight={this.props.showTimeHeight}
+                fixedHour={this.props.fixedHour}
+                fixedMinute={this.props.fixedMinute}
+                fixedSecond={this.props.fixedSecond}
+                >
+                <Calendar
+                  closeOnSelect={this._closeOnStartSelect}
+                  date={this.state.startValue}
+                  minDate={this.props.minDate}
+                  maxDate={this.props.maxDate}
+                  format={this.state.computableFormat}
+                  computableFormat={this.state.computableFormat}
+                  minView={minView}
+                  onChange={this._onStartDateChange}/>
+                  {this.props.showTime ?
+                    <div className='time-div'>
+                      <Time
+                        value={this.state.startTime}
+                        onChange={this._onStartTimeChange}
+                        fixedHour={this.props.fixedHour}
+                        fixedMinute={this.props.fixedMinute}
+                        fixedSecond={this.props.fixedSecond} />
+                      <div style={{textAlign: 'right'}}>
+                        <div onClick={this._hideCalendar} className='btn btn-rounded close-button'>
+                          关闭
+                        </div>
+                      </div>
+                    </div>
+                  : null}
+              </CalendarPosition>
+            </div>
+          </div>
+        </div>
+        :
+        <div></div>
+      , this.state.popupDiv)
+  },
+  _removePopup: function () {
+    if (this.state.popupDiv) {
+      this.state.canlendarRef = null
+      ReactDom.unmountComponentAtNode(this.state.popupDiv)
+      this.state.popupDiv.parentNode.removeChild(this.state.popupDiv)
+      this.state.popupDiv = null
+    }
+  },
+  _clear: function() {
+    this.state.startValue = null
+    if (typeof this.props.onChange === 'function') {
+      this.props.onChange(
+        null
+      )
+    }
+    this.forceUpdate()
+  },
+  _onMouseOver: function() {
+    this.setState({mouseOver: true})
+  },
+  _onMouseOut: function() {
+    this.setState({mouseOver: false})
+  },
+  render: function () {
+    var name = this.state.name || '请选择'
+    this.state.startValue ? name = this.state.startValue : null
+
+    return (
+      <div className={classnames({'date-picker': true}, this.props.className)} style={assign({width: 215}, this.props.style)}>
+        <div className='calendar-input' ref='canlendar_input_ref' onMouseEnter={this._onMouseOver} onMouseLeave={this._onMouseOut}>
+          {this.props.showClose && this.state.startValue && !this.showCalendar && this.state.mouseOver ?
+            <div style={{position: 'absolute', right: 30, top: 9, cursor: 'pointer', fontSize: 12}}>
+              <i className="icon-cross3" onClick={this._clear}></i>
+            </div>
+          : null}
+          <div className='button' onClick={this._calendarInputClick} style={assign({width: '100%', whiteSpace: 'nowrap'}, this.props.style)}>
+            {(this.state.startValue ? this.state.startValue : name)}
+          </div>
+        </div>
+      </div>
+    )
+  }
+})
+
+module.exports = DatePicker

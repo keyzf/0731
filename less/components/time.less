@@ -1,0 +1,62 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Time component
+*
+*  Overrides for time bootstrap component
+*
+*  Version: 1.0
+*  Latest update: May 25, 2015
+*
+* ---------------------------------------------------------------------------- */
+
+
+// Base class
+.time {
+    .time-line {
+        height: 26px;
+        padding-left: 14px;
+    }
+
+    .slider {
+        position: relative;
+        top: 0px;
+        box-sizing: border-box;
+        width: 160px;
+        height: 8px;
+        border: 1px solid #d3d3d3;
+        border-radius: 4px;
+        display: inline-block;
+
+        margin: 0px 10px 0px 0px;
+        &:first-child {
+            margin-left: 0px;
+        }
+
+        & > .button {
+            position: relative;
+            box-sizing: border-box;
+            width: 22px;
+            height: 22px;
+            top: -7px;
+            border: 1px solid #d3d3d3;
+            border-radius: 4px;
+            background-color: #ffffff;
+            cursor: pointer;
+
+            &:active {
+                box-shadow: inset 0px 1px 3px #d3d3d3;
+            }
+
+            & > .lines {
+                position: relative;
+                left: 7px;
+                top: 3px;
+                box-sizing: border-box;
+                width: 6px;
+                height: 14px;
+                border-left: 1px solid #d3d3d3;
+                border-right: 1px solid #d3d3d3;
+            }
+        }
+    }
+}

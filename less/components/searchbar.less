@@ -1,0 +1,48 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Search Bar component
+*
+*  Overrides for search bar bootstrap component
+*
+*  Version: 1.0
+*  Latest update: May 25, 2015
+*
+* ---------------------------------------------------------------------------- */
+
+
+// Base styles
+// -------------------------
+
+
+.search-bar {
+  .form-control:focus {
+    border: 1px solid @color-blue-300;
+
+    & + .form-control-feedback {
+      i {
+        color: @color-blue-300;
+
+        transition: color ease-in-out .15s;
+      }
+    }
+  }
+
+  .form-control-feedback {
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .form-group{
+    margin-bottom: 0px;
+  }
+
+  .float-right {
+    float: right;
+  }
+
+  i {
+    color: #bbbbbb;
+
+    transition: color ease-in-out .15s;
+  }
+}

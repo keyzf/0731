@@ -1,0 +1,43 @@
+/* ------------------------------------------------------------------------------
+*
+*  # Wells component
+*
+*  Overrides for wells bootstrap component
+*
+*  Version: 1.0
+*  Latest update: May 25, 2015
+*
+* ---------------------------------------------------------------------------- */
+
+
+// Base class
+// -------------------------
+
+.prompt {
+	display: block;
+	position: fixed;
+	z-index: 9999;
+	font-size: 14px;
+	line-height: 34px;
+	color: #ffffff;
+	text-align: center;
+	width: 100%;
+	top: 40%;
+	opacity: 0;
+	pointer-events: none;
+
+	.prompt-text {
+		display: inline-block;
+		background-color: #000000;
+		border-radius: 4px;
+		padding: 6px 20px;
+	}
+	animation: show 1.5s;
+	-webkit-animation: show 2s;
+	}
+	@keyframes show {
+	0% {opacity: 0;}
+	15% {opacity: 0.75;}
+	65% {opacity: 0.75;}
+	100% {opacity: 0;}
+}

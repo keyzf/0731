@@ -1,0 +1,42 @@
+.login-chooser {
+  display: -webkit-box;
+  width: 100%;
+  box-sizing: border-box;
+  
+  .item {
+    padding: 25px;
+    text-align: center;
+    width: 100%;
+    background: transparent;
+    display: block;
+    -webkit-box-flex: 1;
+    .bg {
+      height: 220px;
+      width: 100%;
+      button {
+        position: relative;
+        top: 115px;
+      }
+      span {
+        position: relative;
+        top: 120px;
+        display: inline-block;
+        width: 100%;
+      }
+    }
+    &.oa .bg {
+      background: url(../../img/oa-login.png);
+      button {
+        color: #699C69;
+        border-color: #699C69;
+      }
+    }
+    &.qq .bg {
+      background: url(../../img/qq-login.png);
+      button {
+        color: #2FABFE;
+        border-color: #2FABFE;
+      } 
+    }
+  }
+}
