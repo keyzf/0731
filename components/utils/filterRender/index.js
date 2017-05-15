@@ -11,9 +11,9 @@
 var React = require('react');
 var clone = require('clone');
 
-var RaSelect = require('radmin').Select;
-var DatePicker = require('radmin').DatePicker;
-var Utils = require('radmin').Utils;
+var RaSelect = require('../../select/index');
+var DatePicker = require('../../datePicker/index');
+var Utils = require('../index');
 
 module.exports = React.createClass({
     propTypes: {
