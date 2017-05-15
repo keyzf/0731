@@ -198,6 +198,31 @@
     }
 }
 
+// Clear icon
+// Add by restliu
+.select2-choice {
+    .select2-clear {
+        display: none;
+        position: absolute;
+        top: 50%;
+        right: (@padding-base-horizontal - 3);
+        width: @icon-font-size;
+        text-align: right;
+        margin-top: -(@icon-font-size / 2);
+        font-size: @icon-font-size;
+        line-height: 1;
+        color: inherit;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    .select2-allowclear &:hover {
+        .select2-clear {
+            display: inline-block;
+        }
+    }
+}
+
 // Dropdown arrow
 .select2-choice {
 
@@ -227,7 +252,7 @@
     }
 
     // Hide arrow if clear button is shown
-    .select2-allowclear & {
+    .select2-allowclear &:hover {
         .select2-arrow:after {
             content: none;
         }
@@ -416,6 +441,7 @@
         position: relative;
         cursor: pointer;
         -webkit-touch-callout: none;
+        line-height: 20px;
         .user-select(none);
 
         > i {
@@ -907,3 +933,4 @@
 .movie-image img {
     margin-right: 12px;
 }
+

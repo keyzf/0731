@@ -1,5 +1,6 @@
 var radmin = {
   Breadcrumb: require('./breadcrumb'),
+  BreadcrumbBar: require('./breadcrumbBar'),
   Calendar: require('./calendar'),
   CheckBox: require('./checkBox'),
   ClipBoard: require('./clipboard'),
@@ -7,10 +8,19 @@ var radmin = {
   DatePicker: require('./datePicker'),
   DateRangePicker: require('./dateRangePicker'),
   Dropdown: require('./dropdown'),
+  DropDownMenu: require('./dropDownMenu'),
   Form: require('./form'),
+  FilterRender: require('./filterRender'),
+  Input: require('./input'),
   Image: require('./image'),
+  ImageCreator: require('./imageCreator'),
   InlineEdit: require('./inlineEdit'),
+  ListMenu: require('./listMenu'),
+  Loading: require('./loading'),
+  LoadingCss: require('./loadingCss'),
+  LinkageSelect:require('./linkageSelect'),
   Navigator: require('./navigator'),
+  NewTabs: require('./NewTabs'),
   Popover: require('./popover'),
   Popup: require('./popup'),
   Prompt: require('./prompt'),
@@ -19,6 +29,7 @@ var radmin = {
   SearchBar: require('./searchBar'),
   Select: require('./select'),
   Slider: require('./slider'),
+  SlidePanel: require('./slidePanel'),
   Spin: require('./spin'),
   Swiper: require('./swiper'),
   Switch: require('./switch'),
@@ -29,6 +40,6 @@ var radmin = {
   ToolTip: require('./toolTip'),
   TreeSelect: require('./treeSelect'),
   Utils: require('./utils')
-}
+};
 
-module.exports = radmin
+module.exports = radmin;

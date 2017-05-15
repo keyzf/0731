@@ -28,27 +28,31 @@ var Row = React.createClass({
   _onSelect: function (value, checked) {
     this.props.selectRow.onSelect(this.props.id)
   },
-  _renderExpand: function (i) {
-    var expand, icon = null
-    if (typeof this.props.onExpand == 'function') {
-      if (this.props.expanded) {icon = <i className='icon-minus-circle2' onClick={this.props.onExpand}/>}else {icon = <i className='icon-plus-circle2'  onClick={this.props.onExpand}/>}
+_renderExpand: function (i) {
+    var expand, icon = null;
+    if (typeof this.props.onExpand == 'function'&&this.props.isTree) {//zee edit ,add this.props.data.isParent
+      if (this.props.expanded) {
+          icon = <i className='icon-minus-circle2' onClick={this.props.onExpand}/>;
+      }else {
+          icon = <i className='icon-plus-circle2'  onClick={this.props.onExpand}/>;
+      }
       expand = <div className="table-expand" style={{marginLeft: this.props.level * 20}}>
                  {this.props.expandable ? icon : null}
-               </div>
+               </div>;
     }
     return expand
   },
   _renderTableRow: function () {
-    var self = this
+    var self = this;
     var row = self.props.columns.map(function (column, i) {
       if (column.display !== false)
         return (
           <td key={i + 1} style={column.style}>
-            {i == 1 ? self._renderExpand() : null}
+            {i == 0 ? self._renderExpand() : null}
             {self.props.data[column.field]}
           </td>
       )
-    })
+    });
     if (self.props.selectRow.enable) {
       row.unshift(
         <td key={0}>
@@ -56,23 +60,29 @@ var Row = React.createClass({
         </td>
       )
     }
-    if (self.props.action) {
-      var actions = null
+    if (self.props.action&&self.props.action.length) {
+      var actions = null;
       if (self.props.action.length) {
         actions = self.props.action.map(function (item, i) {
           var callback = function () {
             if (typeof item.action === 'function')
               item.action(self.props.id, self.props.data)
+          },actionClassName = 'action ';
+
+          if(typeof item.setClass == 'function'){
+            actionClassName += ' ' + item.setClass(self.props.data);
           }
           return (
-            <a key={i} className='action' onClick={callback}>
+            <a key={i} className={actionClassName} onClick={callback}>
               {item.content}
             </a>
           )
-        })
+        });
+
+
       }
       row.push(
-        <td key={self.props.columns.length + 1} style={{textAlign: 'center'}}>
+        <td className='tbody-action' key={self.props.columns.length + 1} >
           {actions}
         </td>
       )
@@ -81,10 +91,10 @@ var Row = React.createClass({
   },
   render: function () {
     return (
-    this.props.visible ? <tr>
+      this.props.visible ? <tr>
                            {this._renderTableRow()}
                          </tr> : null
     )
   }
 })
-module.exports = Row
+module.exports = Row;

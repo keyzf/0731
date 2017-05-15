@@ -1,8 +1,8 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
+var React = require('react');
+var ReactDom = require('react-dom');
+var Assign = require('object-assign');
 
-var CheckBox = require('../checkBox')
+var CheckBox = require('../checkBox');
 // var Store = require('./store')
 
 var Header = React.createClass({
@@ -14,6 +14,12 @@ var Header = React.createClass({
     }),
     action: React.PropTypes.array,
     onSort: React.PropTypes.func
+  },
+
+  getDefaultProps: function() {
+    return {
+      style:{}
+    };
   },
 
   getInitialState: function () {
@@ -31,10 +37,10 @@ var Header = React.createClass({
     this.props.selectRow.onSelectAll(checked)
   },
   _renderTableHeader: function () {
-    var self = this
+    var self = this;
     var row = null,
       select = null,
-      action = null
+      action = null;
     if (self.props.selectRow.enable) {
       select = (
         <th style={this.props.style}>
@@ -42,24 +48,26 @@ var Header = React.createClass({
         </th>
       )
     }
-    if (self.props.action) {
+    if (self.props.action&&self.props.action.length) {
       action = (
-        <th style={assign({textAlign: 'center'}, this.props.style)}>
+        <th  className='thead-action' style={Assign({}, this.props.style,this.props.actionStyle)}>
           操作
         </th>
       )
     }
-    row = this.props.children.map(function (child, i) {
-      if (child && child.props && child.props.display !== false)
+    row = React.Children.toArray(this.props.children).map(function (child, i) {
+      if (child && child.props && child.props.display !== false){
         return React.cloneElement(child, {
           selectRow: self.props.selectRow,
           onSort: self.props.onSort,
           key: i,
           align: child.props.align,
           bold: child.props.bold,
-          style: self.props.style
+          style: Object.assign({},child.props.style,self.props.style)
         })
-    })
+      }
+
+    });
 
     return (
       <tr>
@@ -77,5 +85,5 @@ var Header = React.createClass({
       </thead>
     )
   }
-})
-module.exports = Header
+});
+module.exports = Header;

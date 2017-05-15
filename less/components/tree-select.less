@@ -1,17 +1,54 @@
 .tree-select {
-    display: inline-block;
-    vertical-align: top;
-    
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+  display: inline-block;
+  vertical-align: top;
 
-	.expand {
-		cursor: pointer;
-		width: 20px;
-		display: inline-block;
-		text-align: center;
-	}
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  .expand {
+    cursor: pointer;
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+  }
+  .tree-item {
+    white-space: nowrap;
+    &:hover {
+      .opera-container {
+        display: inline-block;
+      }
+    }
+    &.tree-focus {
+      .tree-text-content {
+        background: #ebf0fc;
+      }
+      .opera-container {
+        display: inline-block;
+      }
+    }
+    .tree-text-content {
+      display: inline-block;
+      cursor: pointer;
+    }
+    .opera-container {
+      display: none;
+      margin-left: 5px;
+      span {
+        cursor: pointer;
+        margin-right: 5px;
+        font-size: 12px;
+      }
+    }
+    .checkbox label {
+      max-width: 160px;
+      white-space: nowrap;
+      word-break: break-all;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+  }
+
 }

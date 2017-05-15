@@ -1,14 +1,14 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
-var deepEqual = require('deep-equal')
+var React = require('react');
+var ReactDom = require('react-dom');
+var Assign = require('object-assign');
+var ClassNames = require('classnames');
+var DeepEqual = require('deep-equal');
 
-var TableHeader = require('./header')
-var TableBody = require('./body')
-var TableToolBar = require('./toolbar')
-var TableStore = require('./store')
-var Pagination = require('./pagination')
+var TableHeader = require('./header');
+var TableBody = require('./body');
+var TableToolBar = require('./toolbar');
+var TableStore = require('./store');
+var Pagination = require('./pagination');
 
 var Table = React.createClass({
   propTypes: {
@@ -45,6 +45,7 @@ var Table = React.createClass({
   getInitialState: function () {
     return {
       data: this.props.data,
+      isTree:false,
       selected: [],
       expanded: []
     }
@@ -53,136 +54,146 @@ var Table = React.createClass({
     this._init(nextProps)
   },
   componentWillMount: function () {
-    this.store = new TableStore()
-    this._init(this.props)
+    this.store = new TableStore();
+    this._init(this.props);
   },
   componentWillUnmount: function () {},
   _init: function (props) {
-    var self = this
+    var self = this;
     var Store = {
       pagination: {}
-    }
-    Store.columns = []
+    };
+    Store.columns = [];
 
     if (props.pagination && typeof props.pagination.offset != 'undefined') {
-      Store.pagination = props.pagination
+      Store.pagination = props.pagination;
     }
 
-    props.children.forEach(function (column, i) {
+    var children = React.Children.toArray(props.children);
+    children.forEach(function (column) {
       if (column && column.props) {
         if (column.props.isKey) {
           Store.keyField = column.props.dataField
         }
-        var style = column.props.style
-        style && typeof style.align == 'undefined' ? style.align = 'left' : null
+        var style = column.props.style;
+        style && typeof style.align == 'undefined' ? style.align = 'left' : null;
         
         Store.columns.push({
           name: column.props.name,
           field: column.props.dataField,
           style: style,
           display: typeof column.props.display !== 'undefined' ? column.props.display : true
-        })
+        });
       }
-    })
+    });
     if ((!Store.keyField || Store.keyField == '_index_') && props.data) {
-      Store.data = this._setIndex(props.data, 0)
-      Store.keyField = '_index_'
+     Store.data = this._setIndex(props.data, 0);
+      Store.keyField = '_index_';
     } else {
-      Store.data = props.data ? props.data : []
+      Store.data = props.data ? props.data : [];
     }
     if(props.freshCleanSelected){
       this.state.selected = []
     }
     this.store.setProps(Store)
   },
-  _setIndex: function (data, level) {
-    var self = this
-    var items = props.data.map(function (item, i) {
-      item['_index_'] = level + '-' + i
-      if (item.children) item.children = self._setIndex(item.children, level + 1)
-      return item
-    })
-    return items
+  _setIndex: function (data, level,parentIndex) {
+    var self = this;
+    var items = data.map(function (item, i) {
+      item['_index_'] = (!!parentIndex?(parentIndex + '-'):'')+ level + '-' + i;
+      if(item['isExpanded']){
+          self.state.expanded.push(item['_index_']);
+      }
+      if (item.children&&item.children.length){//zee edit
+          item.children = self._setIndex(item.children, level + 1,item['_index_']);
+          self.setState({
+              isTree:true
+          });
+          item.isParent = true;
+      }
+      return item;
+    });
+    return items;
   },
   _isSelectAll: function () {
-    var self = this
-    if (this.state.selected === 0) return false
-    var match = 0
-    var data = this.store.get()
-    if (!data.length) return false
+    var self = this;
+    if (this.state.selected === 0) return false;
+    var match = 0;
+    var data = this.store.get();
+    if (!data.length) return false;
     data.forEach(function (item) {
-      if (self.state.selected.indexOf(item[self.store.keyField]) !== -1) match++
-    })
-    if (match === data.length) return true
+      if (self.state.selected.indexOf(item[self.store.keyField]) !== -1) match++;
+    });
+    if (match === data.length) return true;
     return false
   },
   _handleSelectAll: function (status) {
-    var self = this
-    var selected = []
+    var self = this;
+    var selected = [];
     if (status) {
-      var data = this.store.get()
+      var data = this.store.get();
       selected = data.map(function (item) {
-        return item[self.store.keyField]
+        return item[self.store.keyField];
       })
     }
-    if (this.props.selectRow.onSelected) this.props.selectRow.onSelected(selected)
+    if (this.props.selectRow.onSelected) this.props.selectRow.onSelected(selected);
     this.setState({
       selected: selected
-    })
+    });
   },
   _handleSelect: function (row) {
-    var self = this
-    var index = this.state.selected.indexOf(row)
+    var self = this;
+    var index = this.state.selected.indexOf(row);
     if (index != -1) {
-      this.state.selected.splice(index, 1)
-      if (this.props.selectRow.onSelect) this.props.selectRow.onSelect(row, false)
-      if (this.props.selectRow.onSelected) this.props.selectRow.onSelected(this.state.selected)
+      this.state.selected.splice(index, 1);
+      if (this.props.selectRow.onSelect) this.props.selectRow.onSelect(row, false);
+      if (this.props.selectRow.onSelected) this.props.selectRow.onSelected(this.state.selected);
     } else {
-      this.state.selected.push(row)
-      if (this.props.selectRow.onSelect) this.props.selectRow.onSelect(row, true)
-      if (this.props.selectRow.onSelected) this.props.selectRow.onSelected(this.state.selected)
+      this.state.selected.push(row);
+      if (this.props.selectRow.onSelect) this.props.selectRow.onSelect(row, true);
+      if (this.props.selectRow.onSelected) this.props.selectRow.onSelected(this.state.selected);
     }
     this.setState({
       selected: this.state.selected
-    })
+    });
   },
-  _handleExpand: function (row) {
-    var self = this
-    var index = this.state.expanded.indexOf(row)
+ _handleExpand: function (row) {
+    var self = this;
+    var index = this.state.expanded.indexOf(row);
     if (index != -1) {
-      this.state.expanded.splice(index, 1)
+      this.state.expanded.splice(index, 1);
     // if (this.props.selectRow.onSelect) this.props.selectRow.onSelect(row, false)
     // if (this.props.selectRow.onSelected) this.props.selectRow.onSelected(this.state.selected)
     } else {
-      this.state.expanded.push(row)
+      this.state.expanded.push(row);
     // if (this.props.selectRow.onSelect) this.props.selectRow.onSelect(row, true)
     // if (this.props.selectRow.onSelected) this.props.selectRow.onSelected(this.state.selected)
     }
     this.setState({
       expanded: this.state.expanded
-    })
+    });
   },
   _handleSort: function (field, order) {
-    this.store.sort(field, order)
-    this.forceUpdate()
+    this.store.sort(field, order);
+    this.forceUpdate();
   },
   _handlePaginationChange: function (offset) {
-    this.store.pagination.offset = offset
+    this.store.pagination.offset = offset;
     if (this.props.pagination.onPageChange) {
-      this.props.pagination.onPageChange(this.store.pagination.limit, this.store.pagination.offset)
+      this.props.pagination.onPageChange(this.store.pagination.limit, this.store.pagination.offset);
     } else {
-      this.forceUpdate()
+      this.forceUpdate();
     }
   },
   _handlePaginationLimitChange: function (limit) {
     this.store.pagination = {
       offset: 0,
       limit: limit
-    }
+    };
     if (this.props.pagination.onPageLimitChange) {
-      this.props.pagination.onPageLimitChange(this.store.pagination.limit, 0)
+      this.props.pagination.onPageLimitChange(this.store.pagination.limit, 0);
     }
-    this.forceUpdate()
+    this.forceUpdate();
   },
   _renderHeaderRow: function () {
     return this.props.headerRow ? this.props.headerRow : null
@@ -203,17 +214,17 @@ var Table = React.createClass({
   },
   _renderTableColGroup: function () {
     var col = this.store.columns.map(function (column, i) {
-      var style = null
+      var style = null;
       if (column.width) style = {
           width: column.width
-      }
+      };
       if (column.display)
-        return (<col key={i + 1} style={style} />)
-    })
+        return (<col key={i + 1} style={style} />);
+    });
     if (this.props.selectRow) {
       col.unshift((<col key={0} style={{ width: 40 }}></col>))
     }
-    if (this.props.action) {
+    if (this.props.action&&this.props.action.length) {
       col.push((<col key={this.store.columns.length + 1}></col>))
     }
     return (<colgroup>
@@ -221,11 +232,12 @@ var Table = React.createClass({
             </colgroup>)
   },
   _renderTableHeader: function () {
-    var isSelectAll = this._isSelectAll()
+    var isSelectAll = this._isSelectAll();
     return (<TableHeader
               selectRow={{ enable: this.props.selectRow ? true : false, onSelectAll: this._handleSelectAll, isSelectAll: isSelectAll }}
               onSort={this._handleSort}
               action={this.props.action}
+              actionStyle={this.props.actionStyle}
               style={this.props.thStyle}>
               {this.props.children}
             </TableHeader>)
@@ -235,11 +247,10 @@ var Table = React.createClass({
       enable: this.props.selectRow ? true : false,
       onSelect: this._handleSelect,
       selected: this.state.selected
-    }
-    var expandRow = {
+    },expandRow = {
       onExpand: this._handleExpand,
       expanded: this.state.expanded
-    }
+    };
     return (
       <TableBody
         columns={this.store.columns}
@@ -248,15 +259,16 @@ var Table = React.createClass({
         keyField={this.store.keyField}
         selectRow={selectRow}
         expandRow={expandRow}
+        isTree={this.state.isTree}
         action={this.props.action}
         empty={this.props.empty} />
     )
   },
   render: function () {
     return (
-      <div className={classnames({'table-wrapper': true}, this.props.className)} style={assign({}, this.props.style)}>
+      <div className={ClassNames({'table-wrapper': true}, this.props.className)} style={Assign({}, this.props.style)}>
         {this._renderHeaderRow()}
-        <div className={classnames({'table-body': this.props.bordered ? true : false, 'table-scroll-x': this.props.scroll.x ? true : false })}>
+        <div className={ClassNames({'table-body': this.props.bordered ? true : false, 'table-scroll-x': this.props.scroll.x ? true : false ,'overPanel':true})}>
           <table className='table' style={this.props.scroll.x ? {width: this.props.scroll.x} : null}>
             {this._renderTableColGroup()}
             {this._renderTableHeader()}
@@ -268,5 +280,5 @@ var Table = React.createClass({
         </div>
       </div>)
   }
-})
-module.exports = Table
+});
+module.exports = Table;

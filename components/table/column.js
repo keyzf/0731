@@ -1,8 +1,8 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
-var deepEqual = require('deep-equal')
+var React = require('react');
+var ReactDom = require('react-dom');
+var Assign = require('object-assign');
+var ClassNames = require('classnames');
+var DeepEqual = require('deep-equal');
 
 var Column = React.createClass({
   propTypes: {
@@ -14,9 +14,9 @@ var Column = React.createClass({
     }
   },
   _handleOrder: function () {
-    if (!this.props.sort) return
+    if (!this.props.sort) return;
     if (this.state.order === 'dropdown') {
-      this.props.onSort(this.props.dataField, 'ASC')
+      this.props.onSort(this.props.dataField, 'ASC');
       this.setState({
         order: 'dropup'
       }, function() {
@@ -25,7 +25,7 @@ var Column = React.createClass({
         }
       })
     } else {
-      this.props.onSort(this.props.dataField, 'DESC')
+      this.props.onSort(this.props.dataField, 'DESC');
       this.setState({
         order: 'dropdown'
       }, function() {
@@ -36,8 +36,8 @@ var Column = React.createClass({
     }
   },
   _renderIcon: function () {
-    var icon = null
-    if (!this.props.sort) return icon
+    var icon = null;
+    if (!this.props.sort) return icon;
     if (this.state.order === 'dropdown') {
       icon = (<div className='table-order'>
                 <span className='caret dropdown'></span>
@@ -53,23 +53,24 @@ var Column = React.createClass({
     }
     return icon
   },
+  componentWillMount:function(){
+  },
   render: function () {
-    var classes = null
+    var classes = null;
     if (this.props.sort) {
       if (this.state.order == 'dropdown') {
-        classes = 'sorting_desc'
+        classes = 'sorting_desc';
       }else if (this.state.order === 'dropup') {
-        classes = 'sorting_asc'
+        classes = 'sorting_asc';
       }else {
-        classes = 'sorting'
+        classes = 'sorting';
       }
     }
-
     return (
-      <th onClick={this._handleOrder} className={classnames({}, this.props.className, classes)} style={assign({}, this.props.style)}>
+      <th onClick={this._handleOrder} className={ClassNames({}, this.props.className, classes)} style={Assign({}, this.props.style)}>
         {this.props.children}
       </th>
-    )
+    );
   }
-})
-module.exports = Column
+});
+module.exports = Column;

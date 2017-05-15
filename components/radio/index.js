@@ -21,6 +21,7 @@ var Radio = React.createClass({
      * 是否选中，例：true
      */
     checked: React.PropTypes.bool,
+    
     /**
      * 是否只读，例：true
      */

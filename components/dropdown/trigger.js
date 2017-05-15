@@ -15,7 +15,7 @@ const Trigger = createClass({
   },
 
   render() {
-    const { children, className } = this.props
+    const { children, className } = this.props;
 
     return (
       <a {...this.props}>
@@ -23,6 +23,6 @@ const Trigger = createClass({
       </a>
     )
   }
-})
+});
 
 export default Trigger

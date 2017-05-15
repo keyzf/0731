@@ -1,11 +1,11 @@
-'use strict'
+'use strict';
 
-var React = require('react')
-var ReactDom = require('react-dom')
-var CommonUtil = require('../common')
-var AjaxUtil = require('../ajax')
-var ApiCallUtil = require('./apiCall')
-var LoginChooser = require('../../loginChooser')
+var React = require('react');
+var ReactDom = require('react-dom');
+var CommonUtil = require('../common');
+var AjaxUtil = require('../ajax');
+var ApiCallUtil = require('./apiCall');
+var LoginChooser = require('../../loginChooser');
 
 module.exports = {
   oa: {
@@ -35,82 +35,79 @@ module.exports = {
   currentLoginMode: null,
   redirectNotLoginPage: false,
   // 设置登录方式
-  setLoginMode: function setLoginMode (mode) {
-    this.loginMode = mode ? mode.toLowerCase() : mode
+  setLoginMode: function (mode) {
+    this.loginMode = mode ? mode.toLowerCase() : mode;
   },
   getLoginMode: function getLoginMode () {
-    return this.loginMode
+    return this.loginMode;
   },
   // 当前使用的登录方式（如果已经登录）
-  setCurrentLoginMode: function setCurrentLoginMode (mode) {
-    this.currentLoginMode = mode
+  setCurrentLoginMode: function(mode) {
+    this.currentLoginMode = mode;
   },
-  getCurrentLoginMode: function getCurrentLoginMode () {
-    return this.currentLoginMode
+  getCurrentLoginMode: function() {
+    return this.currentLoginMode;
   },
   // OA登录配置，调用此方法后将使用OA正式环境
-  setOAConfig: function setOAConfig (config) {
-    for (var key in config) {
+  setOAConfig: function (config) {
+     for (var key in config) {
       this.oa[key] = config[key]
     }
     this.oa.tamsId = this.oa.proTamsId
   },
-  setQQConfig: function setQQConfig (config) {
-    for (var key in config) {
+  setQQConfig: function(config) {
+     for (var key in config) {
       this.qq[key] = config[key]
     }
   },
-  setQCConfig: function setQCConfig (config) {
+  setQCConfig: function(config) {
     for (var key in config) {
       this.qc[key] = config[key]
     }
   },
-  setRedirectNotLoginPage: function setRedirectNotLoginPage (redirect) {
-    this.redirectNotLoginPage = redirect
+  setRedirectNotLoginPage: function (redirect) {
+    this.redirectNotLoginPage = redirect;
   },
-  getRedirectNotLoginPage: function getRedirectNotLoginPage () {
-    return this.redirectNotLoginPage
+  getRedirectNotLoginPage: function() {
+    return this.redirectNotLoginPage;
   },
   // ***********************************************************************************
-  isOALogin: function isOALogin () {
+  isOALogin: function() {
     if (CommonUtil.cookie('TCOA_TICKET')) {
       // 验证oa登录，cookie里拿ticket
-      return true
+      return true;
     } else if (CommonUtil.getUrlVar('ticket')) {
       // 验证oa登录，url上拿ticket
-      CommonUtil.cookie('TCOA_TICKET', CommonUtil.getUrlVar('ticket'))
-      var url = window.location.href
+      CommonUtil.cookie('TCOA_TICKET', CommonUtil.getUrlVar('ticket'));
+      var url = window.location.href;
 
-      url = CommonUtil.deleteUrlVar('ticket', url)
-      url = CommonUtil.deleteUrlVar('lengh', url)
-      url = CommonUtil.deleteUrlVar('length', url)
-      url = CommonUtil.deleteUrlVar('loginParam', url)
-      url = CommonUtil.deleteUrlVar('sessionKey', url)
+      url = CommonUtil.deleteUrlVar('ticket', url);
+      url = CommonUtil.deleteUrlVar('lengh', url);
+      url = CommonUtil.deleteUrlVar('length', url);
+      url = CommonUtil.deleteUrlVar('loginParam', url);
+      url = CommonUtil.deleteUrlVar('sessionKey', url);
 
-      window.location.href = url
-      return true
+      window.location.href = url;
+      return true;
     }
-    return false
+    return false;
   },
-  isQQLogin: function isQQLogin () {
-    var uin = CommonUtil.cookie('uin')
-    var skey = CommonUtil.cookie('skey')
-    if (uin && uin.length > 4 && skey && skey.length > 0) {
-      return true
-    }
+  isQQLogin: function() {
+    var uin = CommonUtil.cookie('uin');
+    var skey = CommonUtil.cookie('skey');
+    return (uin && uin.length > 4 && skey && skey.length > 0);
 
-    return false
   },
-  isQCLogin: function isQCLogin (callback) {
-    return QC.Login.check()
+  isQCLogin: function(callback) {
+    return QC.Login.check();
   },
-  getOALoginData: function getOALoginData (callback) {
+  getOALoginData: function(callback) {
     if (typeof this.oa.userInfoUrl === 'undefined' || this.oa.userInfoUrl == null || this.oa.userInfoUrl === '') {
-      var that = this
-      window.ApiCall = ApiCallUtil
-      var host = window.location.host
-      var ticket = CommonUtil.cookie('TCOA_TICKET')
-      ApiCallUtil.setTamsId(that.oa.tamsId)
+      var that = this;
+      window.ApiCall = ApiCallUtil;
+      var host = window.location.host;
+      var ticket = CommonUtil.cookie('TCOA_TICKET');
+      ApiCallUtil.setTamsId(that.oa.tamsId);
       ApiCallUtil.libCall({
         type: 'GET', // 调用方式：GET/POST
         url: that.oa.getAuth + that.oa.tamsId + '/oa/auth',
@@ -126,14 +123,14 @@ module.exports = {
             // oa验证未通过
           } else {
             // oa验证通过
-            CommonUtil.cookie('TCOA_COMPLETE', 1)
+            CommonUtil.cookie('TCOA_COMPLETE', 1);
           }
 
           if (typeof callback === 'function') {
-            callback(r)
+            callback(r);
           }
         }
-      })
+      });
     } else {
       AjaxUtil.ajax({
         url: this.oa.userInfoUrl,
@@ -144,18 +141,18 @@ module.exports = {
             // oa验证未通过
           } else {
             // oa验证通过
-            CommonUtil.cookie('TCOA_COMPLETE', 1)
+            CommonUtil.cookie('TCOA_COMPLETE', 1);
           }
 
           if (typeof callback === 'function') {
-            callback(r)
+            callback(r);
           }
         },
         error: function error (msg) {}
-      })
+      });
     }
   },
-  getQQLoginData: function getQQLoginData (callback) {
+  getQQLoginData: function(callback) {
     if (typeof this.qq.userInfoUrl === 'undefined' || this.qq.userInfoUrl == null || this.qq.userInfoUrl === '') {
       var that = this
       window.ApiCall = ApiCallUtil
@@ -192,57 +189,79 @@ module.exports = {
       })
     }
   },
-  getQCLoginData: function getQCLoginData (callback) {
+  getQCLoginData: function(callback) {
     QC.api('get_user_info', {}).success(function (r) {
       if (typeof callback === 'function') {
         callback(r)
       }
     })
   },
-  getQCAccessTokenAndOpenId: function getQCAccessTokenAndOpenId (callback) {
+  getQCAccessTokenAndOpenId: function(callback) {
     QC.Login.getMe(function (openId, accessToken) {
       if (typeof callback === 'function') {
         callback(openId, accessToken)
       }
     })
   },
-  oaLogin: function oaLogin (url) {
-    this.deleteOATicket()
+  normalLogin: function(url) {
+    this.deleteNormalTicket();
 
-    url = url || window.location.href || 'http://' + window.location.host
-    url = url.replace(/(\?|&)_k=.*$/i, '')
+    url = url || window.location.href || 'http://' + window.location.host;
+    url = url.replace(/(\?|&)_k=.*$/i, '');
 
-    window.location.href = (this.oa.tamsId == this.oa.devTamsId ? this.oa.loginUrlTest + '?' : this.oa.loginUrl + '?appKey=' + this.oa.appKey + '&') + 'url=' + encodeURIComponent(url)
+    window.location.href = '/#/login';
   },
-  oaLogout: function oaLogout (callback, url) {
-    this.deleteOATicket()
+  deleteNormalTicket: function() {
+        CommonUtil.cookie('normal_login', '', -1);
+  },
+  isNormalLogin: function() {
+        if (CommonUtil.cookie('normal_login')) {
+            // 验证oa登录，cookie里拿ticket
+            return true;
+        }
+        return false;
+  },
+  normalLogout:function(callback, url){
+      CommonUtil.cookie('normal_login', '', -1);
+      typeof callback === 'function'&& callback();
+  },
+  oaLogin: function(url) {
+    this.deleteOATicket();
+
+    url = url || window.location.href || 'http://' + window.location.host;
+    url = url.replace(/(\?|&)_k=.*$/i, '');
+
+    window.location.href = (this.oa.tamsId == this.oa.devTamsId ? this.oa.loginUrlTest + '?' : this.oa.loginUrl + '?appKey=' + this.oa.appKey + '&') + 'url=' + encodeURIComponent(url);
+  },
+  oaLogout: function(callback, url) {
+    this.deleteOATicket();
 
     if (typeof callback === 'function') {
       callback()
     }
 
-    url = url || window.location.href || 'http://' + window.location.host
-    url = url.replace(/(\?|&)_k=.*$/i, '')
+    url = url || window.location.href || 'http://' + window.location.host;
+    url = url.replace(/(\?|&)_k=.*$/i, '');
 
     try {
-      var logoutUrl = (this.oa.tamsId == this.oa.devTamsId ? this.oa.logoutUrlTest + '?' : this.oa.logoutUrl + '?appKey=' + this.oa.appKey + '&') + 'url=' + encodeURIComponent(url)
+      var logoutUrl = (this.oa.tamsId == this.oa.devTamsId ? this.oa.logoutUrlTest + '?' : this.oa.logoutUrl + '?appKey=' + this.oa.appKey + '&') + 'url=' + encodeURIComponent(url);
       AjaxUtil.ajax({
         url: logoutUrl,
         type: 'get',
         dataType: 'jsonp',
         success: function success (msg) {
-          console.info('oa logout complete')
+          console.info('oa logout complete');
         },
         error: function error (msg) {
-          console.info('oa logout complete')
+          console.info('oa logout complete');
         }
       })
     } catch (e) {}
   },
-  deleteOATicket: function deleteOATicket () {
-    CommonUtil.cookie('TCOA_TICKET', '', -1)
+  deleteOATicket: function() {
+    CommonUtil.cookie('TCOA_TICKET', '', -1);
   },
-  qqLogin: function qqLogin (url) {
+  qqLogin: function(url) {
     var that = this
     var fromUrl = window.location.href
     console.info(fromUrl)
@@ -272,8 +291,8 @@ module.exports = {
     // node.addEventListener('load', onScriptError, false)
     document.getElementsByTagName('head')[0].appendChild(node)
   },
-  qqLogout: function qqLogout (callback, url) {
-    var that = this
+  qqLogout: function(callback, url) {
+   var that = this
     var onScriptLoad = function onScriptLoad () {
       window.pt.setParams({
         'appid': that.qq.appId,
@@ -300,59 +319,59 @@ module.exports = {
     // node.addEventListener('load', onScriptError, false)
     document.getElementsByTagName('head')[0].appendChild(node)
   },
-  selectLoginMode: function selectLoginMode (oaLoginCallback, qqLoginCallback) {
-    var that = this
-    var div = document.createElement('div')
-    document.body.appendChild(div)
+  selectLoginMode: function(oaLoginCallback, qqLoginCallback) {
+    var that = this;
+    var div = document.createElement('div');
+    document.body.appendChild(div);
     var close = function close () {
-      ReactDom.unmountComponentAtNode(div)
-      div.parentNode.removeChild(div)
-    }
+      ReactDom.unmountComponentAtNode(div);
+      div.parentNode.removeChild(div);
+    };
     var oaLogin = function oaLogin () {
-      close()
+      close();
       if (typeof oaLoginCallback === 'function') {
         oaLoginCallback()
       }
-    }
+    };
     var qqLogin = function qqLogin () {
-      close()
+      close();
       if (typeof qqLoginCallback === 'function') {
         qqLoginCallback()
       }
-    }
+    };
 
-    ReactDom.render(React.createElement(LoginChooser, { onOA: oaLogin, onQQ: qqLogin, onClose: close }), div)
+    ReactDom.render(React.createElement(LoginChooser, { onOA: oaLogin, onQQ: qqLogin, onClose: close }), div);
   },
-  qcLogin: function qcLogin (callback, url) {
+  qcLogin: function(callback, url) {
     QC.Login({}, function (reqData, opts) {
       if (typeof callback === 'function') {
-        callback()
+        callback();
       } else {
         if (!url) {
-          window.location.reload()
+          window.location.reload();
         }
       }
-    })
+    });
 
-    var url = 'https://graph.qq.com/oauth/show?which=Login&display=pc&client_id=' + this.qc.appId + '&response_type=token&scope=get_user_info&redirect_uri=http%3A%2F%2Fqzonestyle.gtimg.cn%2Fqzone%2Fopenapi%2Fredirect-1.0.1.html'
-    return window.open(url, 'qc_window', 'left=100, top=100, height=470, width=740, toolbar=no, menubar=no, scrollbars=no, status=no, location=yes, resizable=yes')
+    var url = 'https://graph.qq.com/oauth/show?which=Login&display=pc&client_id=' + this.qc.appId + '&response_type=token&scope=get_user_info&redirect_uri=http%3A%2F%2Fqzonestyle.gtimg.cn%2Fqzone%2Fopenapi%2Fredirect-1.0.1.html';
+    return window.open(url, 'qc_window', 'left=100, top=100, height=470, width=740, toolbar=no, menubar=no, scrollbars=no, status=no, location=yes, resizable=yes');
 
   // QC.Login.showPopup(param)
   },
-  qcLogout: function qcLogout (callback, url) {
-    QC.Login.signOut()
+  qcLogout: function(callback, url) {
+    QC.Login.signOut();
     if (typeof callback === 'function') {
-      callback()
+      callback();
     }
   },
-  initQC: function initQC (callback) {
+  initQC: function(callback) {
     if (typeof QC != 'undefined') {
       if (typeof callback === 'function') {
-        callback()
+        callback();
       }
     } else {
       if (typeof this.qc.appId === 'undefined' || this.qc.appId == null || this.qc.appId === '' || typeof this.qc.redirectUri === 'undefined' || this.qc.redirectUri == null || this.qc.redirectUri === '') {
-        console.info('未设置appid和redirecturi')
+        console.info('未设置appid和redirecturi');
       }
       window.qcJsLoadedByRadmin = function () {
         if (typeof QC != 'undefined') {
@@ -360,9 +379,9 @@ module.exports = {
             callback()
           }
         }
-      }
+      };
 
       document.write("<script type='text/javascript' onload='qcJsLoadedByRadmin()' src='http://qzonestyle.gtimg.cn/qzone/openapi/qc_loader.js' data-appid='" + this.qc.appId + "' data-redirecturi='" + this.qc.redirectUri + "' charset='utf-8'></script>")
     }
-  }
-}
+  },
+};

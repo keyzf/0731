@@ -1,8 +1,8 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
-var deepEqual = require('deep-equal')
+var React = require('react');
+var ReactDom = require('react-dom');
+var assign = require('object-assign');
+var classnames = require('classnames');
+var deepEqual = require('deep-equal');
 
 var moment = require('moment');
 require('moment-range');
@@ -227,8 +227,6 @@ var DaysView = React.createClass({
     var prevDate = this.props.date.clone().subtract(1, 'months');
     if (this.props.minDate && prevDate.isBefore(this.props.minDate)) {
       prevDate = this.props.minDate
-    } else if (this.props.maxDate && prevDate.isAfter(this.props.maxDate)) {
-      prevDate = this.props.maxDate
     }
     this.props.setDate(prevDate)
   },
@@ -301,7 +299,8 @@ var DaysView = React.createClass({
       return <TdCell classes={_class} key={i} value={item.label} />
     });
 
-    var daysWithTr = [];
+    var daysWithTr = [],
+        currentDate;
     for (var i = 0; i < days.length / 7; i++) {
       var daysCell = [];
       for (var j = i * 7; j < i * 7 + 7; j++) {
@@ -315,9 +314,9 @@ var DaysView = React.createClass({
     }
 
     if (moment.locale() === 'zh-cn') {
-      var currentDate = this.props.date ? this.props.date.format('YYYY年 MMM') : moment().format('YYYY年 MMM')
+      currentDate = this.props.date ? this.props.date.format('YYYY年 MMM') : moment().format('YYYY年 MMM')
     } else {
-      var currentDate = this.props.date ? this.props.date.format('YYYY MMM') : moment().format('YYYY MMM')
+      currentDate = this.props.date ? this.props.date.format('YYYY MMM') : moment().format('YYYY MMM')
     }
 
     return (
@@ -695,8 +694,7 @@ var Calendar = React.createClass({
     /*
     if (this.checkIfDateDisabled(this.state.date)) {
       return
-    }
-    */
+    }*/
     this.setState({
       currentView: ++this.state.currentView
     })

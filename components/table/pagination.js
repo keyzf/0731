@@ -1,5 +1,6 @@
-var React = require('react')
-var classnames = require('classnames')
+var React = require('react');
+var Utils = require('../utils');
+var classnames = require('classnames');
 
 var Pagination = React.createClass({
   propTypes: {
@@ -14,8 +15,8 @@ var Pagination = React.createClass({
     return {
       total: 0,
       offset: 0,
-      limit: 5,
-      limitSettingItems: [5, 20, 100],
+      limit: 10,
+      limitSettingItems: [10, 20, 100],
       redirectText: '跳转'
     }
   },
@@ -26,20 +27,20 @@ var Pagination = React.createClass({
     }
   },
   _createButtons: function () {
-    var startIndex = this.props.offset
-    var endIndex = this.props.offset
+    var startIndex = this.props.offset;
+    var endIndex = this.props.offset;
 
-    var buttonCount = 5 - 1
+    var buttonCount = 5 - 1;
     while (buttonCount > 0) {
-      var all = true
+      var all = true;
       if (startIndex > 0) {
-        startIndex--
-        buttonCount--
+        startIndex--;
+        buttonCount--;
         all = false
       }
       if (endIndex < Math.ceil(this.props.total / this.props.limit) - 1) {
-        endIndex++
-        buttonCount--
+        endIndex++;
+        buttonCount--;
         all = false
       }
       if (all) {
@@ -47,51 +48,51 @@ var Pagination = React.createClass({
       }
     }
 
-    var that = this
-    var ele = []
+    var that = this;
+    var ele = [];
     if (startIndex > 0) {
       var _firstPage = (function (index) {
         return function () {
           that._changePage(index)
         }
       })(0)
-      var ico = '<<'
+      var ico = '<<';
       ele.push(<li key='startstart' onClick={_firstPage}>
                  <a>
                    {ico}
                  </a>
-               </li>)
+               </li>);
       var _prePage = (function (index) {
         return function () {
-          that._changePage(index)
-        }
-      })(Math.max(this.props.offset - 1, 0))
-      var ico = '<'
+          that._changePage(index);
+        };
+      })(Math.max(this.props.offset - 1, 0));
+      var ico = '<';
       ele.push(<li key='start' onClick={_prePage}>
                  <a>
                    {ico}
                  </a>
-               </li>)
+               </li>);
     }
     for (var index = startIndex; index <= endIndex; index++) {
-      var num = index + 1
+      var num = index + 1;
       if (index == this.props.offset) {
         ele.push(<li className='active' key={index}>
                    <a>
                      {num}
                    </a>
-                 </li>)
+                 </li>);
       } else {
         var _changePage = (function (index) {
           return function () {
             that._changePage(index)
           }
-        })(index)
+        })(index);
         ele.push(<li key={index} onClick={_changePage}>
                    <a>
                      {num}
                    </a>
-                 </li>)
+                 </li>);
       }
     }
     if (endIndex < Math.ceil(this.props.total / this.props.limit) - 1) {
@@ -100,25 +101,25 @@ var Pagination = React.createClass({
           that._changePage(index)
         }
       })(Math.min(this.props.offset + 1, Math.ceil(this.props.total / this.props.limit) - 1))
-      var ico = '>'
+      var ico = '>';
       ele.push(<li key='end' onClick={_nextPage}>
                  <a>
                    {ico}
                  </a>
-               </li>)
+               </li>);
       var _lastPage = (function (index) {
         return function () {
           that._changePage(index)
         }
-      })(Math.ceil(this.props.total / this.props.limit) - 1)
-      var ico = '>>'
+      })(Math.ceil(this.props.total / this.props.limit) - 1);
+      var ico = '>>';
       ele.push(<li key='endend' onClick={_lastPage}>
                  <a>
                    {ico}
                  </a>
-               </li>)
+               </li>);
     }
-    return ele
+    return ele;
   },
   _changePage: function (index) {
     if (typeof this.props.onPageChange === 'function') {
@@ -126,17 +127,17 @@ var Pagination = React.createClass({
     }
   },
   _createLimitSetting: function () {
-    var that = this
+    var that = this;
     var buttons = this.props.limitSettingItems.map(function (obj, i) {
       var _setLimit = function () {
         that._setLimit(obj)
-      }
+      };
 
       var style = {
         display: 'inline-block',
         margin: 'auto 2px',
         cursor: 'pointer'
-      }
+      };
       if (obj === that.state.offsetLimit)
         style.color = '#2196F3'
       return (
@@ -144,7 +145,7 @@ var Pagination = React.createClass({
           {obj}
         </div>
       )
-    })
+    });
 
     return (
       <div style={{float: 'left', marginTop: 27}}>
@@ -167,7 +168,7 @@ var Pagination = React.createClass({
   _setLimit: function (limit) {
     this.setState({
       offsetLimit: limit
-    })
+    });
     if (typeof this.props.onPageLimitChange === 'function') {
       this.props.onPageLimitChange(limit)
     }
@@ -178,13 +179,17 @@ var Pagination = React.createClass({
     })
   },
   _onRedirect: function () {
-    var index = parseInt(this.state.text) - 1
+    var index = parseInt(this.state.text) - 1;
     if (typeof index === 'number' && index >= 0 && index <= Math.ceil(this.props.total / this.props.limit) - 1) {
       this._changePage(index)
+    }else if(index < 0 || index > this.props.total - 1){
+      Utils.prompt('页码超过范围');
+    }else{
+      Utils.prompt('请输入欲跳转的页码');
     }
   },
   render: function () {
-    var buttons = this._createButtons()
+    var buttons = this._createButtons();
     return ( <div className='pagination-wrapper clearfix' style={{paddingLeft: 10, paddingRight: 10}}>
                <div style={{float: 'right', verticalAlign: 'middle'}}>
                  {buttons && buttons.length > 1 ?
@@ -203,7 +208,7 @@ var Pagination = React.createClass({
                       <button
                         style={{display: 'inline-block', verticalAlign: 'middle'}}
                         type='button'
-                        className='btn bg-primary'
+                        className='btn bg-blue-ws'
                         onClick={this._onRedirect}>
                         {this.props.redirectText}
                       </button>

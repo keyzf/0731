@@ -1,10 +1,10 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
-var deepEqual = require('deep-equal')
+var React = require('react');
+var ReactDom = require('react-dom');
+var Assign = require('object-assign');
+var ClassNames = require('classnames');
+var DeepEqual = require('deep-equal');
 
-var Popup = require('../popup')
+var Popup = require('../popup');
 
 /**
  * 如果使用OA或QQ两种登录方式则显示此弹层
@@ -42,7 +42,7 @@ var LoginChooser = React.createClass({
         textConfirm={this.props.textConfirm}
         onConfirm={this.props.onClose}
         showCancel={false}
-        className={classnames({}, this.props.className)} style={assign({width: 582}, this.props.style)}>
+        className={ClassNames({}, this.props.className)} style={Assign({width: 582}, this.props.style)}>
         <div className='login-chooser'>
           <div className='item oa'>
             <div className='bg'>
@@ -64,6 +64,6 @@ var LoginChooser = React.createClass({
       </Popup>
     )
   }
-})
+});
 
-module.exports = LoginChooser
+module.exports = LoginChooser;

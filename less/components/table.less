@@ -16,6 +16,9 @@
 // All table headers are semi-bold
 th {
     font-weight: 500;
+  &.thead-action{
+    min-width: 60px;
+  }
 }
 
 // Table base
@@ -427,4 +430,10 @@ th {
     td.active {
         background-color: fade(#000, 15%);
     }
+}
+
+.table-expand {
+  display: inline-block;
+  margin-right: 10px;
+  width: 25px;
 }

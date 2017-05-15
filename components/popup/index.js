@@ -1,7 +1,7 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
+var React = require('react');
+var ReactDom = require('react-dom');
+var assign = require('object-assign');
+var classnames = require('classnames');
 
 /**
  * 标准弹出框，一般作为自定义弹出框的基础组件
@@ -72,6 +72,7 @@ var Popup = React.createClass({
       onClose: null,
       overlayClose: false,
       layout: true,
+      autoClose: true,
       preventWheelEvent: true
     }
   },
@@ -83,13 +84,13 @@ var Popup = React.createClass({
     }
   },
   componentDidMount: function () {
-    var self = this
+    var self = this;
 
     setTimeout(function () {
       self.setState({
         in: true
       })
-    }, 10)
+    }, 10);
 
     this._moveToCenter()
   },
@@ -101,10 +102,10 @@ var Popup = React.createClass({
     }
   },
   _moveToCenter: function () {
-    var self = this
-    var height = ReactDom.findDOMNode(this.refs.dialog).offsetHeight
+    var self = this;
+    var height = ReactDom.findDOMNode(this.refs.dialog).offsetHeight;
     if (this.state.lastHeight != height) {
-      this.state.lastHeight = height
+      this.state.lastHeight = height;
       setTimeout(function () {
         self.setState({
           dialogTop: parseInt(height / 2)
@@ -113,33 +114,38 @@ var Popup = React.createClass({
     }
   },
   _onConfirm: function () {
-    var self = this
-    this.setState({
-      in: false
-    })
-    ReactDom.findDOMNode(this.refs.panel).addEventListener('webkitTransitionEnd', function () {
-      if (typeof self.props.onConfirm === 'function') {
-        self.props.onConfirm()
+    var self = this;
+      if(this.props.autoClose){
+          this.setState({
+              in: false
+          });
+          ReactDom.findDOMNode(this.refs.panel).addEventListener('webkitTransitionEnd', function () {
+              self.props.onConfirm();
+          });
+      }else{
+          typeof this.props.onConfirm == 'function'&&this.props.onConfirm();
       }
-    })
+
+
   },
   _onClose: function () {
-    var self = this
-    this.setState({
-      in: false
-    })
-    ReactDom.findDOMNode(this.refs.panel).addEventListener('webkitTransitionEnd', function () {
-      if (typeof self.props.onClose === 'function') {
-        self.props.onClose()
-      } else if (typeof self.props.onCancel === 'function') {
-        self.props.onCancel()
+    var self = this;
+      if(this.props.autoClose){
+          this.setState({
+              in: false
+          });
+          ReactDom.findDOMNode(this.refs.panel).addEventListener('webkitTransitionEnd', function () {
+              typeof self.props.onClose === 'function' ? self.props.onClose() : self.props.onCancel();
+          });
+      }else{
+          typeof self.props.onClose === 'function' ? self.props.onClose() : self.props.onCancel();
       }
-    })
+
   },
   _onBackgroundClick: function (e) {
-    var self = this
+    var self = this;
     if (this.props.overlayClose && e.target == ReactDom.findDOMNode(this.refs.panel)) {
-      self._onClose()
+      self._onClose();
     }
   },
   _onWheel: function(event) {
@@ -151,7 +157,7 @@ var Popup = React.createClass({
     var panelStyle = {
       width: this.props.style && this.props.style.width ? this.props.style.width : 500,
       WebkitTransform: 'translateY(-' + this.state.dialogTop + 'px)'
-    }
+    };
     
     return (
       <div
@@ -168,7 +174,7 @@ var Popup = React.createClass({
                  <div className='modal-header' style={{zIndex: 1}}>
                    {this.props.title}
                    {this.props.showCancel && (this.props.onClose || this.props.onCancel) ?
-                      <a type='button' className='close' onClick={this._onClose}><i className='iconfont icon-close' style={{fontSize: 14}}></i></a>
+                      <a type='button' className='close' onClick={this._onClose}><i className='icon-cross2' style={{fontSize: 14}}></i></a>
                       :
                       null}
                  </div>
@@ -193,6 +199,6 @@ var Popup = React.createClass({
       </div>
     )
   }
-})
+});
 
-module.exports = Popup
+module.exports = Popup;

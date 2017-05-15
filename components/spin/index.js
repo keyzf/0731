@@ -1,10 +1,10 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
-var deepEqual = require('deep-equal')
+var React = require('react');
+var ReactDom = require('react-dom');
+var assign = require('object-assign');
+var classnames = require('classnames');
+var deepEqual = require('deep-equal');
 
-var Utils = require('../utils')
+var Utils = require('../utils');
 
 /**
  * 等待接口返回时使用，并可遮挡界面以屏蔽重复操作
@@ -23,10 +23,10 @@ var Spin = React.createClass({
   },
   interval: null,
   componentDidMount: function () {
-    var self = this
+    var self = this;
     if (this.props.statusType) {
       this.interval = window.setInterval(function () {
-        var status = Utils.AjaxUtil.getStatus(self.props.statusType)
+        var status = Utils.AjaxUtil.getStatus(self.props.statusType);
         if (status == 1) {
           self.setState({
             active: true
@@ -53,6 +53,6 @@ var Spin = React.createClass({
       </div>
     )
   }
-})
+});
 
-module.exports = Spin
+module.exports = Spin;

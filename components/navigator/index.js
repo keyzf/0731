@@ -1,12 +1,12 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
-var deepEqual = require('deep-equal')
+var React = require('react');
+var ReactDom = require('react-dom');
+var assign = require('object-assign');
+var classnames = require('classnames');
+var deepEqual = require('deep-equal');
 
-var Core = require('./core')
-var defaultVerticalRender = require('./render/defaultVerticalRender')
-var defaultHorizontalRender = require('./render/defaultHorizontalRender')
+var Core = require('./core');
+var defaultVerticalRender = require('./render/defaultVerticalRender');
+var defaultHorizontalRender = require('./render/defaultHorizontalRender');
 
 /**
  * 支持横向和纵向导航，支持完全自定义导航样式，支持多导航组件组合使用（分别对应导航配置的任意级别）
@@ -67,11 +67,11 @@ var Navigator = React.createClass({
       switch (this.props.navigatorRender) {
         case 'vertical':
         case 'v':
-          render = defaultVerticalRender
+          render = defaultVerticalRender;
           break;
         case 'horizontal':
         case 'h':
-          render = defaultHorizontalRender
+          render = defaultHorizontalRender;
           break;
       }
     } else if (typeof this.props.navigatorRender === 'object' && this.props.navigatorRender != null) {
@@ -82,6 +82,6 @@ var Navigator = React.createClass({
       <Core {...this.props} nRender={render} />
     )
   }
-})
+});
 
-module.exports = Navigator
+module.exports = Navigator;

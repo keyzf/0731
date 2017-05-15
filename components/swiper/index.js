@@ -1,5 +1,5 @@
 var React = require('react')
-var ReactDom = require('react-dom')
+var ReactDOM = require('react-dom')
 var Swiper = require('swiper')
 var objectAssign = require('object-assign')
 var defaultProps = {
@@ -175,13 +175,13 @@ var ReactIDangerousSwiper = React.createClass({
   },
 
   componentDidMount: function () {
-    this.swiper = Swiper(ReactDom.findDOMNode(this), objectAssign({}, this.props))
+    this.swiper = Swiper(ReactDOM.findDOMNode(this), objectAssign({}, this.props))
   },
 
   componentDidUpdate: function () {
     if (this.props.rebuildOnUpdate) {
       this.swiper.destroy(true, true)
-      this.swiper = Swiper(ReactDom.findDOMNode(this), objectAssign({}, this.props))
+      this.swiper = Swiper(ReactDOM.findDOMNode(this), objectAssign({}, this.props))
     }
   },
 
@@ -198,7 +198,7 @@ var ReactIDangerousSwiper = React.createClass({
     if (this.swiper != null) {
       this.swiper.destroy(true, true)
     }
-    this.swiper = Swiper(ReactDom.findDOMNode(this), objectAssign({}, this.props))
+    this.swiper = Swiper(ReactDOM.findDOMNode(this), objectAssign({}, this.props))
   },
 
   _renderScrollBar: function () {

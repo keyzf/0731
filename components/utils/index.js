@@ -1,5 +1,5 @@
 // 工具类对外接口
-'use strict'
+'use strict';
 
 var Utils = {
   // 类
@@ -11,10 +11,12 @@ var Utils = {
   SaveUtil: require('./save'),
   StoreUtil: require('./store'),
   AjaxUtil: require('./ajax'),
+  DateUtil: require('./date'),
   // 快捷方法
   ajax: require('./ajax').ajax,
   getLoginFlag: require('./ajax').getLoginFlag,
   initLogin: require('./ajax').initLogin,
+  Loading:require('./loading'),
   setLoginConfig: require('./config').setLoginConfig,
   setAjaxConfig: require('./config').setAjaxConfig,
   combineConfig: require('./config').combineConfig,
@@ -26,6 +28,6 @@ var Utils = {
   createStore: require('./store').create,
   saveToStore: require('./store').dispatch,
   registerStore: require('./store').register
-}
+};
 
-module.exports = Utils
+module.exports = Utils;

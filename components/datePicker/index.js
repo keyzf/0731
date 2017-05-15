@@ -1,8 +1,8 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
-var deepEqual = require('deep-equal')
+var React = require('react');
+var ReactDom = require('react-dom');
+var assign = require('object-assign');
+var classnames = require('classnames');
+var deepEqual = require('deep-equal');
 
 var Calendar = require('../calendar')
 var Time = require('../time')
@@ -40,7 +40,12 @@ var DatePicker = React.createClass({
     /**
      * 显示清除按钮，例：true
      */
-    showClose: React.PropTypes.bool,
+    showClear: React.PropTypes.bool,
+    /**
+     * 点击layer自动设置时间，例：true
+     * zee
+     */
+    layerCloseSetDate: React.PropTypes.bool,
     /**
      * 是否显示时间(时、分、秒）控制器，例：true
      */
@@ -73,10 +78,16 @@ var DatePicker = React.createClass({
      * 时间组件样式高度，不建议修改
      */
     showTimeHeight: React.PropTypes.number,
+
     /**
      * 默认显示的时间
      */
     defaultTime: React.PropTypes.string,
+    /**
+     * 日历展示开始的日期
+     * zee 20170503
+     */
+    startValue: React.PropTypes.string,
 
     /**
      * 选中回调，例：funciton(date) {}
@@ -87,21 +98,23 @@ var DatePicker = React.createClass({
     return {
       left: 0,
       view: 'day',
-      showClose: true,
+      showClear: true,
+      layerCloseSetDate: true,
       showTime: false,
       calendarWidth: 273,
       calendarHeight: 370,
       showTimeHeight: 175,
-      defaultTime: '00:00:00'
+      defaultTime: '00:00:00',
+      startValue:'',
     }
   },
   getInitialState: function () {
-    var startValue = this.props.value
+    var startValue = this.props.value;
 
     // 把时间部分取出
-    var startTime = this.props.defaultTime
+    var startTime = this.props.defaultTime;
     if (startValue) {
-      var index = startValue.indexOf(' ')
+      var index = startValue.indexOf(' ');
       index >= 0 ? startTime = startValue.substring(index) : null
     }
 
@@ -121,20 +134,20 @@ var DatePicker = React.createClass({
     }
   },
   componentDidMount: function () {
-    this._createPopup()
+    this._createPopup();
   },
   componentWillUnmount: function () {
-    this._removePopup()
+    this._removePopup();
   },
   componentWillReceiveProps: function (nextProps) {
     if (!(deepEqual(this.props, nextProps))) {
-      this.state.name = nextProps.name
-      this.state.startValue = nextProps.value
+      this.state.name = nextProps.name;
+      this.state.startValue = nextProps.value;
 
       // 把时间部分取出
       if (this.state.startValue) {
-        var index = this.state.startValue.indexOf(' ')
-        index >= 0 ? this.state.startTime = this.state.startValue.substring(index) : null
+        var index = this.state.startValue.indexOf(' ');
+        index >= 0 ? this.state.startTime = this.state.startValue.substring(index) : null;
       }
 
       this.props = nextProps
@@ -158,11 +171,11 @@ var DatePicker = React.createClass({
         date = this.state.startValue
       }
     }
-    var index = date.indexOf(' ')
-    index >= 0 ? date = date.substring(0, index) : null
+    var index = date.indexOf(' ');
+    index >= 0 ? date = date.substring(0, index) : null;
     this.setState({
       startValue: date + (this.props.showTime ? (' ' + this.state.startTime) : '')
-    })
+    });
   },
   _calendarInputClick: function () {
     if (this.state.showCalendar) {
@@ -177,7 +190,7 @@ var DatePicker = React.createClass({
     this._hideCalendar()
   },
   _hideCalendar: function () {
-    var that = this
+    var that = this;
     if (this.state.showCalendar) {
       this.setState({
         showCalendar: false
@@ -196,10 +209,33 @@ var DatePicker = React.createClass({
       })
     }
   },
+    //zee add for layer click 20170502
+  _onLayerClick:function(){
+      var that = this;
+      if(this.props.layerCloseSetDate){
+          this._hideCalendar();
+      }else{
+          this.setState({
+              showCalendar: false
+          }, function () {
+              if (typeof that.props.onChange === 'function') {
+                  if (that.props.value != null && that.props.value != '') {
+                      that.props.onChange(
+                          new Date(that.props.value)
+                      )
+                  } else {
+                      that.props.onChange(
+                          null
+                      )
+                  }
+              }
+          });
+      }
+  },
   _onStartTimeChange: function (value) {
-    this.state.startTime = value
-    this.forceUpdate()
-    this._onStartDateChange()
+    this.state.startTime = value;
+    this.forceUpdate();
+    this._onStartDateChange();
   },
   _createPopup: function () {
     var that = this
@@ -208,22 +244,20 @@ var DatePicker = React.createClass({
     var minView = 0
     switch (this.props.view) {
       case 'month':
-        minView = 1
+        minView = 1;
         break;
       case 'year':
-        minView = 2
+        minView = 2;
         break;
     }
 
-    //style={{left: this.props.left + left, top: top + 40, position: 'fiexed'}}
-
     // 动态创建浮层
-    this.state.popupDiv = document.createElement('div')
-    document.body.appendChild(this.state.popupDiv)
+    this.state.popupDiv = document.createElement('div');
+    document.body.appendChild(this.state.popupDiv);
     this.state.canlendarRef = ReactDom.render(
       this.state.showCalendar ?
         <div>
-          <div className='date-range-popup-mask' onClick={this._hideCalendar} />
+          <div className='date-range-popup-mask' onClick={this._onLayerClick} />
           <div className='date-range-popup'>
             <div>
               <CalendarPosition
@@ -241,7 +275,7 @@ var DatePicker = React.createClass({
                 >
                 <Calendar
                   closeOnSelect={this._closeOnStartSelect}
-                  date={this.state.startValue}
+                  date={this.state.startValue||this.props.startValue}
                   minDate={this.props.minDate}
                   maxDate={this.props.maxDate}
                   format={this.state.computableFormat}
@@ -280,11 +314,11 @@ var DatePicker = React.createClass({
     }
   },
   _clear: function() {
-    this.state.startValue = null
+    this.state.startValue = null;
     if (typeof this.props.onChange === 'function') {
       this.props.onChange(
         null
-      )
+      );
     }
     this.forceUpdate()
   },
@@ -295,16 +329,16 @@ var DatePicker = React.createClass({
     this.setState({mouseOver: false})
   },
   render: function () {
-    var name = this.state.name || '请选择'
-    this.state.startValue ? name = this.state.startValue : null
+    var name = this.state.name || '请选择';
+    this.state.startValue ? name = this.state.startValue : null;
 
     return (
       <div className={classnames({'date-picker': true}, this.props.className)} style={assign({width: 215}, this.props.style)}>
         <div className='calendar-input' ref='canlendar_input_ref' onMouseEnter={this._onMouseOver} onMouseLeave={this._onMouseOut}>
-          {this.props.showClose && this.state.startValue && !this.showCalendar && this.state.mouseOver ?
-            <div style={{position: 'absolute', right: 30, top: 9, cursor: 'pointer', fontSize: 12}}>
+          {this.props.showClear && this.state.startValue && !this.showCalendar && this.state.mouseOver ?
+            <span className='calendar-input-opera'>
               <i className="icon-cross3" onClick={this._clear}></i>
-            </div>
+            </span>
           : null}
           <div className='button' onClick={this._calendarInputClick} style={assign({width: '100%', whiteSpace: 'nowrap'}, this.props.style)}>
             {(this.state.startValue ? this.state.startValue : name)}
@@ -313,6 +347,6 @@ var DatePicker = React.createClass({
       </div>
     )
   }
-})
+});
 
-module.exports = DatePicker
+module.exports = DatePicker;

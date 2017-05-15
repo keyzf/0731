@@ -1,4 +1,3 @@
-'use strict'
 
 var extensions = {
   tinymce: require('./tinymce'),

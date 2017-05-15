@@ -1,11 +1,11 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
-var deepEqual = require('deep-equal')
+var React = require('react');
+var ReactDom = require('react-dom');
+var assign = require('object-assign');
+var classnames = require('classnames');
+var deepEqual = require('deep-equal');
 
 /**
- * 浮动提示，2秒后消失
+ * 浮动提示，3秒后消失
  */
 var Prompt = React.createClass({
   propTypes: {
@@ -21,12 +21,12 @@ var Prompt = React.createClass({
     }
   },
   componentDidMount: function () {
-    var that = this
+    var that = this;
     window.setTimeout(function () {
       if (typeof that.props.onClose === 'function') {
-        that.props.onClose()
+        that.props.onClose();
       }
-    }, 2000)
+    }, 3000);
   },
   componentWillUnmount: function () {},
   render: function () {
@@ -38,6 +38,6 @@ var Prompt = React.createClass({
       </div>
     )
   }
-})
+});
 
-module.exports = Prompt
+module.exports = Prompt;

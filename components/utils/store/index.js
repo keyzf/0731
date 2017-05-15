@@ -1,13 +1,13 @@
-'use strict'
+'use strict';
 
-var EventEmitter = require('events').EventEmitter
-var objectAssign = require('object-assign')
-var clone = require('clone')
-var Dispatcher = require('flux').Dispatcher
-var dispatcher = new Dispatcher()
+var EventEmitter = require('events').EventEmitter;
+var objectAssign = require('object-assign');
+var clone = require('clone');
+var Dispatcher = require('flux').Dispatcher;
+var dispatcher = new Dispatcher();
 
-const CHANGE_EVENT = 'change'
-
+const CHANGE_EVENT = 'change';
+var StoreTree = {};//zee add
 var Store = objectAssign({}, EventEmitter.prototype, {
   _data: {},
   _listenTypes: [],
@@ -21,7 +21,7 @@ var Store = objectAssign({}, EventEmitter.prototype, {
     this.removeListener(CHANGE_EVENT, callback)
   },
   init: function init () {
-    var that = this
+    var that = this;
     this.dispatchToken = dispatcher.register(function (action) {
       for (var key in that._listenTypes) {
         if (that._listenTypes[key] === action.type) {
@@ -30,7 +30,7 @@ var Store = objectAssign({}, EventEmitter.prototype, {
           break
         }
       }
-    })
+    });
     return this
   },
   // 侦听某个存储事件
@@ -40,8 +40,9 @@ var Store = objectAssign({}, EventEmitter.prototype, {
         return
       }
     }
-    this._listenTypes.push(type)
-    return this
+    this._listenTypes.push(type);
+    StoreTree[type] = this;//zee add
+    return this;
   },
   // 获取某个存储事件的值，只有侦听了此事件或自定义了此事件的存储过程，才可能获得值
   getData: function getData (type) {
@@ -51,7 +52,7 @@ var Store = objectAssign({}, EventEmitter.prototype, {
   setData: function setData (type, value) {
     this._data[type] = value
   }
-})
+});
 
 var StoreUtil = {
   // 创建一个存储器store
@@ -59,7 +60,12 @@ var StoreUtil = {
     return objectAssign(clone(Store), obj).init()
   },
   // 发出某个存储事件（包含值）,由action调用
-  dispatch: function dispatch (obj) {
+  dispatch: function dispatch (obj,isUpdate) {
+
+    if(isUpdate&&StoreTree[obj.type]){//zee add
+      var data = StoreTree[obj.type].getData(obj.type)||{};
+      obj.data = objectAssign(data,obj.data);
+    }
     return dispatcher.dispatch(obj)
   },
   // 自定义某个事件的存储过程

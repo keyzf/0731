@@ -1,7 +1,7 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
+var React = require('react');
+var ReactDom = require('react-dom');
+var assign = require('object-assign');
+var classnames = require('classnames');
 var deepEqual = require('deep-equal')
 
 /**
@@ -60,12 +60,12 @@ var Breadcrumb = React.createClass({
     this._update()
   },
   _arrayIncludeUrl: function(array, url) {
-    var include = false
+    var include = false;
     array.map(function(str) {
       if (str === url) {
         include = true
       }
-    })
+    });
     return include
   },
   _pushToArray: function (array, data, url) {
@@ -76,7 +76,7 @@ var Breadcrumb = React.createClass({
             text: data[key].text,
             url: data[key].url,
             alias: data[key].alias
-          })
+          });
           return true
         }
       }
@@ -84,7 +84,7 @@ var Breadcrumb = React.createClass({
         text: data[key].text,
         url: data[key].url,
         alias: data[key].alias
-      })
+      });
       if (this._pushToArray(array, data[key].value, url)) {
         return true
       } else {
@@ -94,34 +94,34 @@ var Breadcrumb = React.createClass({
     return false
   },
   _createBreadcrumbArray: function (init) {
-    var data = this.props.data
-    var url = this.context.pathname
-    var array = []
+    var data = this.props.data;
+    var url = this.context.pathname;
+    var array = [];
     if (typeof this.props.defaultItem != 'undefined' && this.props.defaultItem != null) {
       array.push(this.props.defaultItem)
     }
-    this._pushToArray(array, data, url)
-    return array
+    this._pushToArray(array, data, url);
+    return array;
   },
   _update: function () {
     this.setState({
       change: this.state.change
-    })
+    });
   },
   _createOnClickFunction: function (url, alias, text) {
-    var that = this
+    var that = this;
     return function () {
       if (that.props.onRedirect != null) {
-        that.props.onRedirect(url, alias, text)
+        that.props.onRedirect(url, alias, text);
       } else {
-        location.href = '#' + url
+        location.href = '#' + url;
       }
     }
   },
   render: function () {
-    var array = this._createBreadcrumbArray()
-    var links = []
-    var tag = this.props.tag || '>'
+    var array = this._createBreadcrumbArray();
+    var links = [];
+    var tag = this.props.tag || '>';
     for (var key in array) {
       if (array[key] !== array[array.length - 1]) {
         links.push(
@@ -152,6 +152,6 @@ var Breadcrumb = React.createClass({
       </ul>
     )
   }
-})
+});
 
-module.exports = Breadcrumb
+module.exports = Breadcrumb;

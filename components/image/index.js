@@ -1,8 +1,8 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
-var deepEqual = require('deep-equal')
+var React = require('react');
+var ReactDom = require('react-dom');
+var assign = require('object-assign');
+var classnames = require('classnames');
+var deepEqual = require('deep-equal');
 
 var Image = React.createClass({
   getDefaultProps: function () {
@@ -25,7 +25,7 @@ var Image = React.createClass({
     }
   },
   _handleError: function () {
-    this.state.url = this.props.errorSrc
+    this.state.url = this.props.errorSrc;
     this.forceUpdate()
   },
   render: function () {
@@ -35,6 +35,6 @@ var Image = React.createClass({
       </div>
     )
   }
-})
+});
 
-module.exports = Image
+module.exports = Image;

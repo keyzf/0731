@@ -25,6 +25,7 @@ var Slider = React.createClass({
      * 当前值，例：50
      */
     value: React.PropTypes.number,
+
     /**
      * 只读，例：true
      */

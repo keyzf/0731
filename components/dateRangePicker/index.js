@@ -102,15 +102,15 @@ var DateRangePicker = React.createClass({
     onChange: React.PropTypes.func,
   },
   getDefaultProps: function () {
-    var startDate = new Date()
-    startDate.setHours(0)
-    startDate.setMinutes(0)
-    startDate.setSeconds(0)
+    var startDate = new Date();
+    startDate.setHours(0);
+    startDate.setMinutes(0);
+    startDate.setSeconds(0);
 
-    var endDate = new Date()
-    endDate.setHours(0)
-    endDate.setMinutes(0)
-    endDate.setSeconds(0)
+    var endDate = new Date();
+    endDate.setHours(0);
+    endDate.setMinutes(0);
+    endDate.setSeconds(0);
     return {
       options: [{name: '最近一周',value: {startDate: new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() - 7),endDate: new Date(endDate)}}, {name: '最近一月',value: {startDate: new Date(startDate.getFullYear(), startDate.getMonth() - 1, startDate.getDate()),endDate: new Date(endDate)}}, {name: '最近一年',value: {startDate: new Date(startDate.getFullYear() - 1, startDate.getMonth(), startDate.getDate()),endDate: new Date(endDate)}}],
       defaultValue: null,
@@ -125,20 +125,20 @@ var DateRangePicker = React.createClass({
     }
   },
   getInitialState: function () {
-    var startValue = this.props.startValue
-    var endValue = this.props.endValue
+    var startValue = this.props.startValue;
+    var endValue = this.props.endValue;
 
     // 把时间部分取出
-    var startTime = '00:00:00'
+    var startTime = '00:00:00';
     if (startValue) {
-      var index = startValue.indexOf(' ')
-      this.props.showTime && index >= 0 ? startTime = startValue.substring(index) : null
+      var index = startValue.indexOf(' ');
+      this.props.showTime && index >= 0 ? startTime = startValue.substring(index) : null;
     }
 
-    var endTime = '23:59:59'
+    var endTime = '23:59:59';
     if (endValue) {
-      index = endValue.indexOf(' ')
-      this.props.showTime && index >= 0 ? endTime = endValue.substring(index) : null
+      index = endValue.indexOf(' ');
+      this.props.showTime && index >= 0 ? endTime = endValue.substring(index) : null;
     }
 
     return {
@@ -165,41 +165,41 @@ var DateRangePicker = React.createClass({
   componentWillMount: function () {
   },
   componentDidMount: function () {
-    this.state.options = this.state.options ? this.state.options : []
-    var hasCustom = false
+    this.state.options = this.state.options ? this.state.options : [];
+    var hasCustom = false;
     this.state.options.map(function (item) {
       if (item.value === OptionType.CUSTOM) {
         hasCustom = true
       }
-    })
+    });
     if (!hasCustom) {
-      this.state.options.push({name: '自定义时间段', value: OptionType.CUSTOM})
+      this.state.options.push({name: '自定义时间段', value: OptionType.CUSTOM});
     }
-    this.forceUpdate()
+    this.forceUpdate();
 
     this._createPopup()
   },
   componentWillUnmount: function () {
-    this._removePopup()
+    this._removePopup();
   },
   componentWillReceiveProps: function (nextProps) {
     if (!(deepEqual(this.props, nextProps))) {
-      this.state.name = nextProps.name
-      this.state.startValue = nextProps.startValue
-      this.state.endValue = nextProps.endValue
+      this.state.name = nextProps.name;
+      this.state.startValue = nextProps.startValue;
+      this.state.endValue = nextProps.endValue;
 
       // 把时间部分取出
       if (this.state.startValue) {
-        var index = this.state.startValue.indexOf(' ')
-        index >= 0 ? this.state.startTime = this.state.startValue.substring(index) : null
+        var index = this.state.startValue.indexOf(' ');
+        index >= 0 ? this.state.startTime = this.state.startValue.substring(index) : null;
       }
 
       if (this.state.endValue) {
-        index = this.state.endValue.indexOf(' ')
-        index >= 0 ? this.state.endTime = this.state.endValue.substring(index) : null
+        index = this.state.endValue.indexOf(' ');
+        index >= 0 ? this.state.endTime = this.state.endValue.substring(index) : null;
       }
 
-      this.props = nextProps
+      this.props = nextProps;
     }
   },
   componentWillUpdate: function () {
@@ -207,8 +207,8 @@ var DateRangePicker = React.createClass({
   componentDidUpdate: function () {
     // 不能每次都重新渲染calendar 否则会重置calendar内部状态
     if (this.state.lastShowCalendar != this.state.showCalendar) {
-      this.state.lastShowCalendar = this.state.showCalendar
-      this._createPopup()
+      this.state.lastShowCalendar = this.state.showCalendar;
+      this._createPopup();
     }
   },
   _onChange: function (value) {
@@ -228,65 +228,65 @@ var DateRangePicker = React.createClass({
 
     if (value != OptionType.CUSTOM) {
       if (typeof this.props.onChange === 'function') {
-        this.props.onChange(value)
+        this.props.onChange(value);
       }
     }
   },
   _onStartDateChange: function (date) {
-    var self = this
+    var self = this;
     if (typeof date === 'undefined' || date == null) {
       if (typeof this.state.startValue === 'undefined' || this.state.startValue == null || this.state.startValue === '') {
-        return
+        return;
       } else {
-        date = this.state.startValue
+        date = this.state.startValue;
       }
     }else{
       this.setState({
         endMinDate: date
       }, function(){
-        self._createPopup()
+        self._createPopup();
       })
     }
-    var index = date.indexOf(' ')
-    index >= 0 ? date = date.substring(0, index) : null
+    var index = date.indexOf(' ');
+    index >= 0 ? date = date.substring(0, index) : null;
     this.setState({
       startValue: date + (this.props.showTime ? (' ' + this.state.startTime) : '')
-    })
+    });
   },
   _onEndDateChange: function (date) {
-    var self = this
+    var self = this;
     if (typeof date === 'undefined' || date == null) {
       if (typeof this.state.endValue === 'undefined' || this.state.endValue == null || this.state.endValue === '') {
-        return
+        return;
       } else {
-        date = this.state.endValue
+        date = this.state.endValue;
       }
     }else{
       this.setState({
         startMaxDate: date
       }, function(){
-        self._createPopup()
+        self._createPopup();
       })
     }
-    var index = date.indexOf(' ')
-    index >= 0 ? date = date.substring(0, index) : null
+    var index = date.indexOf(' ');
+    index >= 0 ? date = date.substring(0, index) : null;
     this.setState({
       endValue: date + (this.props.showTime ? (' ' + this.state.endTime) : '')
-    })
+    });
   },
   _calendarInputClick: function () {
     if (this.state.options.length <= 1) {
       if (this.state.showCalendar) {
-        this._hideCalendar()
+        this._hideCalendar();
       } else {
         this.setState({
           showCalendar: true,
           startChecked: false,
           endChecked: false
-        })
+        });
       }
     } else {
-      this._hideCalendar()
+      this._hideCalendar();
     }
   },
   _closeOnStartSelect: function () {
@@ -294,7 +294,7 @@ var DateRangePicker = React.createClass({
       startChecked: true
     }, function () {
       if (this.state.startChecked && this.state.endChecked && !this.props.showTime) {
-        this._hideCalendar()
+        this._hideCalendar();
       }
     })
   },
@@ -303,12 +303,12 @@ var DateRangePicker = React.createClass({
       endChecked: true
     }, function () {
       if (this.state.startChecked && this.state.endChecked && !this.props.showTime) {
-        this._hideCalendar()
+        this._hideCalendar();
       }
     })
   },
   _hideCalendar: function (confirm) {
-    var that = this
+    var that = this;
     if (this.state.showCalendar) {
       this.setState({
         showCalendar: false
@@ -316,8 +316,8 @@ var DateRangePicker = React.createClass({
         if (typeof that.props.onChange === 'function') {
           // 点击确定键时 即使未选择也要使用默认值
           var dateString = this._dateToString(new Date());
-          var startDateTimeString = dateString + ' ' + this.state.startTime
-          var endDateTimeString = dateString + ' ' + this.state.endTime
+          var startDateTimeString = dateString + ' ' + this.state.startTime;
+          var endDateTimeString = dateString + ' ' + this.state.endTime;
           if (confirm === true) {
             if(
               that.props.minDate && new Date(startDateTimeString) >= new Date(that.props.minDate) || 
@@ -353,20 +353,20 @@ var DateRangePicker = React.createClass({
     }
   },
   _onStartTimeChange: function (value) {
-    this.state.startTime = value
-    this.forceUpdate()
-    this._onStartDateChange()
+    this.state.startTime = value;
+    this.forceUpdate();
+    this._onStartDateChange();
   },
   _onEndTimeChange: function (value) {
-    this.state.endTime = value
-    this.forceUpdate()
-    this._onEndDateChange()
+    this.state.endTime = value;
+    this.forceUpdate();
+    this._onEndDateChange();
   },
   _onConfirm: function() {
-    this._hideCalendar(true)
+    this._hideCalendar(true);
   },
   _dateToString: function (date) {
-    return date.getFullYear() + '-' + ((date.getMonth() + 1).toString().length <= 1 ? '0' : '') + (date.getMonth() + 1) + '-' + (date.getDate().toString().length <= 1 ? '0' : '') + date.getDate()
+    return date.getFullYear() + '-' + ((date.getMonth() + 1).toString().length <= 1 ? '0' : '') + (date.getMonth() + 1) + '-' + (date.getDate().toString().length <= 1 ? '0' : '') + date.getDate();
   },
   _dateTimeToString: function (date) {
     return date.getFullYear() + '-' + ((date.getMonth() + 1).toString().length <= 1 ? '0' : '') + (date.getMonth() + 1) + '-' + (date.getDate().toString().length <= 1 ? '0' : '') + date.getDate() + ' ' + (date.getHours().toString().length <= 1 ? '0' : '') + date.getHours() + ':' + (date.getMinutes().toString().length <= 1 ? '0' : '') + date.getMinutes() + ':' + (date.getSeconds().toString().length <= 1 ? '0' : '') + date.getSeconds()
@@ -378,16 +378,15 @@ var DateRangePicker = React.createClass({
     var minView = 0
     switch (this.props.view) {
       case 'month':
-        minView = 1
+        minView = 1;
         break;
       case 'year':
-        minView = 2
+        minView = 2;
         break;
     }
-
     // 动态创建浮层
-    this.state.popupDiv = document.createElement('div')
-    document.body.appendChild(this.state.popupDiv)
+    this.state.popupDiv = document.createElement('div');
+    document.body.appendChild(this.state.popupDiv);
     ReactDom.render(
       this.state.showCalendar ?
         <div>
@@ -486,16 +485,16 @@ var DateRangePicker = React.createClass({
   },
   _removePopup: function () {
     if (this.state.popupDiv) {
-      ReactDom.unmountComponentAtNode(this.state.popupDiv)
-      this.state.popupDiv.parentNode.removeChild(this.state.popupDiv)
+      ReactDom.unmountComponentAtNode(this.state.popupDiv);
+      this.state.popupDiv.parentNode.removeChild(this.state.popupDiv);
       this.state.popupDiv = null
     }
   },
   render: function() {
-    var name = this.state.name || '请选择'
+    var name = this.state.name || '请选择';
     if (this.state.startValue && this.state.endValue) {
-      name = this.state.startValue + ' - ' + this.state.endValue
-      this.state.selectValue = ''
+      name = this.state.startValue + ' - ' + this.state.endValue;
+      this.state.selectValue = '';
     }
 
     return (
@@ -512,6 +511,6 @@ var DateRangePicker = React.createClass({
       </div>
     )
   }
-})
+});
 
-module.exports = DateRangePicker
+module.exports = DateRangePicker;

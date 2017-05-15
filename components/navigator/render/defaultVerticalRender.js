@@ -1,5 +1,5 @@
-var React = require('react')
-var ReactDom = require('react-dom')
+var React = require('react');
+var ReactDom = require('react-dom');
 
 /**
  * 递归处理data的多层数据结构，但这里不考虑显示多少层，显示多少层由render处理
@@ -19,37 +19,37 @@ var ReactDom = require('react-dom')
  */
 module.exports.parseDataByUrl = function (data, params, url, init, onEqualFunc) {
   var parseData = function(data, dataLayerIndex) {
-    var config = null
+    var config = null;
 
     for (var key in data) {
-      data[key].selected = false
+      data[key].selected = false;
       if (onEqualFunc(url, data[key].url)) {
         if (typeof data[key].value === 'undefined' || data[key].value == null || data[key].value.length === 0) {
-          data[key].selected = true
+          data[key].selected = true;
 
           config = data
         }
       }
 
-      data[key].sub_selected = false
+      data[key].sub_selected = false;
       if (parseData(data[key].value, dataLayerIndex + 1)) {
-        data[key].sub_selected = true
+        data[key].sub_selected = true;
 
         // 特殊处理，当页面初始化时，包含被选中项的父级应为打开状态
         if (init) {
-          data[key].open = true
+          data[key].open = true;
         }
 
-        config = data
+        config = data;
       }
     }
 
     return config
-  }
+  };
 
   // 返回要显示的data结构
   return parseData(data, 1) || data
-}
+};
 
 /**
  * TODO: 非常混乱的一坨代码，需要彻底重构，没用的参数过多
@@ -58,32 +58,32 @@ module.exports.render = function (data, params, config, onRedirect, onInitComple
   if (!data) {
     return <div />
   }
-  var that = this
+  var that = this;
 
   var menuEle = Object.keys(data).map(function (key, i) {
-    var refName = 'layer2-box' + key
-    var value = data[key].value
-    var subMenuEle = null
-    var subMenuHide = true
+    var refName = 'layer2-box' + key;
+    var value = data[key].value;
+    var subMenuEle = null;
+    var subMenuHide = true;
     // 没有子节点或当前只响应一级配置就不会构造子节点
     if (typeof value != 'undefined' && value != null && value !== '' && params.dataLayerRange != 1) {
       var ele = Object.keys(value).map(function (k, ii) {
-        var v = value
+        var v = value;
         var __handleClick = function () {
           onRedirect(v[k].url, v[k].alias)
-        }
-        var className = 'layer2'
+        };
+        var className = 'layer2';
         if (typeof v[k].selected != 'undefined' && v[k].selected === true) {
-          className += ' active'
-          subMenuHide = false
+          className += ' active';
+          subMenuHide = false;
         }
         return (
           <li key={i + '-' + ii} className={className} style={{paddingTop: 0}}>
             <a onClick={__handleClick}><span>{v[k].text}</span></a>
           </li>
         )
-      })
-      var count = ele.length ? ele.length : 0
+      });
+      var count = ele.length ? ele.length : 0;
       subMenuEle = (
         <ul className={'submenu-ele ' + (subMenuHide ? 'hidden-ul' : '')} ref={refName}>
           {ele}
@@ -111,13 +111,14 @@ module.exports.render = function (data, params, config, onRedirect, onInitComple
           data[key].open = !data[key].open
         }
         if (!data[key].open) {
-          ReactDom.findDOMNode(that.refs[refName]).style.height = '0px'
+          ReactDom.findDOMNode(that.refs[refName]).style.height = '0px';
         } else {
-          ReactDom.findDOMNode(that.refs[refName]).style.height = params.cellHeight * count + count - 1 + 'px'
+          //ReactDom.findDOMNode(that.refs[refName]).style.height = params.cellHeight * count + count - 1 + 'px'
+          ReactDom.findDOMNode(that.refs[refName]).style.height = 'auto';//zee 20170309 修改让高度自动
         }
       }
 
-      that.forceUpdate()
+      that.forceUpdate();
 
       if (params.alwaysOpen) {
         // 常开情况下 有子项的情况下只有点击子项才能跳转
@@ -217,10 +218,10 @@ module.exports.render = function (data, params, config, onRedirect, onInitComple
  * render完成后还要做一些处理，加在这里
  */
 module.exports.renderComplete = function (data, params) {
-  var that = this
+  var that = this;
   Object.keys(data).map(function (key, i) {
-    var refName = 'layer2-box' + key
-    var value = data[key].value
+    var refName = 'layer2-box' + key;
+    var value = data[key].value;
     if (typeof value != 'undefined' && value != null && value !== '' && params.dataLayerRange != 1) {
       var ele = Object.keys(value).map(function (k, ii) {
         return (
@@ -228,14 +229,15 @@ module.exports.renderComplete = function (data, params) {
             {value[k].text}
           </div>
         )
-      })
-      var count = ele.length ? ele.length : 0
+      });
+      var count = ele.length ? ele.length : 0;
 
       if (!data[key].open && !params.alwaysOpen) {
         ReactDom.findDOMNode(that.refs[refName]).style.height = '0px'
       } else {
-        ReactDom.findDOMNode(that.refs[refName]).style.height = params.cellHeight * count + count - 1 + 'px'
+        //ReactDom.findDOMNode(that.refs[refName]).style.height = params.cellHeight * count + count - 1 + 'px';
+        ReactDom.findDOMNode(that.refs[refName]).style.height =  'auto';//zee 20170309 修改让高度自动
       }
     }
   })
-}
+};

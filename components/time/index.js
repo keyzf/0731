@@ -27,6 +27,7 @@ var Time = React.createClass({
      * 是否固定秒，例：false
      */
     fixedSecond: React.PropTypes.bool,
+
     /**
      * 只读，例：true
      */

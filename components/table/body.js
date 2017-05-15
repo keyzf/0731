@@ -1,8 +1,9 @@
-var React = require('react')
-var ReactDom = require('react-dom')
+var React = require('react');
+var ReactDom = require('react-dom');
 
-var CheckBox = require('../checkBox')
-var TableRow = require('./row')
+var CheckBox = require('../checkBox');
+var TableRow = require('./row');
+var Utils = require('../utils');
 // var Store = require('./store')
 var Guid = require('./guid')
 
@@ -37,7 +38,7 @@ var Body = React.createClass({
   _isSelected: function (value) {
     return this.props.selectRow.selected.indexOf(value) !== -1
   },
-  _isExpanded: function (value) {
+ _isExpanded: function (value) {
     return this.props.expandRow.expanded.indexOf(value) !== -1
   },
   _onExpanded: function (value) {
@@ -47,13 +48,15 @@ var Body = React.createClass({
     this.props.selectRow.onSelect(row)
   },*/
   _renderTableBody: function () {
-    var self = this
+    var self = this;
     if (!this.props.data.length) {
-      var length = 0
+      var length = 0;
       self.props.columns.map(function (column, i) {
-        if (column.display !== false)
+        if (column.display !== false){
           length++
-      })
+        }
+
+      });
       if (this.props.selectRow && this.props.selectRow.enable) {
         length++
       }
@@ -85,16 +88,17 @@ var Body = React.createClass({
     }
   },
   _renderRows: function (data, level, visible) {
-    var self = this
-    var result = []
-    level = level || 0
-    if (level == 0) visible = true
+    var self = this;
+    var result = [];
+    level = level || 0;
+    if (level == 0) visible = true;
     data.forEach(function (item, i) {
-      var isSelected = self._isSelected(item[self.props.keyField])
-      var isRowExpanded = self._isExpanded(item[self.props.keyField])
+      var isSelected = self._isSelected(item[self.props.keyField]);
+      var isRowExpanded = self._isExpanded(item[self.props.keyField]);
       var onExpanded = function () {
-        self._onExpanded(item[self.props.keyField])
-      }
+        self._onExpanded(item[self.props.keyField]);
+      };
+      //var guid = Guid.NewGuid().ToString();
       var key = self.state.lineNum;
       self.state.lineNum += 1;
       result.push(<TableRow
@@ -108,23 +112,24 @@ var Body = React.createClass({
                     key={key}
                     level={level}
                     visible={visible}
-                    expandable={item.children ? true : false}
+                    isTree={self.props.isTree}
+                    expandable={item.children&&item.children.length  ? true : false}
                     onExpand={onExpanded}
-                    expanded={isRowExpanded} />)
+                    expanded={isRowExpanded} />);
       if (item.children) {
-        var subVisible = visible && isRowExpanded
-        result = result.concat(self._renderRows(item.children, level + 1, subVisible))
+        var subVisible = visible && isRowExpanded;
+        result = result.concat(self._renderRows(item.children, level + 1, subVisible));
       }
-    })
+    });
     return result
   },
   render: function () {
-    var rows = this._renderTableBody()
+    var rows = this._renderTableBody();
     return (
       <tbody>
         {this._renderTableBody()}
       </tbody>
-    )
+    );
   }
-})
-module.exports = Body
+});
+module.exports = Body;

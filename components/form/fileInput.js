@@ -1,4 +1,4 @@
-var React = require('react')
+var React = require('react');
 
 var FileInput = React.createClass({
   getInitialState: function () {
@@ -7,15 +7,15 @@ var FileInput = React.createClass({
     }
   },
   _onClick: function (e) {
-    e && e.preventDefault()
-    this.refs['file-input'].click()
+    e && e.preventDefault();
+    this.refs['file-input'].click();
   },
   _onChange: function (e) {
     if (e.target.files.length) {
       this.setState({
         name: e.target.files[0].name
-      })
-      this.props.onChange && this.props.onChange(e)
+      });
+      this.props.onChange && this.props.onChange(e);
     }
   },
   render: function () {
@@ -33,6 +33,6 @@ var FileInput = React.createClass({
       </div>
     )
   }
-})
+});
 
-module.exports = FileInput
+module.exports = FileInput;

@@ -1,12 +1,12 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
-var deepEqual = require('deep-equal')
+var React = require('react');
+var ReactDom = require('react-dom');
+var assign = require('object-assign');
+var classnames = require('classnames');
+var deepEqual = require('deep-equal');
 
-var ReactRouter = require('react-router')
+var ReactRouter = require('react-router');
 
-var clone = require('clone')
+var clone = require('clone');
 
 var Core = React.createClass({
   propTypes: {
@@ -129,82 +129,82 @@ var Core = React.createClass({
   },
   _parseDataByUrl: function (data, params, url, init, onEqualFunc) {
     var parseData = function(data, dataLayerIndex) {
-      var config = null
+      var config = null;
 
       for (var key in data) {
-        data[key].selected = false
+        data[key].selected = false;
         if (onEqualFunc(url, data[key].url)) {
           if (typeof data[key].value === 'undefined' || data[key].value == null || data[key].value.length === 0) {
-            data[key].selected = true
+            data[key].selected = true;
 
-            config = data
+            config = data;
           }
         }
 
-        data[key].sub_selected = false
+        data[key].sub_selected = false;
         if (parseData(data[key].value, dataLayerIndex + 1)) {
-          data[key].sub_selected = true
+          data[key].sub_selected = true;
 
           config = data
         }
       }
 
       return config
-    }
+    };
 
     // 返回要显示的data结构
     return parseData(data, 1) || data
   },
   _compare: function (url, data, init, params, onEqualFunc) {
     var parseDataByUrl = this.props.nRender.parseDataByUrl || this._parseDataByUrl
-    var config = null
+    var config = null;
 
     switch (this.props.dataLayerIndex) {
       case 2:
         for (var key in data) {
           if (typeof data[key].value === 'object' && data[key].value != null) {
             if (config = parseDataByUrl(data[key].value, params, url, init, onEqualFunc)) {
-              this.state.renderData = config
+              this.state.renderData = config;
               return config
             }
           }
         }
-        break
+        break;
       case 3:
         for (var key in data) {
           for (var k in data[key].value) {
             if (typeof data[key].value[k].value === 'object' && data[key].value[k].value != null) {
               if (config = parseDataByUrl(data[key].value[k].value, params, url, init, onEqualFunc)) {
-                this.state.renderData = config
-                return config
+                this.state.renderData = config;
+                return config;
               }
             }
           }
         }
-        break
+        break;
       default:
         if (config = parseDataByUrl(data, params, url, init, onEqualFunc)) {
-          this.state.renderData = config
-          return config
+          this.state.renderData = config;
+          return config;
         }
         break
     }
     if(config = parseDataByUrl(data, params, url, init, onEqualFunc)){
-      this.state.renderData = config
-      return config
+      this.state.renderData = config;
+      return config;
     } 
-    return null
+    return null;
   },
   _equalUrl: function (url, pattern) {
     if (pattern instanceof Array) {
       for (var key in pattern) {
         if (url === pattern[key]) {
-          return true
+          return true;
         }
       }
-      return false
+      return false;
     } else {
-      return url === pattern
+      return url === pattern;
     }
   },
   _accordUrl: function (url, pattern) {
@@ -214,54 +214,54 @@ var Core = React.createClass({
     if (pattern instanceof Array) {
       for (var key in pattern) {
         if (this._match(url, pattern[key])) {
-          return true
+          return true;
         }
       }
-      return false
+      return false;
     } else {
-      return this._match(url, pattern)
+      return this._match(url, pattern);
     }
   },
   _match: function (url, pattern) {
-    var paramMatch = true
+    var paramMatch = true;
     var patternParam = this._getUrlVars(pattern)
     for (var key in patternParam) {
       if (this._getUrlVar(key, url) !== patternParam[key]) {
-        paramMatch = false
+        paramMatch = false;
       }
     }
     // 参数不符合
     if (!paramMatch) {
-      return false
+      return false;
     }
     // url去掉参数进行比对
-    url = url.replace(/\?[^\#]+/gi, '')
+    url = url.replace(/\?[^\#]+/gi, '');
 
-    var pattern = pattern
-    pattern = pattern.replace(/\/:[^\/]+/g, '/[^\/]+')
-    pattern = pattern.replace(/\//g, '\\\/')
-    pattern = new RegExp('^' + pattern + '$', 'gi')
+    var pattern = pattern;
+    pattern = pattern.replace(/\/:[^\/]+/g, '/[^\/]+');
+    pattern = pattern.replace(/\//g, '\\\/');
+    pattern = new RegExp('^' + pattern + '$', 'gi');
 
-    var result = url.match(pattern)
-    return result && result.length > 0
+    var result = url.match(pattern);
+    return result && result.length > 0;
   },
   _getUrlVars: function (url) {
     var vars = [],
-      hash
+      hash;
     if (typeof url === 'undefined' || url == null) {
       url = window.location.href
     }
 
     if (url.indexOf('?') != -1) {
-      var param = url.match(/\?[^\#]+/gi)
+      var param = url.match(/\?[^\#]+/gi);
       if (param) {
-        param = param[0]
-        param = param.replace(/\?/gi, '')
-        param = param.split(/[\&]/)
+        param = param[0];
+        param = param.replace(/\?/gi, '');
+        param = param.split(/[\&]/);
       }
       for (var i = 0; i < param.length; i++) {
-        hash = param[i].split('=')
-        vars[hash[0]] = hash[1]
+        hash = param[i].split('=');
+        vars[hash[0]] = hash[1];
       }
     }
 
@@ -274,16 +274,16 @@ var Core = React.createClass({
     // 考虑多个相同url的项都被选中的情况
     if (this.props.onlyOneUrl === true) {
       if (this.state.currentAlias) {
-        var selectOne = null
+        var selectOne = null;
         for (var key in data) {
           if (data[key].selected) {
             if (selectOne == null) {
               selectOne = data[key]
             } else if (selectOne != null && data[key].alias === this.state.currentAlias) {
-              selectOne.selected = false
-              selectOne = data[key]
+              selectOne.selected = false;
+              selectOne = data[key];
             } else {
-              data[key].selected = false
+              data[key].selected = false;
             }
           }
 
@@ -292,25 +292,25 @@ var Core = React.createClass({
               if (selectOne == null) {
                 selectOne = data[key].value[k]
               } else if (selectOne != null && data[key].value[k].alias === this.state.currentAlias) {
-                selectOne.selected = false
-                selectOne = data[key].value[k]
+                selectOne.selected = false;
+                selectOne = data[key].value[k];
               } else {
-                data[key].value[k].selected = false
+                data[key].value[k].selected = false;
               }
             }
           }
         }
         if (selectOne) {
-          selectOne.selected = true
+          selectOne.selected = true;
         }
       } else {
-        var selectOne = null
+        var selectOne = null;
         for (var key in data) {
           if (data[key].selected) {
             if (selectOne == null) {
-              selectOne = data[key]
+              selectOne = data[key];
             } else {
-              data[key].selected = false
+              data[key].selected = false;
             }
           }
 
@@ -319,21 +319,21 @@ var Core = React.createClass({
               if (selectOne == null) {
                 selectOne = data[key].value[k]
               } else if (selectOne != null) {
-                data[key].value[k].selected = false
+                data[key].value[k].selected = false;
               }
             }
           }
         }
         if (selectOne) {
-          selectOne.selected = true
+          selectOne.selected = true;
         }
       }
     }
   },
   _render: function() {
-    var config = this._findConfigValue()
+    var config = this._findConfigValue();
 
-    var that = this
+    var that = this;
     return typeof this.props.nRender.render === 'function' ? this.props.nRender.render.call(this, this.state.renderData, this.props, config, this._onRedirect, function() {
       that.state.init = false
     }) : null
@@ -343,6 +343,6 @@ var Core = React.createClass({
       this._render()
     )
   }
-})
+});
 
-module.exports = Core
+module.exports = Core;

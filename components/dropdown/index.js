@@ -29,14 +29,14 @@ var Dropdown = createClass({
   },
 
   render() {
-    const { children, className } = this.props
+    const { children, className } = this.props;
     // create component classes
-    const active = this.isActive()
+    const active = this.isActive();
     var dropdown_classes = cx({
       'dropdown': true,
       'open': active
-    })
-    dropdown_classes += ' ' + className
+    });
+    dropdown_classes += ' ' + className;
     // stick callback on trigger element
     const bound_children = React.Children.map(children, child => {
       if (child.type === Trigger) {
@@ -46,7 +46,7 @@ var Dropdown = createClass({
         })
       }
       return child
-    })
+    });
     return (
       <div style={this.props.style} className={dropdown_classes}>
         {bound_children}
@@ -63,7 +63,7 @@ var Dropdown = createClass({
   hide() {
     this.setState({
       active: false
-    })
+    });
     if (this.props.onHide) {
       this.props.onHide()
     }
@@ -72,29 +72,29 @@ var Dropdown = createClass({
   show() {
     this.setState({
       active: true
-    })
+    });
     if (this.props.onShow) {
       this.props.onShow()
     }
   },
 
   _onWindowClick(event) {
-    const dropdown_element = findDOMNode(this)
+    const dropdown_element = findDOMNode(this);
     if (event.target !== dropdown_element && !dropdown_element.contains(event.target) && this.isActive()) {
       this.hide()
     }
   },
 
   _onToggleClick(event) {
-    event.preventDefault()
+    event.preventDefault();
     if (this.isActive()) {
       this.hide()
     } else {
       this.show()
     }
   }
-})
+});
 
-Dropdown.Trigger = Trigger
-Dropdown.Content = Content
-module.exports = Dropdown
+Dropdown.Trigger = Trigger;
+Dropdown.Content = Content;
+module.exports = Dropdown;

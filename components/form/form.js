@@ -1,11 +1,11 @@
-var React = require('react')
-var ReactDom = require('react-dom')
-var assign = require('object-assign')
-var classnames = require('classnames')
-var deepEqual = require('deep-equal')
+var React = require('react');
+var ReactDom = require('react-dom');
+var assign = require('object-assign');
+var classnames = require('classnames');
+var deepEqual = require('deep-equal');
 
-var FormField = require('./field')
-var Util = require('./util')
+var FormField = require('./field');
+var Util = require('./util');
 
 var Form = React.createClass({
   propTypes: {
@@ -28,7 +28,7 @@ var Form = React.createClass({
     /**
      * 表单取消提交
      */
-    onCancel: React.PropTypes.func
+    onCancel: React.PropTypes.func,
   },
   childContextTypes: {
     form_id: React.PropTypes.string
@@ -39,12 +39,12 @@ var Form = React.createClass({
     }
   },
   getChildContext: function () {
-    this.uuid = Util.generateGuuId()
-    return {form_id: this.uuid}
+    this.uuid = this.uuid || Util.generateGuuId();
+    return {form_id: this.uuid};
   },
   componentWillMount: function () {
-    var self = this
-    this.fields = []
+    var self = this;
+    this.fields = [];
     Util.EventEmitter.subscribe('addField', function (info) {
       if (info.uuid == self.uuid) {
         self.fields.push(info.field)
@@ -56,19 +56,20 @@ var Form = React.createClass({
   },
   // 对外提供表单提交的API
   submit: function (event) {
-    event && event.preventDefault()
-    var self = this
-    var pass = true
-    this.fields.forEach(function (child) {
+    event && event.preventDefault();
+    var self = this;
+    var pass = true;
+   this.fields.forEach(function (child) {
       if (child && child.props.validation) {
         if (!child.doValidate()) {
           pass = false
         }
       }
-    })
+    });
     if (pass) {
       // alert('you pass')
-      this.props.onSubmit && this.props.onSubmit()
+      this.props.onSubmit && this.props.onSubmit();
+      return true;
     } else {
       // alert('you can not pass')
     }
@@ -76,7 +77,7 @@ var Form = React.createClass({
   },
   // 对外提供表单取消的API
   cancel: function (event) {
-    event && event.preventDefault()
+    event && event.preventDefault();
     this.props.onCancel && this.props.onCancel()
   },
 
@@ -86,7 +87,7 @@ var Form = React.createClass({
       labelCol: this.props.labelCol,
       contentCol: this.props.contentCol,
       doValidate: this.state.validate
-    }
+    };
     // var fields = React.Children.map(this.props.children, function (child, i) {
     //   if (child) {
     //     props.contentCol = child.props.contentCol ? child.props.contentCol : props.contentCol
@@ -98,8 +99,8 @@ var Form = React.createClass({
         {this.props.name}
       </legend>
       )
-      : null
-
+      : null;
+      
     return (
       <form className={classnames({'form-horizontal': true}, this.props.className)} style={assign({}, this.props.style)}>
         {legend}
@@ -107,6 +108,6 @@ var Form = React.createClass({
       </form>
     )
   }
-})
+});
 
-module.exports = Form
+module.exports = Form;
