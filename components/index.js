@@ -10,7 +10,6 @@ var radmin = {
   Dropdown: require('./dropdown'),
   DropDownMenu: require('./dropDownMenu'),
   Form: require('./form'),
-  FilterRender: require('./filterRender'),
   Input: require('./input'),
   Image: require('./image'),
   ImageCreator: require('./imageCreator'),
