@@ -1,0 +1,30 @@
+/* ------------------------------------------------------------------------------
+ *
+ *  # Index
+ *
+ *  radmin project less file
+ *
+ *  Version: 1.0
+ *  Latest update: Dec 1st, 2016
+ *
+ * ---------------------------------------------------------------------------- */
+
+//
+@radmin: "../../less";
+
+// 引入字体图标集合
+@import '@{radmin}/../font/icons/icomoon/styles.css';
+// 引入默认变量值
+@import '@{radmin}/variables.less';
+
+// 这是变量集合，改这里的变量就能够修改基本组件样式，覆盖上面的默认变量样式
+@import './variables.less';
+
+// 引入bootstrap和组件的less，这些依赖于上面的变量
+@import '@{radmin}/bootstrap.less';
+@import '@{radmin}/components.less';
+
+// 业务逻辑的样式
+@import './layout.less';
+@import './pages.less';
+@import './components.less';

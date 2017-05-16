@@ -1,0 +1,9 @@
+{
+  "code":0,
+  "message":"success",
+  "data":{
+    "name": "超级管理员",
+    "staffs": ["88345853", "435324", "5435345"],
+    "visitor": false
+  }
+}
