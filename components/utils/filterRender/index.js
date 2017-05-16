@@ -13,7 +13,8 @@ var clone = require('clone');
 
 var RaSelect = require('../../select/index');
 var DatePicker = require('../../datePicker/index');
-var Utils = require('../index');
+var DateUtil = require('../date');
+var Prompt = require('../popup').prompt;
 
 module.exports = React.createClass({
     propTypes: {
@@ -126,13 +127,13 @@ module.exports = React.createClass({
 
     _onDateRangeChange: function (date, name, rangeItemData) {
         var stateChange = {},
-            //changeDateUnix =  Utils.DateUtil.dateToZeroUnix(date),
-            changeDateStr = Utils.DateUtil.dateToStr(date, 'yyyy-MM-dd'),
+            //changeDateUnix =  DateUtil.dateToZeroUnix(date),
+            changeDateStr = DateUtil.dateToStr(date, 'yyyy-MM-dd'),
             oldDateUnix = this.dateUnix[name + ''],
             oldDateRealStr = this.state[name + ''] == undefined ? '' : this.state[name + ''].resultValue,
             oldDateShowStr = this.state[name + ''] == undefined ? '' : this.state[name + ''].showValue,
             filterValue = { showValue: changeDateStr, resultValue: changeDateStr };
-        this.dateUnix[name + ''] = Utils.DateUtil.dateToZeroUnix(date);
+        this.dateUnix[name + ''] = DateUtil.dateToZeroUnix(date);
         this.changeQueryParam(name, filterValue);
         stateChange[name] = filterValue;
 
@@ -140,7 +141,7 @@ module.exports = React.createClass({
             endTime = this.dateUnix[rangeItemData[1].name + ''];
 
         if (startTime > endTime) {
-            Utils.prompt('结束时间不能小于开始时间');
+            Prompt('结束时间不能小于开始时间');
             this.dateUnix[name + ''] = oldDateUnix;
             filterValue.showValue = oldDateShowStr;
             filterValue.resultValue = oldDateRealStr;
@@ -171,11 +172,11 @@ module.exports = React.createClass({
                         onChange={function (date) {
                             var stateChange = {},
                                 showValue = '',
-                                resultValue = Utils.DateUtil.dateToStr(date, 'yyyy-MM-dd'),
+                                resultValue = DateUtil.dateToStr(date, 'yyyy-MM-dd'),
                                 filterValue = { showValue: '', resultValue: '' };
                             if (filter.view == 'month') {
-                                date = Utils.DateUtil.getTheFirstDayOfMonth(date);
-                                resultValue = Utils.DateUtil.dateToStr(date, 'yyyy-MM-dd');
+                                date = DateUtil.getTheFirstDayOfMonth(date);
+                                resultValue = DateUtil.dateToStr(date, 'yyyy-MM-dd');
                                 showValue = resultValue.substring(0, 7);
                             } else {
                                 showValue = resultValue;
@@ -196,8 +197,8 @@ module.exports = React.createClass({
 
     _onDateChange: function (date, name) {
         var stateChange = {},
-            changeDateUnix = Utils.DateUtil.dateToZeroUnix(date),
-            changeDateStr = Utils.DateUtil.dateToStr(date, 'yyyy-MM-dd'),
+            changeDateUnix = DateUtil.dateToZeroUnix(date),
+            changeDateStr = DateUtil.dateToStr(date, 'yyyy-MM-dd'),
             filterValue = { showValue: changeDateStr, resultValue: changeDateStr };
         //stateChange[name + ''] = changeDateUnix;
         stateChange[name] = changeDateStr;
