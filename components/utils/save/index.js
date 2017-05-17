@@ -1,9 +1,9 @@
 'use strict'
 
-var popupUtil = require('../../popup')
-var clone = require('clone')
+var popupUtil = require('../../popup');
+var clone = require('clone');
 
-window.reactAdminSaveUtilCurrentPage = null
+window.reactAdminSaveUtilCurrentPage = null;
 
 module.exports = {
   // 数据状态保存，用于未保存切换页面的提示
@@ -12,17 +12,17 @@ module.exports = {
   clear: true,
   // 初始状态入栈，刚保存完也要执行此函数
   pushSaveState: function pushSaveState (obj) {
-    this.stateDataObj = clone(obj)
-    this.newStateDataObj = clone(obj)
-    this.clear = false
-    reactAdminSaveUtilCurrentPage = this
+    this.stateDataObj = clone(obj);
+    this.newStateDataObj = clone(obj);
+    this.clear = false;
+      window.reactAdminSaveUtilCurrentPage = this
   },
   // 任何状态变化都要入栈
   pushNewSaveState: function pushNewSaveState (obj) {
     if (!this.clear) {
       this.newStateDataObj = clone(obj)
     }
-    reactAdminSaveUtilCurrentPage = this
+      window.reactAdminSaveUtilCurrentPage = this
     return this.hasSaveStateChange()
   },
   // 清除状态
@@ -30,21 +30,21 @@ module.exports = {
     this.clear = true
     this.stateDataObj = null
     this.newStateDataObj = null
-    reactAdminSaveUtilCurrentPage = null
+      window.reactAdminSaveUtilCurrentPage = null
   },
   hasSaveStateChange: function hasSaveStateChange () {
     return !this.eq(this.stateDataObj, this.newStateDataObj)
   },
   currentPageHasSaveChange: function currentPageHasSaveChange () {
-    if (reactAdminSaveUtilCurrentPage) {
+    if (window.reactAdminSaveUtilCurrentPage) {
       return reactAdminSaveUtilCurrentPage.hasSaveStateChange()
     } else {
       return false
     }
   },
   currentPageClearState: function currentPageClearState () {
-    if (reactAdminSaveUtilCurrentPage) {
-      reactAdminSaveUtilCurrentPage.clearSaveState()
+    if (window.reactAdminSaveUtilCurrentPage) {
+        window.reactAdminSaveUtilCurrentPage.clearSaveState()
     }
   },
   eq: function eq (x, y) {

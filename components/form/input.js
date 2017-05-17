@@ -5,6 +5,7 @@ var React = require('react');
 var clone = require('clone');
 
 var Utils = require('../utils');
+var FormUtil = require('./util');
 
 module.exports = React.createClass({
     propTypes: {
@@ -30,6 +31,7 @@ module.exports = React.createClass({
             valuePrefix:'',//输入的值固定的前缀
             value:'',
             valuePath:'',
+            valueReg:'',
             readOnly:false,
         };
     },
@@ -46,6 +48,19 @@ module.exports = React.createClass({
                     value:this.state.value,
                 });
                 return;
+            }
+        }
+
+        if(value){
+            if(this.props.valueType){
+                if(!FormUtil.validateValue(this.props.valueType,value)){
+                    value = this.state.value;
+                }
+            }
+            if(this.props.valueReg){
+                if(!this.props.valueReg.test(value)){
+                    value = this.state.value;
+                }
             }
         }
 

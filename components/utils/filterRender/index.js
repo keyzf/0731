@@ -228,7 +228,7 @@ module.exports = React.createClass({
                 <span className="filter-label" style={{width:filter.labelWidth}}>{filter.label}</span>
                 <span className="filter-select-content" style={{ width: filter.width || null }}>
                     <RaSelect
-                        clearable={!!filter.clearable}
+                        clearable={typeof filter.clearable !== 'undefined'?filter.clearable:true}
                         searchable={filter.searchable}
                         valuePath={filter.name}
                         defaultValue={defaultValue}

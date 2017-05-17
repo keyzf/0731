@@ -205,11 +205,7 @@ module.exports = {
   },
   normalLogin: function(url) {
     this.deleteNormalTicket();
-
-    url = url || window.location.href || 'http://' + window.location.host;
-    url = url.replace(/(\?|&)_k=.*$/i, '');
-
-    window.location.href = '/#/login';
+    window.location.href = url;
   },
   deleteNormalTicket: function() {
         CommonUtil.cookie('normal_login', '', -1);
@@ -222,8 +218,13 @@ module.exports = {
         return false;
   },
   normalLogout:function(callback, url){
-      CommonUtil.cookie('normal_login', '', -1);
-      typeof callback === 'function'&& callback();
+      AjaxUtil.ajax({
+          url:url,
+          success:function(data){
+              CommonUtil.cookie('normal_login', '', -1);
+              typeof callback === 'function'&& callback();
+          }
+      });
   },
   oaLogin: function(url) {
     this.deleteOATicket();
