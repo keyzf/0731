@@ -267,9 +267,15 @@ var Select = React.createClass({
                         selectedOption: this.state.options[index]
                     });
                     this.props.onChange(this.props.defaultValue, this.state.options[index], this.props.valuePath);
-                    break
+                    return
                 }
             }
+
+            this.props.onChange(undefined, null, this.props.valuePath);
+            this.setState({
+                name: this.props.name,
+                selectedOption: null,
+            });
         }
     },
 
