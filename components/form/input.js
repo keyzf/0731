@@ -93,7 +93,11 @@ module.exports = React.createClass({
     _onKeyDown:function(e){
         typeof this.props.onKeyDown == 'function'&&this.props.onKeyDown(e);
     },
-
+	
+    _onBlur:function(e){
+        typeof this.props.onBlur == 'function' && this.props.onBlur(e);  
+    },
+	
     componentWillMount: function() {
         this.state.counterStr = this.props.value.length + '/' + this.props.maxLength;
         this.state.value = this.props.value;
@@ -112,6 +116,7 @@ module.exports = React.createClass({
                     className={'form-input form-control '+ this.props.className}
                     value={this.state.value === ''?this.props.valuePrefix:this.state.value}
                     onChange={this._onChange}
+					onBlur={this._onBlur}
                     onKeyUp={this._onKeyDown}
                     name={this.props.valuePath}
                     maxLength={this.props.maxLength?this.props.maxLength:null}
