@@ -103,15 +103,16 @@ var AjaxUtil = {
     var xhr = new XMLHttpRequest();
     xhr.open('post', param.url);
     xhr.onload = function () {
-      try {
-        var data = JSON.parse(xhr.responseText);
-        typeof param.success === 'function' && param.success(data);
-      } catch (e) {
-        typeof param.error === 'function' && param.error(data);
+      if (xhr.status === 200) {
+        try {
+          var data = JSON.parse(xhr.responseText);
+          typeof param.success === 'function' && param.success(data);
+        } catch (e) {
+          typeof param.error === 'function' && param.error();
+        }
+      } else {
+        typeof param.error === 'function' && param.error();
       }
-    };
-    xhr.onerror = function () {
-      typeof param.error === 'function' && param.error();
     };
     xhr.send(param.data);
   }
