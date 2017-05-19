@@ -114,6 +114,7 @@ var AjaxUtil = {
         typeof param.error === 'function' && param.error();
       }
     };
+    xhr.send(param.data);
   }
 };
 module.exports = AjaxUtil;
