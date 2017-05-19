@@ -31,6 +31,9 @@ var Field = React.createClass({
   componentDidMount: function () {
     Util.EventEmitter.dispatch('addField', {uuid: this.context.form_id, field: this})
   },
+  componentWillUnmount: function () { 
+    Util.EventEmitter.dispatch('removeField', {uuid: this.context.form_id, field: this}) 
+  },
   doValidate: function(nextProps){
     var info = Util.validate(this.props.validation);
     if(info){

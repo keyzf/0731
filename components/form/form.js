@@ -50,9 +50,16 @@ var Form = React.createClass({
         self.fields.push(info.field)
       }
     })
+    Util.EventEmitter.subscribe('removeField', function (info) { 
+      if (info.uuid == self.uuid) { 
+        var index = self.fields.indexOf(info.field) 
+        self.fields.splice(index, 1) 
+      } 
+    })
   },
   componentWillUnmount: function () {
     Util.EventEmitter.unSubscribe('addField')
+    Util.EventEmitter.unSubscribe('removeField')
   },
   // 对外提供表单提交的API
   submit: function (event) {
