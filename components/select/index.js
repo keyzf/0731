@@ -271,7 +271,7 @@ var Select = React.createClass({
                 }
             }
 
-            this.props.onChange(undefined, null, this.props.valuePath);
+            this.props.onChange('', null, this.props.valuePath);
             this.setState({
                 name: this.props.name,
                 selectedOption: null,
@@ -462,7 +462,7 @@ var Select = React.createClass({
     },
 
     _handleClearClick: function (e) {
-        this.props.onChange(undefined, null, this.props.valuePath);
+        this.props.onChange('', null, this.props.valuePath);
         this.setState({
             name: this.props.name,
             selectedOption: null,
