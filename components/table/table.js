@@ -57,7 +57,9 @@ var Table = React.createClass({
     this.store = new TableStore();
     this._init(this.props);
   },
-  componentWillUnmount: function () {},
+  componentWillUnmount: function () {
+
+  },
   _init: function (props) {
     var self = this;
     var Store = {
@@ -101,8 +103,8 @@ var Table = React.createClass({
     var self = this;
     var items = data.map(function (item, i) {
       item['_index_'] = (!!parentIndex?(parentIndex + '-'):'')+ level + '-' + i;
-      if(item['isExpanded']){
-          self.state.expanded.push(item['_index_']);
+      if (item['isExpanded'] && self.state.expanded.indexOf(item['_index_']) === -1) {
+        self.state.expanded.push(item['_index_']);
       }
       if (item.children&&item.children.length){//zee edit
           item.children = self._setIndex(item.children, level + 1,item['_index_']);
