@@ -96,7 +96,7 @@ module.exports = React.createClass({
   render: function () {
     return (
       <Table data={this._format()} scroll={{x: 1500}} selectRow={{ enable: true, onSelect: function (id, checked) { console.log(id, checked)} }} bordered pagination={{ total: this.state.total, limit: this.state.limit, offset: this.state.offset, onPageChange: this._changePage, onPageLimitChange: this._changePageLimit}}>
-        <Table.Column
+          {/*<Table.Column
           dataField='item_id'
           isKey={true}
           display={false}
@@ -104,7 +104,7 @@ module.exports = React.createClass({
           style={{minWidth: 100, textAlign: 'right'}}
           >
           ID
-        </Table.Column>
+        </Table.Column>*/}
         <Table.Column dataField='name' style={{minWidth: 10}}>
           名称
         </Table.Column>

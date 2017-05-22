@@ -253,11 +253,11 @@ module.exports = {
      *   callFn:遍历操作
      * }
      * */
-    traverseTreeData: function (treeData,opts) {
+    traverseTreeData: function (treeData,opts,parentNode) {
         var childrenKey = opts.childrenKey||'children';
         for (var i in treeData) {
-            typeof opts.callFn== "function"&&opts.callFn(treeData[i]);
-            this.traverseTreeData(treeData[i][childrenKey],opts);
+            typeof opts.callFn== "function"&&opts.callFn(treeData[i],parentNode);
+            this.traverseTreeData(treeData[i][childrenKey],opts,treeData[i]);
         }
     },
 
