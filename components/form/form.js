@@ -95,12 +95,13 @@ var Form = React.createClass({
       contentCol: this.props.contentCol,
       doValidate: this.state.validate
     };
-    // var fields = React.Children.map(this.props.children, function (child, i) {
-    //   if (child) {
-    //     props.contentCol = child.props.contentCol ? child.props.contentCol : props.contentCol
-    //     return React.cloneElement(child, props)
-    //   }
-    // })
+     var fields = React.Children.map(this.props.children, function (child, i) {
+       if (child) {
+         props.contentCol = child.props.contentCol ? child.props.contentCol : props.contentCol;
+         props.labelCol = child.props.labelCol ? child.props.labelCol : props.labelCol;
+        return React.cloneElement(child, props)
+       }
+     });
     var legend = this.props.name ? (
       <legend className='text-bold'>
         {this.props.name}
@@ -111,7 +112,7 @@ var Form = React.createClass({
     return (
       <form className={classnames({'form-horizontal': true}, this.props.className)} style={assign({}, this.props.style)}>
         {legend}
-        {this.props.children}
+        {/*this.props.children*/fields}
       </form>
     )
   }
