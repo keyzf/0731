@@ -18,12 +18,14 @@ module.exports = React.createClass({
     } else {
       this.setState({
         options: this.state.optionsAll.filter(function(item){
+            console.log('item',item);
           return (value || value === 0) && (item.name.indexOf(value) > -1 || item.value.indexOf(value) > -1)
         })
       })
     }
   },
   render: function () {
+      console.log('this.state',this.state.options)
     return (
       <Select
         autocomplete

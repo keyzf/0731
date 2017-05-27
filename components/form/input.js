@@ -10,6 +10,9 @@ var FormUtil = require('./util');
 module.exports = React.createClass({
     propTypes: {
         onChange: React.PropTypes.func,
+        onFocus: React.PropTypes.func,
+        onBlur: React.PropTypes.func,
+        onKeyDown: React.PropTypes.func,
         /**
          * 对输入进行过滤
          * */
@@ -97,7 +100,10 @@ module.exports = React.createClass({
     _onBlur:function(e){
         typeof this.props.onBlur == 'function' && this.props.onBlur(e);  
     },
-	
+    _onFocus:function(e){
+        typeof this.props.onFocus == 'function' && this.props.onFocus(e);
+    },
+
     componentWillMount: function() {
         this.state.counterStr = this.props.value.length + '/' + this.props.maxLength;
         this.state.value = this.props.value;
@@ -117,6 +123,7 @@ module.exports = React.createClass({
                     value={this.state.value === ''?this.props.valuePrefix:this.state.value}
                     onChange={this._onChange}
 					onBlur={this._onBlur}
+					onFocus={this._onFocus}
                     onKeyUp={this._onKeyDown}
                     name={this.props.valuePath}
 					autoComplete={'off'}
