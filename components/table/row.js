@@ -70,7 +70,7 @@ _renderExpand: function (i) {
           },actionClassName = 'action ';
 
           if(typeof item.setClass == 'function'){
-            actionClassName += ' ' + item.setClass(self.props.data);
+            actionClassName += ' ' + item.setClass(self.props.data,item);
           }
           return (
             <a key={i} className={actionClassName} onClick={callback}>
