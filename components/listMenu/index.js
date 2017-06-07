@@ -111,7 +111,7 @@ module.exports = React.createClass({
                     </div>:null}
 
                 <div className='list-body'>
-                    <ul className={'ul-list ' + (this.state.showTree?' none':'') + this.props.className}>
+                    <ul className={'ul-list ' + (this.state.showTree&& this.props.showTree?' none':'') + this.props.className}>
                         {this.state.listData.length?this.state.listData.map(function (item) {
                             return (
                                 <li className={self.state.focusId == item[self.props.displayValue]?'li-item focus-in':'li-item'}
