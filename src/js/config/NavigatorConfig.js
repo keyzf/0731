@@ -167,6 +167,10 @@ module.exports = [{
       text: '小工具',
       alias: 'func-tool',
       url: '/func/tool',
+    }, {
+      text: '一些新改动Demo',
+      alias: 'func-tabTest',
+      url: '/func/tabTest',
     }]
   }
 ]

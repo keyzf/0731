@@ -40,6 +40,8 @@ var Filter = require('../pages/func/Filter')
 var Multipage = require('../pages/func/Multipage')
 var Tool = require('../pages/func/Tool')
 
+var NewTabList = require('../pages/demo/NewTabList');
+
 var Error404 = require('../layout/default/404')
 
 /**路由地址和对应的页面
@@ -83,6 +85,8 @@ module.exports = [
   {path: '/component/iconfont', page: Iconfont, layout: App},
   {path: '/component/richeditor', page: RichEditor, layout: App},
   {path: '/component/verificationcode', page: VerificationCode, layout: App},
+
+  {path: '/func/tabTest', page: NewTabList, layout: App},
 
   {path: '/func', page: Ajax, layout: App},
   {path: '/func/ajax', page: Ajax, layout: App},
