@@ -14,10 +14,12 @@ module.exports = React.createClass({
         return {
             id : '',
             url : '',
+            name : '',
             hashColor : '',
             className : '',
             urlPrefix : true,
             hasDelIcon : false,//zee
+            imgStyle:{},
             picLevel : 'm',			//l 大图 , m 中图 , s 小图 ss 超小图
             picLevelConf : {
                 l : {
@@ -66,9 +68,9 @@ module.exports = React.createClass({
         color1 : '#9ac6c7',
         color2 : '#cae4e3',
         color3 : '#b8dbc5',
-        color4 : '#5cb389',
+        color4 : '#8bc93a',
         color5 : '#f1bcb8',
-        color6 : '#E9E5E5'
+        color6 : '#ffb400'
     },
 
     _randomRGB : function (){
@@ -96,12 +98,12 @@ module.exports = React.createClass({
 
     _renderPic:function(){
         var	picConf = this.props.picLevelConf[this.props.picLevel],
-            style = {
+            style = Object.assign({
                 width:picConf.width,
                 height:picConf.height,
                 lineHeight:picConf.height,
                 fontSize:picConf.fontSize,
-            };
+            },this.props.imgStyle);
 
         if( this.props.url && this.props.url.length>0 ) {
             return (

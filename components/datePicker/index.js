@@ -218,7 +218,7 @@ var DatePicker = React.createClass({
           this.setState({
               showCalendar: false
           }, function () {
-              if (typeof that.props.onChange === 'function') {
+              /*if (typeof that.props.onChange === 'function') {
                   if (that.props.value != null && that.props.value != '') {
                       that.props.onChange(
                           new Date(that.props.value)
@@ -228,7 +228,7 @@ var DatePicker = React.createClass({
                           null
                       )
                   }
-              }
+              }*/
           });
       }
   },
