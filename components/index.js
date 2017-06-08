@@ -19,7 +19,7 @@ var radmin = {
   LoadingCss: require('./loadingCss'),
   LinkageSelect:require('./linkageSelect'),
   Navigator: require('./navigator'),
-  NewTabs: require('./NewTabs'),
+  NewTabs: require('./newTabs'),
   Popover: require('./popover'),
   Popup: require('./popup'),
   Prompt: require('./prompt'),
