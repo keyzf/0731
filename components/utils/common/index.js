@@ -257,7 +257,7 @@ module.exports = {
         var childrenKey = opts.childrenKey||'children';
         for (var i in treeData) {
             typeof opts.callFn== "function"&&opts.callFn(treeData[i],parentNode);
-            this.traverseTreeData(treeData[i][childrenKey],opts,treeData[i]);
+            this.traverseTreeData(treeData[i][childrenKey]||[],opts,treeData[i]);
         }
     },
 

@@ -95,6 +95,11 @@ module.exports = React.createClass({
         }
         return rgb;
     },
+    _randomRGBByAscii : function (){
+        var code =this.props.name.charCodeAt(),
+        rgb = this._staticColors[ 'color'+(code%this._staticColors.length) ];
+        return rgb;
+    },
 
     _renderPic:function(){
         var	picConf = this.props.picLevelConf[this.props.picLevel],
@@ -117,7 +122,7 @@ module.exports = React.createClass({
                 </span>
             )
         }else if( this.props.name ){
-            style.backgroundColor = this.props.color || this._randomRGB();
+            style.backgroundColor = this.props.color || this._randomRGBByAscii();
             return (
                 <span
                     className='image-container'
