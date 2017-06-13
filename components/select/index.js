@@ -255,6 +255,7 @@ var Select = React.createClass({
                     }
                 })
             }
+
             this.state.multiselectArray = multiselectArray;
             this.props.onChange(defaultValue, this.state.multiselectArray, this.props.valuePath);
         } else if (this.props.autocomplete) {//zee
@@ -320,10 +321,12 @@ var Select = React.createClass({
     },
 
     _handleMultiAutoClick: function (e) {
+
         ReactDom.findDOMNode(this.refs.selectInput).focus()
     },
 
     _handleInputChange: function (e) {
+
         var self = this,
             changeState = {
                 term: e.target.value,
@@ -444,9 +447,34 @@ var Select = React.createClass({
     },
 
     _handleInputFocus: function (e) {
+
         /*var onUpdate = this.props.onUpdate;
          onUpdate && onUpdate(this.state.term, this.props.valuePath)*/
         this._handleInputChange(e);
+    },
+
+    _handleInputPaste:function(e){
+		/*
+        e.preventDefault();
+        let pasteData = e.clipboardData.getData('Text');
+
+        var data = ['苹果','芒果'],newMatch=[];
+
+        if(pasteData){
+            data.forEach((item,index)=>{
+                console.log(item);
+            this.props.options.forEach((op,i)=>{
+                    if(item === op[`${this.props.displayKey}`]){
+                        console.log(op);
+                        this._selectItem(op,0)
+                        newMatch.push(op);
+                    }
+                })
+            })
+            console.log(newMatch);
+            
+        }
+		*/
     },
 
     _handleInputBlur: function (e) {
@@ -490,6 +518,7 @@ var Select = React.createClass({
     },
 
     _selectItem: function (option, index) {
+
         var that = this;
         if (option && option['isDisabled']) {//选项被禁用
             return;
@@ -499,6 +528,7 @@ var Select = React.createClass({
             if (this.props.multiselect) {
                 var contain = false;
                 this.state.multiselectArray.map(function (item) {
+                    
                     if (item[that.props.displayValue] === option[that.props.displayValue]) {
                         contain = true;
                     }
@@ -509,10 +539,11 @@ var Select = React.createClass({
                         [that.props.displayValue]: option[that.props.displayValue]
                     })
                 }
+                
                 var values = this.state.multiselectArray.map(function (item) {
                     return item[that.props.displayValue]
                 });
-
+                
                 // this.refs.input.focus()
                 this.props.onChange(values, this.state.multiselectArray, this.props.valuePath);
                 this.setState({
@@ -550,9 +581,8 @@ var Select = React.createClass({
         var options = this.state.options;
         var optionEle = [];
         var that = this;
-        var noValue = (<li className='select2-no-results' key='no-result'>
-            {this.props.noResultText}
-        </li>);
+        var noValue = (<li className='select2-no-results' key='no-result'>{this.props.noResultText}</li>);
+
         if (this.props.searchable) {
             optionEle.unshift(<li className='select2-search' key='search'>
                 <input
@@ -607,22 +637,12 @@ var Select = React.createClass({
                 {name}
             </Option>)
         });
-        // if (search) optionEle.unshift(search)
+
         return optionEle.filter(function (item) {
             return item
         }).length ? optionEle : noValue
     },
 
-    /*  componentDidUpdate() {
-     if (this.props.multiselect || this.props.autocomplete) {//zee 添加了autocomplete
-     var input = ReactDom.findDOMNode(this.refs.selectInput || this.refs.autocompleteInput);
-     if (this.state.open) {
-     input.focus();
-     } else {
-     input.blur();
-     }
-     }
-     },*/
     render: function () {
         var that = this;
         var drop = null,
@@ -630,7 +650,6 @@ var Select = React.createClass({
                 display:this.state.open ?'block':'none'
             },this.props.dropStyle);
 
-        // if (this.state.open) {
         drop = (<div className='select2-drop select2-drop-active' ref='drop'
                      style={dropStyle}>
                 <ul className='select2-results'>
@@ -638,7 +657,6 @@ var Select = React.createClass({
                 </ul>
             </div>
         );
-        // }
 
         var choices = null;
 
@@ -668,7 +686,7 @@ var Select = React.createClass({
                         <a className='select2-search-choice-close' onClick={remove}></a>
                     </li>
                 )
-            });
+            });  
         }
         var className = classnames({
             'select2-container': true,
@@ -697,6 +715,7 @@ var Select = React.createClass({
                                     onFocus={this._handleInputFocus}
                                     onBlur={this._handleInputBlur}
                                     onChange={this._handleInputChange}
+                                    onPaste= {this._handleInputPaste}  
                                     onKeyDown={this._handleInputKeyDown}
                                     />
                             </li>
@@ -724,6 +743,7 @@ var Select = React.createClass({
                     }
                 </ul>
         } else if (this.props.autocomplete) {
+            
             trigger = (
                 <input
                     ref='autocompleteInput'
