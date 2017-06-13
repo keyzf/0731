@@ -104,9 +104,9 @@ module.exports = React.createClass({
                 onUpdate={selectItemConfig.onUpdate}
                 onChange={function (selected, selectData, valuePath) {
                   if (configIndex < linkAgeConfig.length - 1) {
-                    if (selectData && selectData.children) {
+                    if (selectData && selectData.children&& selectData.children.length) {
                       linkAgeConfig[configIndex + 1].data = selectData.children;
-                      linkAgeConfig[configIndex + 1].defaultValue = selectData.children[0][self.props.displayValue];
+                      //linkAgeConfig[configIndex + 1].defaultValue = selectData.children[0][self.props.displayValue];
                     } else {
                       linkAgeConfig[configIndex + 1].data = [];
                     }

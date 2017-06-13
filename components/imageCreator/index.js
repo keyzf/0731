@@ -14,10 +14,12 @@ module.exports = React.createClass({
         return {
             id : '',
             url : '',
+            name : '',
             hashColor : '',
             className : '',
             urlPrefix : true,
             hasDelIcon : false,//zee
+            picStyle:{},
             picLevel : 'm',			//l 大图 , m 中图 , s 小图 ss 超小图
             picLevelConf : {
                 l : {
@@ -61,15 +63,17 @@ module.exports = React.createClass({
     componentWillReceiveProps: function (nextProps) {
 
     },
-    _staticColors : {
-        color0 : '#b9cdef',
-        color1 : '#9ac6c7',
-        color2 : '#cae4e3',
-        color3 : '#b8dbc5',
-        color4 : '#5cb389',
-        color5 : '#f1bcb8',
-        color6 : '#E9E5E5'
-    },
+    _staticColors : [
+        '#ffb400',
+        '#5091f9',
+        '#eb5945',
+        '#8bc93a',
+        '#3ac9c7',
+        '#a6a6a6',
+        '#b9cdef'
+    ]
+
+    ,
 
     _randomRGB : function (){
         var	hashRoot = this.props.hashColor,
@@ -89,19 +93,26 @@ module.exports = React.createClass({
                 hashTotal = hashTotal + hashRoot.charCodeAt( j );
             }
             hashTotal = hashTotal%this._staticColors.length;
-            rgb = this._staticColors[ 'color'+hashTotal ];
+            rgb = this._staticColors[hashTotal ];
         }
         return rgb;
+    },
+    _randomRGBByAscii : function (){
+        var codeSub = 0;
+        for(var i = 0 ; i < this.props.name.length ; i++ ){
+            codeSub += this.props.name.charCodeAt(i);
+        }
+        return this._staticColors[codeSub%this._staticColors.length];
     },
 
     _renderPic:function(){
         var	picConf = this.props.picLevelConf[this.props.picLevel],
-            style = {
+            style = Object.assign({
                 width:picConf.width,
                 height:picConf.height,
                 lineHeight:picConf.height,
                 fontSize:picConf.fontSize,
-            };
+            },this.props.picStyle);
 
         if( this.props.url && this.props.url.length>0 ) {
             return (
@@ -115,7 +126,7 @@ module.exports = React.createClass({
                 </span>
             )
         }else if( this.props.name ){
-            style.backgroundColor = this.props.color || this._randomRGB();
+            style.backgroundColor = this.props.color || this._randomRGBByAscii();
             return (
                 <span
                     className='image-container'

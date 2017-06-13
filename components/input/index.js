@@ -14,8 +14,10 @@ module.exports = React.createClass({
          * */
         inputFilter: React.PropTypes.func,
         onChange: React.PropTypes.func,
+        onKeyUp: React.PropTypes.func,
         onKeyDown: React.PropTypes.func,
         onBlur: React.PropTypes.func,
+        onFocus: React.PropTypes.func,
     },
     getInitialState:function(){
         return {
@@ -72,7 +74,10 @@ module.exports = React.createClass({
     },
 
     _onBlur:function(e){
-        typeof this.props.onBlur == 'function'&&this.props.onBlur(this._inputFilter(e),this.props.valuePath,e);
+        typeof this.props.onBlur == 'function'&&this.props.onBlur(this.state.value,this.props.valuePath,e);
+    },
+    _onFocus:function(e){
+        typeof this.props.onFocus == 'function'&&this.props.onFocus(this.state.value,this.props.valuePath,e);
     },
 
     _inputFilter:function(e){
@@ -89,6 +94,7 @@ module.exports = React.createClass({
     },
 
     _onKeyUp:function(e){
+        typeof this.props.onKeyUp == 'function'&&this.props.onKeyUp(e);
     },
 
     componentWillMount: function() {
@@ -109,6 +115,7 @@ module.exports = React.createClass({
                 value={this.state.value}
                 onChange={this._onChange}
                 onBlur={this._onBlur}
+                onFocus={this._onFocus}
                 onKeyUp={this._onKeyUp}
                 onKeyDown={this._onKeyDown}
                 name={this.props.valuePath}

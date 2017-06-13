@@ -230,6 +230,7 @@ module.exports = React.createClass({
                     <RaSelect
                         clearable={typeof filter.clearable !== 'undefined'?filter.clearable:true}
                         searchable={filter.searchable}
+                        disabled={!!filter.disabled}
                         valuePath={filter.name}
                         defaultValue={defaultValue}
                         displayKey={displayKey}
