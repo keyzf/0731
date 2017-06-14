@@ -116,7 +116,7 @@ module.exports = React.createClass({
 
     render:function(){
         return (
-            <div className='form-input-content'>
+            <div className={'form-input-content '+ this.props.maxLength?'has-addons':''}>
                 <input
                     type={this.props.type}
                     className={'form-input form-control '+ this.props.className}
