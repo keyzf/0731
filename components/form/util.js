@@ -30,7 +30,7 @@ function Validator(rule, value) {
     };
 
     this._required = function (val) {
-        return !(val == '' || typeof val == 'undefined');
+        return !(val === '' || val === undefined || val === null);
     };
 
     this._minLength = function (val, minlength) {
