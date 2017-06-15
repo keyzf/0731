@@ -1,6 +1,6 @@
 ﻿var React = require('react')
 var ReactDom = require('react-dom')
-var assign = require('object-assign')
+var Assign = require('object-assign')
 var classnames = require('classnames')
 var deepEqual = require('deep-equal')
 
@@ -46,7 +46,7 @@ var Alert = React.createClass({
         showCancel={false}
         maxContentHeight={200}
         className={classnames({}, this.props.className)}
-        style={assign({width: 300}, this.props.style)}>
+        style={Assign({width: 300}, this.props.style)}>
         <div style={{textAlign: 'center', padding: '20px 0'}}>
           {this.props.text}
           {this.props.children}

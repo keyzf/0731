@@ -63,7 +63,7 @@ var Header = React.createClass({
           key: i,
           align: child.props.align,
           bold: child.props.bold,
-          style: Object.assign({},child.props.style,self.props.style)
+          style: Assign({},child.props.style,self.props.style)
         })
       }
 

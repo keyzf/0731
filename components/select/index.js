@@ -1,6 +1,6 @@
 var React = require('react');
 var ReactDom = require('react-dom');
-var assign = require('object-assign');
+var Assign = require('object-assign');
 var classnames = require('classnames');
 var deepEqual = require('deep-equal');
 var Clone = require('clone');
@@ -647,7 +647,7 @@ var Select = React.createClass({
     render: function () {
         var that = this;
         var drop = null,
-            dropStyle = Object.assign({
+            dropStyle = Assign({
                 display:this.state.open ?'block':'none'
             },this.props.dropStyle);
 
@@ -774,7 +774,7 @@ var Select = React.createClass({
             <div
                 ref='select_div'
                 className={className}
-                style={assign({}, this.props.style)}
+                style={Assign({}, this.props.style)}
                 >
                 {trigger}
                 {drop}

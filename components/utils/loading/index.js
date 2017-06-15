@@ -1,5 +1,6 @@
 var React  = require('react');
 var ReactDom = require('react-dom');
+var Assign = require('object-assign');
 
 var LoadingCss = require('../../loadingCss');
 
@@ -52,7 +53,7 @@ Object.assign(Loading.prototype,{
 	},
 
 	show:function(props){
-		this.props = Object.assign(this.getDefaultProps(),props);
+		this.props = Assign(this.getDefaultProps(),props);
 		this.createLoading();
 		var self = this;
 		/*setTimeout(function(){

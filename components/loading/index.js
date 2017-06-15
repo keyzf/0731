@@ -3,6 +3,8 @@
  */
 var React = require('react');
 var svgSources = require('./svg');
+var Assign = require('object-assign');
+
 
 module.exports = React.createClass({
     propTypes: {
@@ -56,7 +58,7 @@ module.exports = React.createClass({
     render:function(){
         var type = this.state.delayed ? 'blank' : this.props.type;
         var svg = svgSources[type];
-	    var style = Object.assign({fill: '#44b549', height: 40, width: 40},this.props.style);
+	    var style = Assign({fill: '#44b549', height: 40, width: 40},this.props.style);
 
         return (
             <div

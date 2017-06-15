@@ -3,6 +3,7 @@
  * zee 2017-03-28
  * */
 var React = require('react');
+var Assign = require('object-assign');
 
 
 module.exports = React.createClass({
@@ -107,7 +108,7 @@ module.exports = React.createClass({
 
     _renderPic:function(){
         var	picConf = this.props.picLevelConf[this.props.picLevel],
-            style = Object.assign({
+            style = Assign({
                 width:picConf.width,
                 height:picConf.height,
                 lineHeight:picConf.height,
