@@ -5,10 +5,10 @@ var Assign = require('object-assign');
 var LoadingCss = require('../../loadingCss');
 
 var Loading = function (){
-	//this.props = Object.assign(this.getDefaultProps(),props);
+	//this.props = Assign(this.getDefaultProps(),props);
 	this.componentWillMount();
 };
-Object.assign(Loading.prototype,{
+Assign(Loading.prototype,{
 	props:{
 		style:{
 			fill: '#44b549',
