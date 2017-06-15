@@ -1,3 +1,5 @@
+require('es6-shim');
+
 var radmin = {
   Breadcrumb: require('./breadcrumb'),
   BreadcrumbBar: require('./breadcrumbBar'),

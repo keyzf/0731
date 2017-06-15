@@ -8,6 +8,7 @@
     "clipboard": "^1.5.12",
     "clone": "^1.0.2",
     "deep-equal": "^1.0.1",
+    "es6-shim": "^0.35.3",
     "flux": "^2.1.1",
     "keymirror": "^0.1.1",
     "moment": "^2.15.0",
@@ -28,7 +29,6 @@
     "babel-preset-stage-0": "^6.5.0",
     "less": "^2.7.1",
     "less-plugin-clean-css": "^1.5.1",
-
     "highcharts": "^4.2.6",
     "highcharts-drilldown": "^0.1.2",
     "react-highcharts": "^10.0.0",
