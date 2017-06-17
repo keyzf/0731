@@ -96,6 +96,17 @@ var Form = React.createClass({
       doValidate: this.state.validate
     };
      var fields = React.Children.map(this.props.children, function (child, i) {
+		 
+      if (child) {
+        if(child.props.className.indexOf('row') > -1){
+          return React.cloneElement(child);
+        }else{
+          props.contentCol = child.props.contentCol ? child.props.contentCol : props.contentCol;
+          props.labelCol = child.props.labelCol ? child.props.labelCol : props.labelCol;
+          return React.cloneElement(child, props);
+        }        
+      }
+	  
        if (child) {
          props.contentCol = child.props.contentCol ? child.props.contentCol : props.contentCol;
          props.labelCol = child.props.labelCol ? child.props.labelCol : props.labelCol;
