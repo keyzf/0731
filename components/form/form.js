@@ -107,11 +107,6 @@ var Form = React.createClass({
         }        
       }
 	  
-       if (child) {
-         props.contentCol = child.props.contentCol ? child.props.contentCol : props.contentCol;
-         props.labelCol = child.props.labelCol ? child.props.labelCol : props.labelCol;
-        return React.cloneElement(child, props)
-       }
      });
     var legend = this.props.name ? (
       <legend className='text-bold'>
