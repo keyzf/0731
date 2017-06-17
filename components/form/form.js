@@ -98,7 +98,7 @@ var Form = React.createClass({
      var fields = React.Children.map(this.props.children, function (child, i) {
 		 
       if (child) {
-        if(child.props.className.indexOf('row') > -1){
+        if(child.props.className && child.props.className.indexOf('row') > -1){
           return React.cloneElement(child);
         }else{
           props.contentCol = child.props.contentCol ? child.props.contentCol : props.contentCol;
