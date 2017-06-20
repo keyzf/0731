@@ -57,7 +57,7 @@ module.exports = React.createClass({
 
         return (
             <span className="filter-item" key={filter.name}>
-                <span className="filter-label" style={{width:filter.labelWidth}}>{filter.label}</span>
+                <span className="filter-label" title={filter.label} style={{width:filter.labelWidth}}>{filter.label}</span>
                 <span className="filter-input-content filter-content">
                     <input type="text" className="form-control filter-input"
                         value={defaultValue}
@@ -98,7 +98,7 @@ module.exports = React.createClass({
             endValue = that.state[dateRangeData.items[1].name] == undefined ? dateRangeData.items[1].defaultValue : that.state[dateRangeData.items[1].name]['showValue'];
         return (
             <span className="filter-item" key={dateRangeData.name}>
-                <span className="filter-label" style={{width:dateRangeData.labelWidth}}>{dateRangeData.label}</span>
+                <span className="filter-label"  title={filter.label} style={{width:dateRangeData.labelWidth}}>{dateRangeData.label}</span>
                 <span className="filter-input-content">
                     <DatePicker
                         name='请选择'
@@ -161,7 +161,7 @@ module.exports = React.createClass({
             value = that.state[filter.name] == undefined ? filter.defaultValue : that.state[filter.name]['showValue'];
         return (
             <span className="filter-item" key={filter.name}>
-                <span className="filter-label" style={{width:filter.labelWidth}}>{filter.label}</span>
+                <span className="filter-label"  title={filter.label} style={{width:filter.labelWidth}}>{filter.label}</span>
                 <span className="filter-input-content filter-content">
                     <DatePicker
                         name={datePickLabel}
@@ -226,7 +226,7 @@ module.exports = React.createClass({
 
         return (
             <span className="filter-item" key={filter.name}>
-                <span className="filter-label" style={{width:filter.labelWidth}}>{filter.label}</span>
+                <span className="filter-label"  title={filter.label} style={{width:filter.labelWidth}}>{filter.label}</span>
                 <span className="filter-select-content filter-content" style={{ width: filter.width || null }}>
                     <RaSelect
                         clearable={typeof filter.clearable !== 'undefined'?filter.clearable:true}
@@ -277,7 +277,7 @@ module.exports = React.createClass({
             selectValuePath = filter.selectValuePath || displayValue;
         return (
             <span className="filter-item" key={filter.name}>
-                <span className="filter-label" style={{width:filter.labelWidth}}>{filter.label}</span>
+                <span className="filter-label"  title={filter.label} style={{width:filter.labelWidth}}>{filter.label}</span>
                 <span className="filter-select-content">
                     <RaSelect
                         autocomplete
