@@ -653,6 +653,46 @@ textarea {
 }
 
 
+.form-input-group {
+    display: inline-table;
+    width: 100%;
+
+    .form-input-prepend, .form-input-append, .form-input-content {
+        display: table-cell;
+        vertical-align: middle;
+    }
+    .form-input-prepend, .form-input-append {
+        padding: 0 10px;
+        width: 1px;
+        background-color: @gray-lighter;
+        border: 1px solid @input-border;
+        white-space: nowrap;
+        color: @input-color;
+    }
+    .form-input-prepend {
+        border-top-left-radius: @input-border-radius;
+        border-bottom-left-radius: @input-border-radius;
+    }
+    .form-input-append {
+        border-top-right-radius: @input-border-radius;
+        border-bottom-right-radius: @input-border-radius;
+    }
+    .form-input-content {
+        width: 100%;
+    }
+
+    &.input-group-prepend .form-input {
+        border-left: 0;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    &.input-group-append .form-input {
+        border-right: 0;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+}
 
 .form-input-content{
   position: relative;
@@ -666,6 +706,7 @@ textarea {
   }
   .addons-container{
     position: absolute;
+    top: 0;
     right: 0;
     .input-counter{
       position: relative;
