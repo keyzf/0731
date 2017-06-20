@@ -1,0 +1,48 @@
+/* ------------------------------------------------------------------------------
+*
+*  # FilterRender component
+*
+*  Version: 1.0
+*  Latest update: 2017.6.19
+*
+* ---------------------------------------------------------------------------- */
+
+
+// Base class
+
+.filter-list{
+  display: inline-block;
+
+  .filter-item{
+    display: inline-block;
+    position: relative;
+    margin: 0 10px 10px 0;
+
+    .filter-label{
+      display: inline-block;
+      width: 100px;
+      padding-right: 20px;
+      vertical-align: middle;
+      overflow: hidden;
+      font-size: 12px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .filter-content {
+      display: inline-block;
+      width: 180px;
+      vertical-align: middle;
+      font-size: 12px;
+
+      .form-control,
+      .select2-choice,
+      .calendar-input > .button {
+        height: 30px;
+        padding: 5px 11px;
+        font-size: 12px;
+        line-height: inherit;
+      }
+    }
+  }
+}
