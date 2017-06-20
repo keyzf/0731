@@ -1,0 +1,63 @@
+@scrollbar-color:  rgba(0, 0, 0, 0.2);
+
+html,body {
+  scrollbar-face-color: @scrollbar-color; /*滚动条3D表面（ThreedFace）的颜色*/ 
+  scrollbar-highlight-color: #fff; /*滚动条3D界面的亮边（ThreedHighlight）颜色*/ 
+  scrollbar-shadow-color: #eeeeee; /*滚动条3D界面的暗边（ThreedShadow）颜色*/ 
+  scrollbar-3dlight-color: #eeeeee; /*滚动条亮边框颜色*/ 
+  scrollbar-arrow-color: @scrollbar-color; /*滚动条方向箭头的颜色 */ 
+  scrollbar-track-color: #fff; /*滚动条的拖动区域(TrackBar)颜色*/
+  scrollbar-darkshadow-color: #fff; /*滚动条暗边框（ThreedDarkShadow）颜色*/
+
+  ::-webkit-scrollbar {  
+    width: 14px;  
+    height: 14px;  
+  }  
+    
+  ::-webkit-scrollbar-track,  
+  ::-webkit-scrollbar-thumb {  
+    border-radius: 999px;  
+    border: 5px solid transparent;  
+  }  
+    
+  ::-webkit-scrollbar-track {  
+    box-shadow: 1px 1px 5px @scrollbar-color inset;  
+  }  
+    
+  ::-webkit-scrollbar-thumb {  
+    min-height: 20px;  
+    background-clip: content-box;  
+    box-shadow: 0 0 0 5px @scrollbar-color inset;  
+  }  
+    
+  ::-webkit-scrollbar-corner {  
+    background: transparent;  
+  }
+}
+
+@-moz-document
+url-prefix(http://),
+url-prefix(https://),
+url-prefix(about:),
+url-prefix(chrome://),    
+
+url("chrome://browser/content/bookmarks/bookmarksPanel.xul"),
+url("chrome://browser/content/browser.xul"),
+url("chrome://browser/content/history/history-panel.xul")
+{
+    scrollbar{-moz-appearance:none !important;background:#FAFAFA !important;}
+    scrollbar thumb{-moz-appearance:none !important;background:rgba(255,167,41,.9) !important;
+    border:0px !important;border-radius:30px !important;}
+    scrollbar thumb:hover,scrollbar thumb:active{background:rgba(37,179,246,.9) !important;}
+
+    slider,slider:hover,slider:active
+    {-moz-appearance:none !important;background:transparent !important;
+    border:0px !important;opacity:0.9 !important;-moz-transition-duration:0.5s !important;}
+
+    scrollbar[orient="vertical"]{width:7px !important;} scrollbar[orient="horizontal"]{height:7px !important;}
+    scrollbar[orient="vertical"],scrollbar[orient="horizontal"]{padding:0px !important;border-width:0px !important;}
+
+    scrollbarbutton[sbattr="scrollbar-up-top"],scrollbarbutton[sbattr="scrollbar-down-top"],
+    scrollbarbutton[sbattr="scrollbar-up-bottom"],scrollbarbutton[sbattr="scrollbar-down-bottom"]
+    {-moz-appearance:none !important;display:none !important;}
+}
