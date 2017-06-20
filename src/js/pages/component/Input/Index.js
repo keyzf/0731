@@ -23,7 +23,7 @@ module.exports = React.createClass({
               <div className='panel-body'>
                 <div className='form-group'>
                   <div>
-                    <RaInput append="$" name="哈哈航" maxLength={20}></RaInput>
+                    <RaInput prepend="http://" append="$" name="哈哈航" maxLength={20}></RaInput>
                   </div>
                 </div>
               </div>

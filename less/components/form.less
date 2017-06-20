@@ -670,10 +670,12 @@ textarea {
         color: @input-color;
     }
     .form-input-prepend {
+        border-right: 0;
         border-top-left-radius: @input-border-radius;
         border-bottom-left-radius: @input-border-radius;
     }
     .form-input-append {
+        border-left: 0;
         border-top-right-radius: @input-border-radius;
         border-bottom-right-radius: @input-border-radius;
     }
@@ -682,13 +684,11 @@ textarea {
     }
 
     &.input-group-prepend .form-input {
-        border-left: 0;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
     }
 
     &.input-group-append .form-input {
-        border-right: 0;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
     }
