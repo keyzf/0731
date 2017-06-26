@@ -93,19 +93,18 @@ module.exports = React.createClass({
       }*/
     _createDateRangeFilter: function (dateRangeData) {
         var that = this,
-            date = new Date(),
             startValue = that.state[dateRangeData.items[0].name] == undefined ? dateRangeData.items[0].defaultValue : that.state[dateRangeData.items[0].name]['showValue'],
             endValue = that.state[dateRangeData.items[1].name] == undefined ? dateRangeData.items[1].defaultValue : that.state[dateRangeData.items[1].name]['showValue'];
         return (
             <span className="filter-item" key={dateRangeData.name}>
-                <span className="filter-label"  title={filter.label} style={{width:dateRangeData.labelWidth}}>{dateRangeData.label}</span>
+                <span className="filter-label"  title={dateRangeData.label} style={{width:dateRangeData.labelWidth}}>{dateRangeData.label}</span>
                 <span className="filter-input-content">
                     <DatePicker
                         name='请选择'
                         format='YYYY-MM-DD'
-                        style={{ width: 120 }}
+                        style={{ width: 130 }}
                         value={startValue}
-                        //maxDate={new Date(date.getFullYear(), date.getMonth(), date.getDate())}
+                        maxDate={this.dateUnix[dateRangeData.items[1].name + '']}
                         onChange={function (date) {
                             that._onDateRangeChange(date, dateRangeData.items[0].name, dateRangeData.items);
                         }}
@@ -114,9 +113,9 @@ module.exports = React.createClass({
                     <DatePicker
                         name='请选择'
                         format='YYYY-MM-DD'
-                        width={120}
+                        style={{ width: 130 }}
                         value={endValue}
-                        //maxDate={new Date(date.getFullYear(), date.getMonth(), date.getDate())}
+                        minDate={this.dateUnix[dateRangeData.items[0].name + '']}
                         onChange={function (date) {
                             that._onDateRangeChange(date, dateRangeData.items[1].name, dateRangeData.items);
                         }}
