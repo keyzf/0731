@@ -12,6 +12,7 @@ var React = require('react');
 var clone = require('clone');
 
 var RaSelect = require('../../select/index');
+var RaInput = require('../../form/input');
 var DatePicker = require('../../datePicker/index');
 var DateUtil = require('../date');
 var Prompt = require('../popup').prompt;
@@ -56,9 +57,9 @@ module.exports = React.createClass({
 
         return (
             <span className="filter-item" key={filter.name}>
-                <span className="filter-label" style={{width:filter.labelWidth}}>{filter.label}</span>
-                <span className="filter-input-content">
-                    <input type="text" className="filter-input"
+                <span className="filter-label" title={filter.label} style={{width:filter.labelWidth}}>{filter.label}</span>
+                <span className="filter-input-content filter-content">
+                    <input type="text" className="form-control filter-input"
                         value={defaultValue}
                         name={filter.name}
                         onChange={this._inputChange}
@@ -92,19 +93,18 @@ module.exports = React.createClass({
       }*/
     _createDateRangeFilter: function (dateRangeData) {
         var that = this,
-            date = new Date(),
             startValue = that.state[dateRangeData.items[0].name] == undefined ? dateRangeData.items[0].defaultValue : that.state[dateRangeData.items[0].name]['showValue'],
             endValue = that.state[dateRangeData.items[1].name] == undefined ? dateRangeData.items[1].defaultValue : that.state[dateRangeData.items[1].name]['showValue'];
         return (
             <span className="filter-item" key={dateRangeData.name}>
-                <span className="filter-label" style={{width:filter.labelWidth}}>{dateRangeData.label}</span>
+                <span className="filter-label"  title={dateRangeData.label} style={{width:dateRangeData.labelWidth}}>{dateRangeData.label}</span>
                 <span className="filter-input-content">
                     <DatePicker
                         name='请选择'
                         format='YYYY-MM-DD'
-                        style={{ width: 120 }}
+                        style={{ width: 130 }}
                         value={startValue}
-                        //maxDate={new Date(date.getFullYear(), date.getMonth(), date.getDate())}
+                        maxDate={this.dateUnix[dateRangeData.items[1].name + '']}
                         onChange={function (date) {
                             that._onDateRangeChange(date, dateRangeData.items[0].name, dateRangeData.items);
                         }}
@@ -113,9 +113,9 @@ module.exports = React.createClass({
                     <DatePicker
                         name='请选择'
                         format='YYYY-MM-DD'
-                        width={120}
+                        style={{ width: 130 }}
                         value={endValue}
-                        //maxDate={new Date(date.getFullYear(), date.getMonth(), date.getDate())}
+                        minDate={this.dateUnix[dateRangeData.items[0].name + '']}
                         onChange={function (date) {
                             that._onDateRangeChange(date, dateRangeData.items[1].name, dateRangeData.items);
                         }}
@@ -155,13 +155,13 @@ module.exports = React.createClass({
     _createDatePickFilter: function (filter) {
         var that = this,
             date = new Date(),
-            width = filter.width || 120,
+            width = filter.width || '100%',
             datePickLabel = '请选择' + filter.label,
             value = that.state[filter.name] == undefined ? filter.defaultValue : that.state[filter.name]['showValue'];
         return (
             <span className="filter-item" key={filter.name}>
-                <span className="filter-label" style={{width:filter.labelWidth}}>{filter.label}</span>
-                <span className="filter-input-content">
+                <span className="filter-label"  title={filter.label} style={{width:filter.labelWidth}}>{filter.label}</span>
+                <span className="filter-input-content filter-content">
                     <DatePicker
                         name={datePickLabel}
                         format='YYYY-MM-DD'
@@ -225,8 +225,8 @@ module.exports = React.createClass({
 
         return (
             <span className="filter-item" key={filter.name}>
-                <span className="filter-label" style={{width:filter.labelWidth}}>{filter.label}</span>
-                <span className="filter-select-content" style={{ width: filter.width || null }}>
+                <span className="filter-label"  title={filter.label} style={{width:filter.labelWidth}}>{filter.label}</span>
+                <span className="filter-select-content filter-content" style={{ width: filter.width || null }}>
                     <RaSelect
                         clearable={typeof filter.clearable !== 'undefined'?filter.clearable:true}
                         searchable={filter.searchable}
@@ -276,7 +276,7 @@ module.exports = React.createClass({
             selectValuePath = filter.selectValuePath || displayValue;
         return (
             <span className="filter-item" key={filter.name}>
-                <span className="filter-label" style={{width:filter.labelWidth}}>{filter.label}</span>
+                <span className="filter-label"  title={filter.label} style={{width:filter.labelWidth}}>{filter.label}</span>
                 <span className="filter-select-content">
                     <RaSelect
                         autocomplete
@@ -329,19 +329,14 @@ module.exports = React.createClass({
             switch (filter.type) {
                 case 'input':
                     return self._createInputFilter(filter);
-                    break;
                 case 'dateRange':
                     return self._createDateRangeFilter(filter);
-                    break;
                 case 'datePicker':
                     return self._createDatePickFilter(filter);
-                    break;
                 case 'select':
                     return self._createSelectFilter(filter);
-                    break;
                 case 'autocomplete':
                     return self._createAutoComplete(filter);
-                    break;
             }
         })
     },

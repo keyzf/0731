@@ -1,5 +1,6 @@
 var React = require('react')
 
+var RaInput = require('radmin').Form.FormInput
 var Code = require('../Code')
 var Document = require('../Document')
 
@@ -13,6 +14,21 @@ module.exports = React.createClass({
       <div className='content'>
         <h6 className='content-group text-semibold'>输入框 <small className='display-block'></small></h6>
         <div className='row'>
+
+          <div className='col-md-6'>
+            <div className='panel panel-flat'>
+              <div className='panel-heading'>
+                <h5 className='panel-title'>RaInput</h5>
+              </div>
+              <div className='panel-body'>
+                <div className='form-group'>
+                  <div>
+                    <RaInput prepend="http://" append="$" name="哈哈航" maxLength={20}></RaInput>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <div className='col-md-6'>
             <div className='panel panel-flat'>

@@ -108,6 +108,10 @@ module.exports = [{
       text: '验证码 VERIFICATIONCODE',
       alias: 'component-verificationcode',
       url: '/component/verificationcode'
+    }, {
+      text: '筛选表单 FilterRender',
+      alias: 'component-filterrender',
+      url: '/component/filterrender'
     }
   ]
 }, {

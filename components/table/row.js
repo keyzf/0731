@@ -30,13 +30,14 @@ var Row = React.createClass({
   },
 _renderExpand: function (i) {
     var expand, icon = null;
-    if (typeof this.props.onExpand == 'function'&&this.props.isTree) {//zee edit ,add this.props.data.isParent
+    //this.props.data.unExpandAble:可以设置某行数据不显示expand
+    if (typeof this.props.onExpand == 'function'&&this.props.isTree&&!this.props.data.unExpandAble) {//zee edit ,add this.props.data.isParent
       if (this.props.expanded) {
           icon = <i className='icon-minus-circle2' onClick={this.props.onExpand}/>;
       }else {
           icon = <i className='icon-plus-circle2'  onClick={this.props.onExpand}/>;
       }
-      expand = <div className="table-expand" style={{marginLeft: this.props.level * 20}}>
+      expand = <div className="table-expand " style={{marginLeft: this.props.level * 20}}>
                  {this.props.expandable ? icon : null}
                </div>;
     }
