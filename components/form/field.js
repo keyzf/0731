@@ -59,7 +59,7 @@ var Field = React.createClass({
   },
   render: function () {
     var info = this.state.info ? (<span className='help-block'>{this.state.info}</span>) : null;
-    var label = this.props.label ? (<label className={'control-label text-semibold text-' + (this.props.align == 'right' ? 'right' : 'left') + ' ' + this._calcCol(this.props.labelCol, 'label')}>
+    var label = this.props.label ? (<label className={'control-label text-semibold text-' + (this.props.align == 'right' ? 'right' : 'left') + ' ' + this._calcCol(this.props.labelCol, 'label')} style={{width:this.props.labelWidth || ''}}>
                                       {this.props.label}
                                     </label>) : null;
     var desc = this.props.desc ? (<span className='help-block'>{this.props.desc}</span>) : null;
