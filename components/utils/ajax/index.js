@@ -104,12 +104,14 @@ var AjaxUtil = {
     xhr.open('post', param.url);
     xhr.onload = function () {
       if (xhr.status === 200) {
+        var data;
         try {
-          var data = JSON.parse(xhr.responseText);
-          typeof param.success === 'function' && param.success(data);
+          data = JSON.parse(xhr.responseText);
         } catch (e) {
           typeof param.error === 'function' && param.error();
+          return;
         }
+        typeof param.success === 'function' && param.success(data);
       } else {
         typeof param.error === 'function' && param.error();
       }
