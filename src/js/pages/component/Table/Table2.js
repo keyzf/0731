@@ -102,7 +102,9 @@ module.exports = React.createClass({
         data={this._format()}
         pagination={{ total: this.state.total, limit: this.state.limit, offset: this.state.offset, onPageChange: this._changePage, onPageLimitChange: this._changePageLimit }}
         selectRow={{ enable: true,  onSelect: function (id, checked) { console.log(id, checked)} }}
-        action={[ {content: (<span style={{marginRight: 10}}>编辑</span>), action: this._edit}, {content: (<span>删除</span>), action: this._delete} ]}>
+        action={[ {content: (<span style={{marginRight: 10}}>编辑</span>), action: this._edit}, {content: (<span>删除</span>), action: this._delete} ]}
+        actionStyle={{width: 100}}
+        >
         <Table.Column
           dataField='item_id'
           isKey={true}
