@@ -25,6 +25,7 @@ var radmin = {
   Popover: require('./popover'),
   Popup: require('./popup'),
   Prompt: require('./prompt'),
+  PullDownTree: require('./pullDownTree'),
   Radio: require('./radio'),
   RadioGroup: require('./radioGroup'),
   SearchBar: require('./searchBar'),
@@ -40,6 +41,7 @@ var radmin = {
   Time: require('./time'),
   ToolTip: require('./toolTip'),
   TreeSelect: require('./treeSelect'),
+  Transfer: require('./transfer'),
   Utils: require('./utils')
 };
 

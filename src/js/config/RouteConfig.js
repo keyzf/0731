@@ -30,6 +30,8 @@ var Iconfont = require('../pages/component/Iconfont/Index')
 var RichEditor = require('../pages/component/RichEditor/Index')
 var VerificationCode = require('../pages/component/VerificationCode/Index')
 var FilterRender = require('../pages/component/FilterRender/Index')
+var PullDownTree = require('../pages/component/PullDownTree/Index')
+var Transfer = require('../pages/component/Transfer/Index')
 
 var Ajax = require('../pages/func/Ajax')
 var Login = require('../pages/func/Login')
@@ -87,6 +89,8 @@ module.exports = [
   {path: '/component/richeditor', page: RichEditor, layout: App},
   {path: '/component/verificationcode', page: VerificationCode, layout: App},
   {path: '/component/filterrender', page: FilterRender, layout: App},
+  {path: '/component/pullDownTree', page: PullDownTree, layout: App},
+  {path: '/component/transfer', page: Transfer, layout: App},
 
   {path: '/func/tabTest', page: NewTabList, layout: App},
 
@@ -108,4 +112,4 @@ module.exports = [
   {path: '*', page: null, layout: Error404}
 ]
 
-module.exports.defaultLayout = App
+module.exports.defaultLayout = App;

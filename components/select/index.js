@@ -322,7 +322,6 @@ var Select = React.createClass({
     },
 
     _handleMultiAutoClick: function (e) {
-
         ReactDom.findDOMNode(this.refs.selectInput).focus()
     },
 

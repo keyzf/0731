@@ -112,7 +112,15 @@ module.exports = [{
       text: '筛选表单 FilterRender',
       alias: 'component-filterrender',
       url: '/component/filterrender'
-    }
+    } , {
+          text: '树形下拉 pullDownTree',
+          alias: 'component-pullDownTree',
+          url: '/component/pullDownTree'
+      }, {
+          text: '两列选择 Transfer',
+          alias: 'component-filterrender',
+          url: '/component/transfer'
+      }
   ]
 }, {
   text: '扩展组件',

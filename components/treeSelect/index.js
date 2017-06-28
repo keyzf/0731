@@ -302,7 +302,7 @@ var TreeSelect = React.createClass({
             item.isParent = !!(item[that.props.childrenKey] && item[that.props.childrenKey] instanceof Array && item[that.props.childrenKey].length);
 
             t.push((
-                <div key={'i' + key} style={{marginLeft: that.props.marginLeft}}>
+                <div key={'i' + key}  style={{marginLeft: that.props.marginLeft}} data-id={that.props.treeId}>
                     <div
                         className={itemClass}
                         style={{top: item.checked ? 1 : 2}}
@@ -321,7 +321,7 @@ var TreeSelect = React.createClass({
                                 key={'cb' + key}
                                 value={item[that.props.displayValue]}//displayValue,displayKey
                                 checked={item.checked}
-                                className={item.className}
+                                className={'tree-checkbox ' + (item.className||'')}
                                 style={{display: 'inline-block', marginLeft: 2}}
                                 onChange={_itemOnChange}>
                                 {item[that.props.displayKey]}
@@ -369,6 +369,7 @@ var TreeSelect = React.createClass({
                             delChild={that.props.delChild}
                             editChild={that.props.editChild}
                             data={item[that.props.childrenKey]}
+                            treeId={that.props.treeId}
                             realOnChange={typeof that.props.realOnChange == 'function'?that.props.realOnChange:that.props.onChange}
                             treeStore={that.state.treeStore}
                             linkage={that.props.linkage}
