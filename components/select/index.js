@@ -273,7 +273,7 @@ var Select = React.createClass({
                 }
             }
 
-            this.props.onChange('', null, this.props.valuePath);
+            this.props.onChange(this.props.defaultValue, null, this.props.valuePath);
             this.setState({
                 name: this.props.name,
                 selectedOption: null,
