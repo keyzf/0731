@@ -301,12 +301,21 @@ var PullDownTree = React.createClass({
                         }
                     }
 
+                    Utils.CommonUtil.traverseTreeData(self.state.treeData, {
+                        childrenKey: self.props.childrenKey, callFn: function (node, parentNode) {
+                            if (node[self.props.displayValue] === item[self.props.displayValue]) {
+                                node['checked'] = false;
+                            }
+                        }
+                    });
+
                     if (typeof self.props.onChange === 'function') {
                         var values = self.state.selectItems.map(function (item) {
                             return item[self.props.displayValue];
                         });
                         self.props.onChange(values, self.state.selectItems, self.props.valuePath);
                     }
+
                     self.forceUpdate();
                 };
                 return (

@@ -254,10 +254,14 @@ module.exports = {
      * }
      * */
     traverseTreeData: function (treeData,opts,parentNode) {
-        var childrenKey = opts.childrenKey||'children';
-        for (var i in treeData) {
-            typeof opts.callFn== "function"&&opts.callFn(treeData[i],parentNode);
-            this.traverseTreeData(treeData[i][childrenKey]||[],opts,treeData[i]);
+        if(treeData.length){
+            var childrenKey = opts.childrenKey||'children';
+            for (var i in treeData) {
+                if(typeof opts.callFn== "function"){
+                    opts.callFn(treeData[i],parentNode);
+                }
+                this.traverseTreeData(treeData[i][childrenKey]||[],opts,treeData[i]);
+            }
         }
     },
 
