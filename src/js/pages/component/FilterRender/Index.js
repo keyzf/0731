@@ -46,7 +46,7 @@ module.exports = React.createClass({
       type: 'select', name: 'select2', label: '下拉框2', options: options, searchable: true, multiselect: true,defaultValue:this.state.filterData.v8
     }, {
       type: 'datePicker', name: 'date2', view:'month',label: '时间2',defaultValue:this.state.filterData.v9
-    }]
+    }, {type: 'dateRange', name: 'createDate', label: '新建时间', items: [{name: 'sysCtimeStart', defaultValue: ''},{name: 'sysCtimeEnd', defaultValue: ''},]},]
   },
 
   render: function () {

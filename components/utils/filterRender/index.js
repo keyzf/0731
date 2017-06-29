@@ -139,8 +139,7 @@ module.exports = React.createClass({
 
         var startTime = this.dateUnix[rangeItemData[0].name + ''],
             endTime = this.dateUnix[rangeItemData[1].name + ''];
-
-        if (startTime > endTime) {
+        if (startTime&&endTime&&startTime > endTime) {
             Prompt('结束时间不能小于开始时间');
             this.dateUnix[name + ''] = oldDateUnix;
             filterValue.showValue = oldDateShowStr;
