@@ -3,6 +3,7 @@ var React = require('react')
 var Utils = require('radmin').Utils
 var Form = require('radmin').Form
 var FormField = Form.Field
+var FormDatePicker = Form.DatePicker
 var FormInput = Form.FileInput
 var FormUtil = Form.Util
 
@@ -10,7 +11,8 @@ module.exports = React.createClass({
   getInitialState: function () {
     return {
       name: '',
-      psw: ''
+      psw: '',
+      birthday: '',
     }
   },
   render: function () {
@@ -37,6 +39,13 @@ module.exports = React.createClass({
             value={this.state.psw || ''}
             onChange={Form.Util.linkState(this, 'psw')}
             className='form-control' />
+        </FormField>
+        <FormField label='生日：'>
+          <FormDatePicker
+              name='生日'
+              format='YYYY-MM-DD'
+              style={{width:130}}
+              showTime={false} />
         </FormField>
         <FormField className='text-right' contentCol={12}>
           <a className='btn btn-default' onClick={function(){this.refs.form1.cancel()}.bind(this)} style={{marginRight: 10}}>

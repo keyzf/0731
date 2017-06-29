@@ -53,11 +53,18 @@ module.exports = React.createClass({
         this.refs.datePicker.setState({showCalendar:true});
     },
 
+    _clear:function(){
+        this.setState({
+            timeStr:''
+        });
+        typeof this.props.onChange == 'function' && this.props.onChange('',this.props.valuePath);
+    },
+
     render:function(){
         return (
-            <div className='datePickInForm'>
+            <div className='form-input-content form-date-picker has-addons'>
                 <input type='text' className='form-control'
-                       value={this.props.value}
+                       value={this.state.timeStr}
                        onChange={this._onChange}
                        onFocus={this._onFocus}
                     />
@@ -65,9 +72,14 @@ module.exports = React.createClass({
                     ref="datePicker"
                     name='请选择'
                     format='YYYY-MM-DD'
-                    value={this.props.value}
+                    value={this.state.timeStr}
                     onChange={this._onDateTimeChange}
                     showTime={this.props.showTime} />
+                <span className='addons-container'>
+                    {
+                        this.state.timeStr&&<i className="clear-icon icon-cross3" onClick={this._clear}></i>
+                    }
+                </span>
             </div>
         )
     },

@@ -805,3 +805,27 @@ textarea {
   }
 }
 
+.form-date-picker{
+  .date-picker{
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+  .addons-container{
+    .clear-icon{
+      display: none;
+      cursor: pointer;
+      padding: 10px 5px;
+      font-size: 20px;
+    }
+  }
+  &:hover{
+    .addons-container{
+      .clear-icon{
+        display: inline-block;
+      }
+    }
+  }
+
+}
