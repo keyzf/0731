@@ -170,13 +170,12 @@ module.exports = React.createClass({
                         value={value}
                         maxDate={filter.maxDate}
                         onChange={function (date) {
+                            console.log('onChange',date)
                             var stateChange = {},
                                 showValue = '',
                                 resultValue = DateUtil.dateToStr(date, 'yyyy-MM-dd'),
                                 filterValue = { showValue: '', resultValue: '' };
                             if (filter.view == 'month') {
-                                date = DateUtil.getTheFirstDayOfMonth(date);
-                                resultValue = DateUtil.dateToStr(date, 'yyyy-MM-dd');
                                 showValue = resultValue.substring(0, 7);
                             } else {
                                 showValue = resultValue;
