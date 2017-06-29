@@ -43,6 +43,7 @@ var PullDownTree = React.createClass({
         return {
             checked: false,
             linkage: true,//是否联动
+            resultJustShowLeafData: false,//结果展示只显示叶数据
             onChange: null,
             disabled: false,
             displayKey: 'name',
@@ -126,7 +127,6 @@ var PullDownTree = React.createClass({
     },
 
     _handleClickOutside: function (event) {
-        console.log('click out')
         if (!this.state.open) {
             return
         }
@@ -292,42 +292,54 @@ var PullDownTree = React.createClass({
 
     _createChoice: function () {
         var self = this,
-            choices = this.state.selectItems.map(function (item, i) {
-                var remove = function (ev) {
-                    ev.stopPropagation();
-                    for (var j = 0; j < self.state.selectItems.length; j++) {
-                        if (self.state.selectItems[j][self.props.displayValue] === item[self.props.displayValue]) {
-                            self.state.selectItems.splice(j, 1);
-                        }
-                    }
-
-                    Utils.CommonUtil.traverseTreeData(self.state.treeData, {
-                        childrenKey: self.props.childrenKey, callFn: function (node, parentNode) {
-                            if (node[self.props.displayValue] === item[self.props.displayValue]) {
-                                node['checked'] = false;
-                            }
-                        }
-                    });
-
-                    if (typeof self.props.onChange === 'function') {
-                        var values = self.state.selectItems.map(function (item) {
-                            return item[self.props.displayValue];
-                        });
-                        self.props.onChange(values, self.state.selectItems, self.props.valuePath);
-                    }
-
-                    self.forceUpdate();
-                };
-                return (
-                    <li key={i} className={'select2-search-choice'}>
-                        <div>
-                            {item[self.props.displayKey]}
-                        </div>
-                        <a className='select2-search-choice-close' onClick={remove}></a>
-                    </li>
-                )
-            });
+            choices = [];
+        for(var i= 0,len = this.state.selectItems.length;i < len;i++){
+            if(this.props.resultJustShowLeafData){
+                if(!this.state.selectItems[i].isParent){
+                    choices.push(this._createOnChoice(this.state.selectItems[i]))
+                }
+            }else{
+                choices.push(this._createOnChoice(this.state.selectItems[i]))
+            }
+        }
         return choices;
+    },
+
+    _createOnChoice:function(item){
+        var self = this,
+            remove = function (ev) {
+                ev.stopPropagation();
+                for (var j = 0; j < self.state.selectItems.length; j++) {
+                    if (self.state.selectItems[j][self.props.displayValue] === item[self.props.displayValue]) {
+                        self.state.selectItems.splice(j, 1);
+                    }
+                }
+
+                Utils.CommonUtil.traverseTreeData(self.state.treeData, {
+                    childrenKey: self.props.childrenKey, callFn: function (node, parentNode) {
+                        if (node[self.props.displayValue] === item[self.props.displayValue]) {
+                            node['checked'] = false;
+                        }
+                    }
+                });
+
+                if (typeof self.props.onChange === 'function') {
+                    var values = self.state.selectItems.map(function (item) {
+                        return item[self.props.displayValue];
+                    });
+                    self.props.onChange(values, self.state.selectItems, self.props.valuePath);
+                }
+
+                self.forceUpdate();
+            };
+        return (
+            <li key={Utils.CommonUtil.getRandomId()} className={'select2-search-choice'}>
+                <div>
+                    {item[self.props.displayKey]}
+                </div>
+                <a className='select2-search-choice-close' onClick={remove}></a>
+            </li>
+        )
     },
 
     render: function () {

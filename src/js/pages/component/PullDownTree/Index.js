@@ -119,7 +119,7 @@ module.exports = React.createClass({
                         >
                         <PullDownTree
                             data={this._getData()}
-                            linkage={false}
+                            resultJustShowLeafData={true}
                             />
                     </RaForm.Field>
                     <RaForm.Field
