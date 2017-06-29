@@ -7,6 +7,7 @@ module.exports = React.createClass({
         return {
             timeStr:'',
             timeUix:'',
+            dateData:'',
         }
     },
 
@@ -36,9 +37,14 @@ module.exports = React.createClass({
         if (!value) {
             return
         }
+        var timeStr = this._dateTimeToString(value);
+        this.setState({
+            dateData:value,
+            timeStr:timeStr,
+        });
 
         this.state.timeStr = this._dateTimeToString(value);
-        typeof this.props.onChange == 'function' && this.props.onChange(this.state.timeStr,this.props.valuePath);
+        typeof this.props.onChange == 'function' && this.props.onChange(value,this.props.valuePath);
 
         this.forceUpdate();
 
@@ -55,6 +61,7 @@ module.exports = React.createClass({
 
     _clear:function(){
         this.setState({
+            dateData:'',
             timeStr:''
         });
         typeof this.props.onChange == 'function' && this.props.onChange('',this.props.valuePath);
