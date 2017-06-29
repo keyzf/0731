@@ -16,6 +16,9 @@ module.exports = React.createClass({
             valuePath:'',
             showTime:false,
             valueFmt:'yyyy-MM-dd',
+            minDate:'',
+            maxDate:'',
+            startValue:'',
             value:'',
             onChange:''
         }
@@ -79,6 +82,9 @@ module.exports = React.createClass({
                     ref="datePicker"
                     name='请选择'
                     format='YYYY-MM-DD'
+                    minDate={this.props.minDate}
+                    maxDate={this.props.maxDate}
+                    startValue={this.props.startValue}
                     value={this.state.timeStr}
                     onChange={this._onDateTimeChange}
                     showTime={this.props.showTime} />
