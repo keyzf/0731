@@ -35,7 +35,7 @@ module.exports = React.createClass({
 		/**
 		 * 自定义底部元素内容，例<div></div>
 		 */
-		foot: React.PropTypes.element,
+        footer: React.PropTypes.element,
 		/**
 		 * 弹窗中间内容部分是否使用默认样式，当false时使用children内容，例：true
 		 */
