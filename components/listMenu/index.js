@@ -76,20 +76,19 @@ module.exports = React.createClass({
 
     _search: function (value) {
         var self = this;
-        if (typeof value === 'undefined' || value == null || value === '' || value.trim() === '') {
-            return clone(this.props.listData);
-        } else {
-            value = value.trim()
-            return this.props.listData.filter(function (item) {
-                return (value || value === 0) && (item[self.props.displayKey].indexOf(value) > -1)
-            });
-        }
+        return this.props.listData.filter(function (item) {
+            return item[self.props.displayKey].indexOf(value) > -1
+        });
     },
 
     _onSearch: function (e) {
         var self= this,
-            value = e.target.value,
-            listData = this._search(value);
+            value = e.target.value;
+        if (!value.trim()) {
+            return; 
+        }
+
+        var listData = this._search(value.trim());
         if(this.state.timeOut){
             clearTimeout(this.state.timeOut);
         }
