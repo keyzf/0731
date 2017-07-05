@@ -85,7 +85,10 @@ module.exports = React.createClass({
         var self= this,
             value = e.target.value;
         if (!value.trim()) {
-            this.setState({ showTree: true });
+            clearTimeout(this.state.timeOut);
+            this.state.timeOut = setTimeout(function() {
+                self.setState({ showTree: true });
+            }, 300);
             return; 
         }
 
