@@ -85,6 +85,7 @@ module.exports = React.createClass({
         var self= this,
             value = e.target.value;
         if (!value.trim()) {
+            this.setState({ showTree: true });
             return; 
         }
 
