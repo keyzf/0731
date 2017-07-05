@@ -76,9 +76,10 @@ module.exports = React.createClass({
 
     _search: function (value) {
         var self = this;
-        if (typeof value === 'undefined' || value == null || value === '') {
+        if (typeof value === 'undefined' || value == null || value === '' || value.trim() === '') {
             return clone(this.props.listData);
         } else {
+            value = value.trim()
             return this.props.listData.filter(function (item) {
                 return (value || value === 0) && (item[self.props.displayKey].indexOf(value) > -1)
             });
