@@ -16,6 +16,7 @@ module.exports = React.createClass({
 
     getDefaultProps: function() {
         return {
+            className:'',
             tabData:[],
             canClose:false,
             unicity:false,//唯一性，就是tab标题能不能一样，默认可以一样，否则自动替换
@@ -116,6 +117,7 @@ module.exports = React.createClass({
         return(
             <Tabs
                 ref='tabs'
+                className={this.props.className}
                 onChange={this._onTabChange}
                 onDelete={this.props.canClose?this._tabClosed:null}
                 >

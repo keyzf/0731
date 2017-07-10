@@ -38,7 +38,8 @@ var Tabs = React.createClass({
   getDefaultProps() {
     return {
       active: 0,
-      vertical: false
+      vertical: false,
+      className:'',
     }
   },
   getInitialState: function () {
@@ -259,7 +260,7 @@ var Tabs = React.createClass({
     var classes = classnames({
       'tabbable': true,
       'tabs-left': this.props.vertical
-    })
+    },this.props.className);
     return (<div className={classes}>
               {this._createNavs()}
               {this._createContent()}
