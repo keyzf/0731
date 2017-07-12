@@ -38,15 +38,14 @@ module.exports = React.createClass({
     AjaxDemoAction.getTableAjax(this.state.limit, this.state.limit * this.state.offset)
   },
   _edit: function (item_id) {
-    console.log(arguments);
     Utils.prompt({
       text: '编辑' + item_id
     })
   },
   _delete: function (item_id) {
     Utils.confirm({
-      text: '是否删除' + item_id + '？',
-      onConfirm: function () { }
+      text: '是否删除' + item_id +'？',
+      onConfirm: function () {}
     })
   },
 
@@ -62,7 +61,6 @@ module.exports = React.createClass({
     this.state.offset = 0
     this._getTableAjax()
   },
-
   _format: function () {
     var that = this
 
@@ -72,28 +70,24 @@ module.exports = React.createClass({
         // 自定义表格内容可按如下方式处理
         // obj.zzjgdmz = (<img src={obj.zzjgdmz}></img>)
 
+        var _edit = function () {
+          that._edit(obj.item_id)
+        }
+
+        var _delete = function () {
+          that._delete(obj.item_id)
+        }
+
         obj.operationsEle = (
           <div>
             <div style={{ display: 'inline-block' }}>
-              <span onClick={that._edit.bind(that, obj)} style={{ color: '#5093e1', cursor: 'pointer' }}>编辑</span>
+              <span onClick={_edit} style={{ color: '#5093e1', cursor: 'pointer'}}>编辑</span>
             </div>
             <div style={{ display: 'inline-block' }}>
-              <span onClick={that._delete} style={{ color: '#5093e1', cursor: 'pointer', marginLeft: 10 }}>删除</span>
+              <span onClick={_delete} style={{ color: '#5093e1', cursor: 'pointer', marginLeft: 10}}>删除</span>
             </div>
           </div>
         )
-        obj.children && obj.children.map(function (child) {
-          child.operationsEle = (
-            <div>
-              <div style={{ display: 'inline-block' }}>
-                <span onClick={that._edit.bind(that, child)} style={{ color: '#5093e1', cursor: 'pointer' }}>编辑</span>
-              </div>
-              <div style={{ display: 'inline-block' }}>
-                <span onClick={that._delete} style={{ color: '#5093e1', cursor: 'pointer', marginLeft: 10 }}>删除</span>
-              </div>
-            </div>
-          )
-        })
         return obj
       })
     }
@@ -101,26 +95,26 @@ module.exports = React.createClass({
   },
   render: function () {
     return (
-      <Table data={this._format()} scroll={{ x: 1800 }} selectRow={{ enable: true, onSelect: function (id, checked) { console.log(id, checked) } }} bordered pagination={{ total: this.state.total, limit: this.state.limit, offset: this.state.offset, onPageChange: this._changePage, onPageLimitChange: this._changePageLimit }}>
-        {/*<Table.Column
-          datafield='item_id'
-          iskey={true}
+      <Table data={this._format()} scroll={{x: 1500}} selectRow={{ enable: true, onSelect: function (id, checked) { console.log(id, checked)} }} bordered pagination={{ total: this.state.total, limit: this.state.limit, offset: this.state.offset, onPageChange: this._changePage, onPageLimitChange: this._changePageLimit}}>
+          {/*<Table.Column
+          dataField='item_id'
+          isKey={true}
           display={false}
           sort={true}
-          style={{ minwidth: 100, textalign: 'right' }}
-        >
+          style={{minWidth: 100, textAlign: 'right'}}
+          >
           ID
         </Table.Column>*/}
-        <Table.Column dataField='name' fixed sort={true} style={{ width: 100 }}>
+        <Table.Column dataField='name' style={{minWidth: 10}}>
           名称
         </Table.Column>
-        <Table.Column dataField='description' style={{ minWidth: 100 }}>
+        <Table.Column dataField='description' style={{minWidth: 100}}>
           描述
         </Table.Column>
-        <Table.Column dataField='time' style={{ minWidth: 100, textAlign: 'center' }}>
+        <Table.Column dataField='time' style={{minWidth: 100, textAlign: 'center'}}>
           创建日期
         </Table.Column>
-        <Table.Column dataField='operationsEle' fixed style={{ width: 100, textAlign: 'center' }}>
+        <Table.Column dataField='operationsEle' style={{width: 100, textAlign: 'center'}}>
           操作
         </Table.Column>
       </Table>
