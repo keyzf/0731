@@ -47,10 +47,15 @@ _renderExpand: function (i) {
     var self = this;
     var row = self.props.columns.map(function (column, i) {
       if (column.display !== false)
+        console.log();
         return (
           <td key={i + 1} style={column.style}>
             {(i == 0 && self.props.isTree) ? self._renderExpand() : null}
-            {self.props.data[column.field]}
+            {
+              typeof self.props.data[column.field] === 'string' ? 
+              <span title={self.props.data[column.field]}>{self.props.data[column.field]}</span> : 
+              self.props.data[column.field]
+            }
           </td>
       )
     });

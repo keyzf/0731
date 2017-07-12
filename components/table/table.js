@@ -198,6 +198,41 @@ var Table = React.createClass({
     }
     this.forceUpdate();
   },
+
+  _getFixedTableColumns: function (flag) {
+    var columns = [];
+    var children = this.store.columns;
+    if (flag === 'right') {
+      // 尾列
+      for (var index = children.length - 1; index > -1; index--) {
+        var element = children[index];
+        if (!element.display) {
+          continue;
+        }
+        if (element.fixed) {
+          columns.unshift(element);
+        } else {
+          break;
+        }
+      }
+    } else if (flag === 'left') {
+      // 首列
+      for (var index = 0; index < children.length; index++) {
+        var element = children[index];
+        if (!element.display) {
+          continue;
+        }
+        if (element.fixed) {
+          columns.push(element);
+        } else {
+          break;
+        }
+      }
+    }
+
+    return columns;
+  },
+
   _renderHeaderRow: function () {
     return this.props.headerRow ? this.props.headerRow : null
   },
@@ -215,6 +250,7 @@ var Table = React.createClass({
       </Pagination>
     )
   },
+
   _renderTableColGroup: function () {
     var col = this.store.columns.map(function (column, i) {
       var style = null;
@@ -225,7 +261,7 @@ var Table = React.createClass({
         return (<col key={i + 1} style={style} />);
     });
     if (this.props.selectRow) {
-      col.unshift((<col key={0} style={{ width: 40 }}></col>))
+      col.unshift((<col key={0} style={{ width: 58 }}></col>))
     }
     if (this.props.action && this.props.action.length) {
       col.push((<col key={this.store.columns.length + 1}></col>))
@@ -234,6 +270,31 @@ var Table = React.createClass({
       {col}
     </colgroup>)
   },
+
+  _renderFixedTableColGroup: function (flag) {
+    var columns = this._getFixedTableColumns(flag);
+    var cols = columns.map(function (column, i) {
+      var style = null;
+      if (column.width) style = {
+        width: column.width
+      };
+      if (column.display)
+        return (<col key={i + 1} style={style} />);
+    });
+
+    if (flag === 'left' && this.props.selectRow) {
+      cols.unshift((<col key={0} style={{ width: 40 }}></col>))
+    }
+
+    if (flag === 'right' && this.props.action && this.props.action.length) {
+      cols.push((<col key={this.store.columns.length + 1}></col>))
+    }
+
+    return (
+      <colgroup>{cols}</colgroup>
+    )
+  },
+
   _renderTableHeader: function () {
     var isSelectAll = this._isSelectAll();
     return (<TableHeader
@@ -246,15 +307,14 @@ var Table = React.createClass({
     </TableHeader>)
   },
 
-  _renderFixedTableHeader: function (rightFlag) {
-    var rightFlag = !!rightFlag;
+  _renderFixedTableHeader: function (flag) {
     var children = React.Children.toArray(this.props.children);
     var isSelectAll = this._isSelectAll();
 
     var columns = [];
-    var action;
+    var action = null;
 
-    if (rightFlag) {
+    if (flag === 'right') {
       // 尾列
       action = this.props.action;
 
@@ -269,7 +329,7 @@ var Table = React.createClass({
           break;
         }
       }
-    } else {
+    } else if (flag === 'left') {
       // 首列
       for (var index = 0; index < children.length; index++) {
         var element = children[index];
@@ -287,7 +347,7 @@ var Table = React.createClass({
 
     return (
       <TableHeader
-        selectRow={{ enable: (this.props.selectRow && !rightFlag) ? true : false, onSelectAll: this._handleSelectAll, isSelectAll: isSelectAll }}
+        selectRow={{ enable: (this.props.selectRow && flag === 'left') ? true : false, onSelectAll: this._handleSelectAll, isSelectAll: isSelectAll }}
         onSort={this._handleSort}
         action={action}
         actionStyle={this.props.actionStyle}
@@ -320,9 +380,9 @@ var Table = React.createClass({
     )
   },
 
-  _renderFixedTableBody: function (rightFlag) {
+  _renderFixedTableBody: function (flag) {
     var selectRow = {
-      enable: (this.props.selectRow && !rightFlag) ? true : false,
+      enable: (this.props.selectRow && flag === 'left') ? true : false,
       onSelect: this._handleSelect,
       selected: this.state.selected
     }, expandRow = {
@@ -330,40 +390,15 @@ var Table = React.createClass({
       expanded: this.state.expanded
     };
 
-    var children = this.store.columns;
-    var columns = [];
+    var columns = this._getFixedTableColumns(flag);
     var isTree = false;
-    var action;
-    if (rightFlag) {
+    var action = null;
+    if (flag === 'right') {
       // 尾列
       action = this.props.action;
-
-      for (var index = children.length - 1; index > -1; index--) {
-        var element = children[index];
-        if (!element.display) {
-          continue;
-        }
-        if (element.fixed) {
-          columns.unshift(element);
-        } else {
-          break;
-        }
-      }
-    } else {
+    } else if (flag === 'left') {
       // 首列
       isTree = this.state.isTree;
-
-      for (var index = 0; index < children.length; index++) {
-        var element = children[index];
-        if (!element.display) {
-          continue;
-        }
-        if (element.fixed) {
-          columns.push(element);
-        } else {
-          break;
-        }
-      }
     }
 
     return (
@@ -410,18 +445,20 @@ var Table = React.createClass({
           {
             renderLeftFixed &&
             <div className="table-body table-fixed table-fixed-left">
-              <table className="table">
-                {this._renderFixedTableHeader(false)}
-                {this._renderFixedTableBody(false)}
+              <table className="table" style={{ width: 'auto' }}>
+                {this._renderFixedTableColGroup('left')}
+                {this._renderFixedTableHeader('left')}
+                {this._renderFixedTableBody('left')}
               </table>
             </div>
           }
           {
             renderRightFixed &&
             <div className="table-body table-fixed table-fixed-right">
-              <table className="table">
-                {this._renderFixedTableHeader(true)}
-                {this._renderFixedTableBody(true)}
+              <table className="table" style={{ width: 'auto' }}>
+                {this._renderFixedTableColGroup('right')}
+                {this._renderFixedTableHeader('right')}
+                {this._renderFixedTableBody('right')}
               </table>
             </div>
           }
