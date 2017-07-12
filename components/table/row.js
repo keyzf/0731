@@ -49,7 +49,7 @@ _renderExpand: function (i) {
       if (column.display !== false)
         return (
           <td key={i + 1} style={column.style}>
-            {i == 0 ? self._renderExpand() : null}
+            {(i == 0 && self.props.isTree) ? self._renderExpand() : null}
             {self.props.data[column.field]}
           </td>
       )
