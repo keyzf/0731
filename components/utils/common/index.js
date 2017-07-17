@@ -313,5 +313,13 @@ module.exports = {
         } 
  
         return roots; 
-    } 
+    } ,
+
+    //替换所有的换行
+    replaceBr: function (content) {
+        var string = content;
+        string = string.replace(/\r\n/g, "<br>");
+        string = string.replace(/\n/g, "<br>");
+        return string;
+    }
 };

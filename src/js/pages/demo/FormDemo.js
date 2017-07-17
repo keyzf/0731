@@ -16,6 +16,11 @@ module.exports = React.createClass({
 			showSlidePanel: false,
 			loadingType:'ball-pulse',
 			loadingNum:0,
+            itemData:{
+                password:'',
+                customTagCode:'',
+            },
+            files:[],
 		}
 	},
 
@@ -137,22 +142,49 @@ module.exports = React.createClass({
 		})
 	},
 
+    _onInputChange: function (value, valuePath, e) {
+        var updateData = {};
+        updateData[valuePath + ''] = value;
+        this._updateItemDataState(updateData);
+    },
+
+    _updateItemDataState:function(changeData,callFn){
+        var itemData = clone(this.state.itemData);
+        for (var key in changeData) {
+            if (typeof changeData[key] !== 'undefined' && typeof itemData[key] !== 'undefined'&&itemData[key] !=null) {
+                itemData[key] = changeData[key];
+            }
+        }
+        this.setState({itemData:itemData},function(){
+            typeof callFn == 'function'&&callFn();
+        });
+    },
+
+    _onSelectFile: function (e) {
+        if (!e.target.files.length) return
+        this.state.files = []
+        for (var i = 0; i < e.target.files.length; i++) {
+            this.state.files.push(e.target.files[i])
+        }
+        this.forceUpdate()
+    },
+
 	render:function(){
 		return (
 			<div className="content">
-				<div>
+				<div className={'none'}>
 					<span>loading</span>
 					<RLoading type="spinningBubbles" color='#000' height={40} width={40}/>
 				</div>
-				<div style={{margin:'10px'}}>
+				<div  className={'none'} style={{margin:'10px'}}>
 					<input className="btn bg-blue-ws" type="button" value="show loading"
 					       onClick={this._showLoading} />
 				</div>
-				<div style={{background:'grey',padding:'40px'}}>
+				<div  className={'none'} style={{background:'grey',padding:'40px'}}>
 					<LoadingCss type={this.state.loadingType}/>
 				</div>
 
-				<div>
+				<div  className={'none'}>
 					<input className="btn bg-blue-ws" type="button" value="change loading"
 					       onClick={this._changeLoading} />
 				</div>
@@ -187,6 +219,25 @@ module.exports = React.createClass({
 										maxLength={16}
 										/>
 								</RaForm.Field>
+                                <RaForm.Field
+                                    label='代码'
+                                    validation={[{type:'required',message:'请填写代码',value:this.state.itemData.customTagCode}]}
+                                    >
+                                    <RaForm.FormInput
+                                        value={this.state.itemData.customTagCode}
+                                        valuePrefix={'WS-'}
+                                        valuePath={'customTagCode'}
+                                        maxLength={30}
+                                        onChange={this._onInputChange}
+                                        readOnly={!!this.state.itemData.id}
+                                        />
+                                </RaForm.Field>
+                                <RaForm.Field
+                                    label='上传文件'
+                                    validation={[{type:'required',message:'请填写代码',value:this.state.itemData.customTagCode}]}
+                                    >
+                                    <RaForm.FileInput name='点击上传' onChange={this._onSelectFile} />
+                                </RaForm.Field>
 							</RaForm>
 						</SlidePanel> : null}
 				</div>

@@ -23,6 +23,9 @@ module.exports = React.createClass({
         return {
             counterStr: '',
             value: '',
+            prepend: '',
+            append: '',
+            valuePrefix: '',
         }
     },
 
@@ -46,10 +49,10 @@ module.exports = React.createClass({
         var value = this._inputFilter(e),
             len = value.length,
             counterStr = '',
-            valuePrefixLen = this.props.valuePrefix.length;
+            valuePrefixLen = this.state.valuePrefix.length;
 
         if (valuePrefixLen) {
-            if (value.substr(0, valuePrefixLen) != this.props.valuePrefix) {
+            if (value.substr(0, valuePrefixLen) != this.state.valuePrefix) {
                 this.setState({
                     value: this.state.value,
                 });
@@ -110,11 +113,14 @@ module.exports = React.createClass({
     componentWillMount: function () {
         this.state.counterStr = this.props.value.length + '/' + this.props.maxLength;
         this.state.value = this.props.value;
+        this.state.prepend = this.props.prepend;
+        this.state.append = this.props.append;
+        this.state.valuePrefix = this.props.valuePrefix;
     },
 
     componentWillReceiveProps: function (nextProps) {
-        this.state.counterStr = (nextProps.value + '').length + '/' + nextProps.maxLength;
-        this.state.value = nextProps.value;
+        this.props = nextProps;
+        this.componentWillMount();
     },
 
     _renderInput: function () {
@@ -123,7 +129,7 @@ module.exports = React.createClass({
                 <input
                     type={this.props.type}
                     className={'form-input form-control ' + this.props.className}
-                    value={this.state.value === '' ? this.props.valuePrefix : this.state.value}
+                    value={this.state.value === '' ? this.state.valuePrefix : this.state.value}
                     onChange={this._onChange}
                     onBlur={this._onBlur}
                     onFocus={this._onFocus}
@@ -144,8 +150,8 @@ module.exports = React.createClass({
     },
 
     render: function () {
-        var hasPrepend = !!this.props.prepend
-        var hasAppend = !!this.props.append
+        var hasPrepend = !!this.state.prepend
+        var hasAppend = !!this.state.append
 
         if (hasPrepend || hasAppend) {
             var className = classNames({
@@ -158,12 +164,12 @@ module.exports = React.createClass({
                 <div className={className}>
                     {
                         hasPrepend &&
-                        <span className="form-input-prepend">{this.props.prepend}</span>
+                        <span className="form-input-prepend">{this.state.prepend}</span>
                     }
                     {this._renderInput()}
                     {
                         hasAppend &&
-                        <span className="form-input-append">{this.props.append}</span>
+                        <span className="form-input-append">{this.state.append}</span>
                     }
                 </div>
             )
