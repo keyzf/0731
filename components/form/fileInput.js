@@ -6,6 +6,10 @@ var FileInput = React.createClass({
       name: this.props.name
     }
   },
+  componentWillReceiveProps: function (nextProps) {
+        this.props = nextProps;
+        this.state.name = nextProps.name;
+  },
   _onClick: function (e) {
     e && e.preventDefault();
     this.refs['file-input'].click();
