@@ -72,14 +72,18 @@ module.exports.render = function (data, params, config, onRedirect, onInitComple
         var __handleClick = function () {
           onRedirect(v[k].url, v[k].alias)
         };
-        var className = 'layer2';
+        var className = 'layer2 ' + (data[key].className||'');
+        var icon = data[key].icon?data[key].icon:(data[key].iconClassName ? <i className={data[key].iconClassName} /> : null);
         if (typeof v[k].selected != 'undefined' && v[k].selected === true) {
           className += ' active';
           subMenuHide = false;
         }
         return (
           <li key={i + '-' + ii} className={className} style={{paddingTop: 0}}>
-            <a onClick={__handleClick}><span>{v[k].text}</span></a>
+            <a onClick={__handleClick}>
+                {icon}
+                <span>{v[k].text}</span>
+            </a>
           </li>
         )
       });
