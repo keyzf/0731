@@ -1,4 +1,5 @@
 var React  = require('react');
+var clone = require('clone');
 
 var Utils = require('radmin').Utils;
 var SlidePanel = require('radmin').SlidePanel;
@@ -19,6 +20,7 @@ module.exports = React.createClass({
             itemData:{
                 password:'',
                 customTagCode:'',
+                phone:13232789215,
             },
             files:[],
 		}
@@ -228,6 +230,18 @@ module.exports = React.createClass({
                                         valuePrefix={'WS-'}
                                         valuePath={'customTagCode'}
                                         maxLength={30}
+                                        onChange={this._onInputChange}
+                                        readOnly={!!this.state.itemData.id}
+                                        />
+                                </RaForm.Field>
+                                <RaForm.Field
+                                    label='电话'
+                                    validation={[{type:'required',message:'请填写电话',value:this.state.itemData.phone}]}
+                                    >
+                                    <RaForm.FormInput
+                                        value={this.state.itemData.phone}
+                                        valuePath={'phone'}
+                                        maxLength={11}
                                         onChange={this._onInputChange}
                                         readOnly={!!this.state.itemData.id}
                                         />

@@ -2,7 +2,6 @@
  * Created by zeezhang on 2016/12/9.
  */
 var React = require('react');
-var clone = require('clone');
 var classNames = require('classnames');
 
 var Utils = require('../utils');
@@ -52,7 +51,7 @@ module.exports = React.createClass({
             valuePrefixLen = this.state.valuePrefix.length;
 
         if (valuePrefixLen) {
-            if (value.substr(0, valuePrefixLen) != this.state.valuePrefix) {
+            if (value.substr(0, valuePrefixLen) != this.state.valuePrefix) {//判断前缀是否正确
                 this.setState({
                     value: this.state.value,
                 });
@@ -111,11 +110,11 @@ module.exports = React.createClass({
     },
 
     componentWillMount: function () {
-        this.state.counterStr = this.props.value.length + '/' + this.props.maxLength;
-        this.state.value = this.props.value;
+        this.state.value = (this.props.value === '' ? this.props.valuePrefix : this.props.value) + '';
+        this.state.valuePrefix = this.props.valuePrefix;
         this.state.prepend = this.props.prepend;
         this.state.append = this.props.append;
-        this.state.valuePrefix = this.props.valuePrefix;
+        this.state.counterStr = this.state.value.length + '/' + this.props.maxLength;
     },
 
     componentWillReceiveProps: function (nextProps) {
@@ -129,7 +128,7 @@ module.exports = React.createClass({
                 <input
                     type={this.props.type}
                     className={'form-input form-control ' + this.props.className}
-                    value={this.state.value === '' ? this.state.valuePrefix : this.state.value}
+                    value={ this.state.value}
                     onChange={this._onChange}
                     onBlur={this._onBlur}
                     onFocus={this._onFocus}
@@ -150,15 +149,15 @@ module.exports = React.createClass({
     },
 
     render: function () {
-        var hasPrepend = !!this.state.prepend
-        var hasAppend = !!this.state.append
+        var hasPrepend = !!this.state.prepend;
+        var hasAppend = !!this.state.append;
 
         if (hasPrepend || hasAppend) {
             var className = classNames({
                 'form-input-group': true,
                 'input-group-prepend': hasPrepend,
                 'input-group-append': hasAppend,
-            })
+            });
 
             return (
                 <div className={className}>
