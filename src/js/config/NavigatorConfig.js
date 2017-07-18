@@ -5,12 +5,12 @@ module.exports = [{
   text: 'Radmin概述',
   alias: 'index',
   url: ['/'],
-  className: 'icon-home2'
+  iconClassName: 'icon-home2'
 }, {
   text: '基础组件',
   alias: 'index',
   url: ['/component'],
-  className: 'icon-puzzle3',
+  iconClassName: 'icon-puzzle3',
   value: [
     {
       text: '按钮 BUTTON',
@@ -62,7 +62,7 @@ module.exports = [{
   text: '高级组件',
   alias: 'index',
   url: ['/component'],
-  className: 'icon-puzzle3',
+  iconClassName: 'icon-puzzle3',
   value: [
     {
       text: '弹窗 MODAL',
@@ -126,7 +126,7 @@ module.exports = [{
   text: '扩展组件',
   alias: 'index',
   url: ['/component'],
-  className: 'icon-puzzle3',
+  iconClassName: 'icon-puzzle3',
   value: [
     {
       text: '图表 CHART',
@@ -142,7 +142,7 @@ module.exports = [{
     text: '功能实例',
     alias: 'func',
     url: '/func',
-    className: 'icon-steam2',
+    iconClassName: 'icon-steam2',
     value: [{
       text: '发送请求',
       alias: 'func-ajax',

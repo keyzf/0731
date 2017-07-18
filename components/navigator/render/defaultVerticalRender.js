@@ -123,32 +123,32 @@ module.exports.render = function (data, params, config, onRedirect, onInitComple
       if (params.alwaysOpen) {
         // 常开情况下 有子项的情况下只有点击子项才能跳转
         if (typeof data[key].value === 'undefined' || data[key].value == null || data[key].value.length === 0) {
-          onRedirect(data[key].url, data[key].alias)
+          onRedirect(data[key].url, data[key].alias);
         }
       } else if (typeof data[key].url != 'undefined' && data[key].url != null && (typeof data[key].value === 'undefined' || data[key].value == null || data[key].value.length === 0 || params.dataLayerRange == 1)) {
-        onRedirect(data[key].url, data[key].alias)
+        onRedirect(data[key].url, data[key].alias);
       }
-    }
+    };
 
     var _handleMouseOver = function () {
-      data[key].eye = true
+      data[key].eye = true;
 
       // 第一次操作时关闭初始化状态，使open属性不再依赖url的变化
-      onInitComplete()
+      onInitComplete();
 
-      that.forceUpdate()
-    }
+      that.forceUpdate();
+    };
 
     var _handleMouseOut = function (e) {
-      data[key].eye = false
+      data[key].eye = false;
 
-      that.forceUpdate()
-    }
+      that.forceUpdate();
+    };
 
     var _handleEyeClick = function (event) {
-      event.stopPropagation()
+      event.stopPropagation();
 
-      data[key].lock = !data[key].lock
+      data[key].lock = !data[key].lock;
       if (data[key].lock === true) {
         _handleClick(false)
       }
@@ -158,35 +158,35 @@ module.exports.render = function (data, params, config, onRedirect, onInitComple
       }
 
       that.forceUpdate()
-    }
+    };
 
-    var className = 'layer1'
-    var icon = data[key].icon?data[key].icon:(data[key].className ? <i className={data[key].className} /> : null);
+    var className = 'layer1 ' + (data[key].className||'');
+    var icon = data[key].icon?data[key].icon:(data[key].iconClassName ? <i className={data[key].iconClassName} /> : null);
 
-    var textClassName = '' // data[key].className
+    var textClassName = '' ;// data[key].className
     if (typeof data[key].selected != 'undefined' && data[key].selected === true) {
-      className += ' active'
+      className += ' active';
       if (typeof textClassName != 'undefined') {
         textClassName += ' active'
       }
     }
 
     if (data[key].lock === true) {
-      className += ' dark'
+      className += ' dark';
       if (typeof textClassName != 'undefined') {
         textClassName += ' dark'
       }
     } else {
       if (data[key].light) {
-        className += ' light'
+        className += ' light';
         if (typeof textClassName != 'undefined') {
-          textClassName += ' light'
+          textClassName += ' light';
         }
       }
       if (data[key].sub_selected) {
-        className += ' active'
+        className += ' active';
         if (typeof textClassName != 'undefined') {
-          textClassName += ' active'
+          textClassName += ' active';
         }
       }
     }
@@ -199,7 +199,8 @@ module.exports.render = function (data, params, config, onRedirect, onInitComple
         onMouseLeave={_handleMouseOut}
         key={i}>
         <a onClick={_handleClick}>
-          {icon} <span>{data[key].text}</span>
+          {icon}
+            <span className={textClassName}>{data[key].text}</span>
           {data[key].lock === true || (data[key].eye && data[key].lock === false) ?
              <div className={data[key].lock ? 'eye-no-button' : 'eye-button'} title={data[key].lock ? '点击开启模块' : '点击关闭模块，关闭后大屏幕将不会显示此模块'} onClick={_handleEyeClick}></div>
              : null}
