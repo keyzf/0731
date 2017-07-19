@@ -73,7 +73,7 @@ var Popup = React.createClass({
       overlayClose: false,
       layout: true,
       autoClose: true,
-      preventWheelEvent: true
+      preventWheelEvent: false//默认可以使用滚轮事件
     }
   },
   getInitialState: function () {
