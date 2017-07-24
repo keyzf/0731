@@ -219,11 +219,14 @@ var DateRangePicker = React.createClass({
         endChecked: false
       })
     } else {
-      this.setState({
-        showCalendar: false,
-        startMaxDate: value.endDate,
-        endMinDate: value.startDate,
-      })
+        if(value){
+            this.setState({
+                showCalendar: false,
+                startMaxDate: value.endDate,
+                endMinDate: value.startDate,
+            })
+        }
+
     }
 
     if (value != OptionType.CUSTOM) {
@@ -496,7 +499,6 @@ var DateRangePicker = React.createClass({
       name = this.state.startValue + ' - ' + this.state.endValue;
       this.state.selectValue = '';
     }
-
     return (
       <div className={classnames({'date-range-picker': true}, this.props.className)} style={assign({width: 215, whiteSpace: 'nowrap'}, this.props.style)}>
         <div ref='canlendar_input_ref'>

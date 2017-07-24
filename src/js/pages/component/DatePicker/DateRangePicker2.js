@@ -40,6 +40,7 @@ module.exports = React.createClass({
         startValue={this.state.startTime}
         endValue={this.state.endTime}
         onChange={this._onChange}
+        minDate={Utils.DateUtil.dateToZeroUnix(new Date())}
         showTime={true}
         style={{width: 340}} />
     )

@@ -202,14 +202,15 @@ module.exports = {
      zee 20170505
      * */
     arrToTree: function (arrDataBase, opts) {
-        var keyNodes = {},//用来保存每个节点
+        var result = [],
+            keyNodes = {},//用来保存每个节点
             arrData = arrDataBase,
            // arrData = clone(arrDataBase),
             parentKeyNodes = {},//保存有子节点的数据
             pIdKey = opts.pIdKey || 'parentId',
             idKey = opts.idKey || 'id',
             childrenKey = opts.childrenKey || 'children',
-            rootParentId = !opts.rootParentId? '__rootParentId':opts.rootParentId,
+            rootParentId = !opts.rootParentId? '__rootParentId':opts.rootParentId,//0,'',null,undefined
             children;
         for (var i = 0; i < arrData.length; i++) {
             arrData[i][childrenKey] = [];
@@ -243,7 +244,14 @@ module.exports = {
             }
 
         }
-        return parentKeyNodes[rootParentId + ''] || [];
+
+        result = parentKeyNodes[rootParentId + ''] || [];
+
+        result = result.map(function(item){
+            item[pIdKey + ''] = opts.rootParentId;
+            return item;
+        });
+        return result;
     },
 
     /**

@@ -29,13 +29,25 @@ module.exports = React.createClass({
     Utils.prompt(this.state.date)
   },
   render: function () {
+      var date = new Date();
+
     return (
       <div>
-        <DatePicker
-          name='请选择'
-          format='YYYY-MM-DD'
-          value={this.state.date}
-          onChange={this._onChange} />
+          {
+             /* <DatePicker
+                  name='请选择'
+                  format='YYYY-MM-DD'
+                  minDate={new Date()}
+                  value={this.state.date}
+                  onChange={this._onChange} />*/
+          }
+
+          <DatePicker
+              name='请选择'
+              format='YYYY-MM-DD'
+              value={this.state.date}
+              minDate={Utils.DateUtil.dateToZeroUnix(new Date())}
+              onChange={this._onChange} />
       </div>
     )
   }
