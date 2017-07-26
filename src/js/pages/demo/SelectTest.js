@@ -1,10 +1,14 @@
 var React = require('react');
 var FilterRender = require('radmin').Utils.FilterRender;
+var RaSelect = require('radmin').Select;
 
 
 module.exports = React.createClass({
     getInitialState: function () {
         return {
+            itemData:{
+                companyCodeList:[]
+            },
             option:[
                 { name: '苹果', value: '0' },
                 { name: '梨子', value: '1' },
@@ -67,6 +71,9 @@ module.exports = React.createClass({
     _onFilterChange: function (name, resultValue, selectItem) {
         console.log(name, resultValue, selectItem)
     },
+    _onSelected: function (selected,selectItems,valuePath) {
+       console.log('_onSelected',selected,selectItems,valuePath)
+    },
     render: function () {
         return (
             <div className="page-session">
@@ -74,6 +81,19 @@ module.exports = React.createClass({
                     filterData={this.filterData}
                     onFilterChange={this._onFilterChange}
                     />
+                <div>
+                    <RaSelect
+                        multiselect
+                        autocomplete
+                        onChange={this._onSelected}
+                        dropStyle={{
+                                position: 'fixed',
+                                top: 'auto',
+                                width: 338,
+                            }}
+                        name='请选择机构'
+                        options={this.state.option}/>
+                </div>
             </div>
         )
     }

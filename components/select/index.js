@@ -322,6 +322,7 @@ var Select = React.createClass({
     },
 
     _handleMultiAutoClick: function (e) {
+        console.log('_handleMultiAutoClick')
         ReactDom.findDOMNode(this.refs.selectInput).focus()
     },
 
@@ -446,6 +447,9 @@ var Select = React.createClass({
         e.preventDefault();
     },
 
+    _handleMultiAutoInputClick: function (e) {
+        this._handleInputChange(e);
+    },
     _handleInputFocus: function (e) {
 
         /*var onUpdate = this.props.onUpdate;
@@ -714,6 +718,7 @@ var Select = React.createClass({
                                     value={this.state.term}
                                     className='select2-input multi-select'
                                     onFocus={this._handleInputFocus}
+                                    onClick={this._handleMultiAutoInputClick}
                                     onBlur={this._handleInputBlur}
                                     onChange={this._handleInputChange}
                                     onPaste= {this._handleInputPaste}  
